@@ -34,18 +34,19 @@ void Game::pollEvents() {
 void Game::update(const float& deltaTime) {
 
     player.update(deltaTime);
+    player.Colision(window, deltaTime);
 
     if (Keyboard::isKeyPressed(Keyboard::Z)) {
-        player.shape.move(0, -200 * deltaTime);
+        player.shape.move(0, -player.speed * deltaTime);
     }
     if (Keyboard::isKeyPressed(Keyboard::S)) {
-        player.shape.move(0, 200 * deltaTime);
+        player.shape.move(0, player.speed * deltaTime);
     }
     if (Keyboard::isKeyPressed(Keyboard::D)) {
-        player.shape.move(200 * deltaTime, 0);
+        player.shape.move(player.speed * deltaTime, 0);
     }
     if (Keyboard::isKeyPressed(Keyboard::Q)) {
-        player.shape.move(-200 * deltaTime, 0);
+        player.shape.move(-player.speed * deltaTime, 0);
     }
     if (Keyboard::isKeyPressed(Keyboard::J)) {
         isRunning = false;
