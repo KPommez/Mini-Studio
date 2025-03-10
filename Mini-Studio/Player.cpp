@@ -10,6 +10,13 @@ Player::Player() {
 	velocity = 0.f;
     fallingMovement = 0.f;
 	jumpMovement = 5.f;
+	for (int i = 1; i < 11; ++i) {
+		sf::RectangleShape rect;
+		rect.setSize(sf::Vector2f(250.f, 30.f));
+		rect.setPosition(i * 250.f, 1080 - (i * 60.f));
+		rect.setFillColor(sf::Color::White);
+		platforms.push_back(rect);
+	}
 }
 
 void Player::resize(sf::RenderWindow& window) {
@@ -27,16 +34,14 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
         fallingMovement = 0.f;
     }
 
-    if (Keyboard::isKeyPressed(Keyboard::S)) {
-        shape.move(0, speed * deltaTime);
-    }
     if (Keyboard::isKeyPressed(Keyboard::D)) {
         shape.move(speed * deltaTime, 0);
     }
     if (Keyboard::isKeyPressed(Keyboard::Q)) {
         shape.move(-speed * deltaTime, 0);
     }
-    if (Keyboard::isKeyPressed(Keyboard::Space) && shape.getPosition().y >= window.getSize().y - shape.getSize().y) {
+
+    if (Keyboard::isKeyPressed(Keyboard::Space) && (shape.getPosition().y >= window.getSize().y - shape.getSize().y || hasPlatform)) {
         isJumping = true;
     }
 
@@ -71,8 +76,21 @@ void Player::Colision(RenderWindow& window, const float& deltaTime) {
 	{
 		shape.move(0, -speed * deltaTime);
 	}
+	int count = 0;
+	for (auto& platform : platforms) {
+		if (shape.getGlobalBounds().intersects(platform.getGlobalBounds())) {
+			hasPlatform = true;
+			count++;
+		}
+	}
+	if (!count) {
+		hasPlatform = false;
+	}
 }
 
 void Player::draw(sf::RenderWindow& window) {
 	window.draw(shape);
+	for (auto& platform : platforms) {
+		window.draw(platform);
+	}
 }

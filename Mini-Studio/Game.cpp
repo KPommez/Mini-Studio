@@ -41,7 +41,6 @@ void Game::pollEvents() {
             isRunning = false;
         if (event.type == Event::KeyReleased && event.key.code == sf::Keyboard::Space) {
             player.isJumping = false;
-            cout << "Released" << endl;
         }
     }
 }
