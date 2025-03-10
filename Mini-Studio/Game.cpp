@@ -39,7 +39,7 @@ void Game::pollEvents() {
 void Game::update(const float& deltaTime) {
 
     player.update(deltaTime, window);
-
+    player.Colision(window, deltaTime);
     if (Keyboard::isKeyPressed(Keyboard::J)) {
         isRunning = false;
     }

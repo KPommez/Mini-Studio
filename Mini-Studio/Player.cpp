@@ -7,7 +7,6 @@ Player::Player() {
 	shape.setFillColor(sf::Color::Green);
 	shape.setPosition(100, 100);
 	speed = 350.f;
-	velocity = 100.f;
     fallingTime = 0.f;
 }
 
@@ -23,16 +22,16 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
     }
 
     if (Keyboard::isKeyPressed(Keyboard::Z)) {
-        shape.move(0, -200 * deltaTime);
+        shape.move(0, -speed * deltaTime);
     }
     if (Keyboard::isKeyPressed(Keyboard::S)) {
-        shape.move(0, 200 * deltaTime);
+        shape.move(0, speed * deltaTime);
     }
     if (Keyboard::isKeyPressed(Keyboard::D)) {
-        shape.move(200 * deltaTime, 0);
+        shape.move(speed * deltaTime, 0);
     }
     if (Keyboard::isKeyPressed(Keyboard::Q)) {
-        shape.move(-200 * deltaTime, 0);
+        shape.move(-speed * deltaTime, 0);
     }
     if (Keyboard::isKeyPressed(Keyboard::Space)) {
         isJumping = true;
@@ -41,7 +40,25 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
     if (isJumping && hasPlatform) {
 
     }
+}
 
+void Player::Colision(RenderWindow& window, const float& deltaTime) {
+	if (shape.getPosition().x <= 0)
+	{
+		shape.move(speed * deltaTime, 0);
+	}
+	if (shape.getPosition().x >= window.getSize().x - shape.getSize().x)
+	{
+		shape.move(-speed * deltaTime, 0);
+	}
+	if (shape.getPosition().y <= 0)
+	{
+		shape.move(0, speed * deltaTime);
+	}
+	if (shape.getPosition().y >= window.getSize().y - shape.getSize().y)
+	{
+		shape.move(0, -speed * deltaTime);
+	}
 }
 
 void Player::draw(sf::RenderWindow& window) {
