@@ -2,7 +2,7 @@
 Lampadaire lamp({ 200,200 });
 
 
-Game::Game() : window(sf::VideoMode::getFullscreenModes().at(0), "Mini-Studio", sf::Style::Fullscreen)
+Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", Style::Fullscreen)
 {
     window.setFramerateLimit(144);
     deltaTime = 0.f;
@@ -40,6 +40,7 @@ void Game::pollEvents() {
 }
 
 void Game::update(const float& deltaTime) {
+    lamp.playerPos = player.shape.getPosition();
     lamp.update(deltaTime, window);
     player.update(deltaTime, window);
     player.Colision(window, deltaTime);

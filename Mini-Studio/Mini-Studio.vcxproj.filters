@@ -51,7 +51,7 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Lampadaire.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Ennemies</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
