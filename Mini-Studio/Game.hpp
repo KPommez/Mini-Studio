@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Player.hpp"
+#include "Map.hpp"
 
 class Game
 {
@@ -10,6 +11,7 @@ private:
 	sf::RenderWindow window;
 	sf::Event event;
 	sf::Clock Clock;
+	
 
 private:
 	Player player;
@@ -17,6 +19,7 @@ private:
 public:
 	Game();
 	void Run();
+	Map level;
 
 private:
 	void update(const float& deltaTime);
