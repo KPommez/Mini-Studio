@@ -1,5 +1,6 @@
 #include "Game.hpp"
 
+
 Game::Game() : window(sf::VideoMode::getFullscreenModes().at(0), "Mini-Studio", sf::Style::Fullscreen)
 {
     window.setVerticalSyncEnabled(true);
@@ -10,8 +11,11 @@ Game::Game() : window(sf::VideoMode::getFullscreenModes().at(0), "Mini-Studio", 
 
 void Game::Run() {
 
+    
+
     // Chargement des assets
     // Chargement de la map
+    level.loadMap();
     // Ajout des menus
     // Appel du dessin du menu
 
@@ -54,5 +58,6 @@ void Game::update(const float& deltaTime) {
 void Game::draw() {
     window.clear();
     player.draw(window);
+    level.drawMap(window);
     window.display();
 }
