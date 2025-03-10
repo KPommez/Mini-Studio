@@ -3,7 +3,7 @@
 
 Game::Game() : window(sf::VideoMode::getFullscreenModes().at(0), "Mini-Studio", sf::Style::Fullscreen)
 {
-    window.setFramerateLimit(144);
+    window.setVerticalSyncEnabled(true);
     deltaTime = 0.f;
     event = {};
     isRunning = true;
@@ -18,6 +18,8 @@ void Game::Run() {
     level.loadMap();
     // Ajout des menus
     // Appel du dessin du menu
+
+    player.resize(window);
 
     while (window.isOpen() && isRunning) {
         
@@ -37,6 +39,10 @@ void Game::pollEvents() {
     while (window.pollEvent(event)) {
         if (event.type == Event::Closed)
             isRunning = false;
+        if (event.type == Event::KeyReleased && event.key.code == sf::Keyboard::Space) {
+            player.isJumping = false;
+            cout << "Released" << endl;
+        }
     }
 }
 
