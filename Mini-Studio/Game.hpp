@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Player.hpp"
+#include "Lampadaire.hpp"
 
 class Game
 {

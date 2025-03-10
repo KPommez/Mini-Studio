@@ -35,6 +35,8 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
     }
     if (Keyboard::isKeyPressed(Keyboard::Space)) {
         isJumping = true;
+    }if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+        window.close();
     }
 
     if (isJumping && hasPlatform) {

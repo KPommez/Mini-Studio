@@ -1,4 +1,6 @@
 #include "Game.hpp"
+Lampadaire lamp({ 200,200 });
+
 
 Game::Game() : window(sf::VideoMode::getFullscreenModes().at(0), "Mini-Studio", sf::Style::Fullscreen)
 {
@@ -9,20 +11,21 @@ Game::Game() : window(sf::VideoMode::getFullscreenModes().at(0), "Mini-Studio", 
 }
 
 void Game::Run() {
-
+    
     // Chargement des assets
     // Chargement de la map
     // Ajout des menus
     // Appel du dessin du menu
-
+    
     while (window.isOpen() && isRunning) {
         
         deltaTime = Clock.restart().asSeconds();
 
         pollEvents();
+        
         update(deltaTime);
         draw();
-
+        
     }
 
     window.close();
@@ -37,7 +40,7 @@ void Game::pollEvents() {
 }
 
 void Game::update(const float& deltaTime) {
-
+    lamp.update(deltaTime, window);
     player.update(deltaTime, window);
     player.Colision(window, deltaTime);
     if (Keyboard::isKeyPressed(Keyboard::J)) {
@@ -48,5 +51,7 @@ void Game::update(const float& deltaTime) {
 void Game::draw() {
     window.clear();
     player.draw(window);
+    lamp.draw(window);
     window.display();
+    
 }
