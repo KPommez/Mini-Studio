@@ -10,25 +10,33 @@ Player::Player() {
 	speed = 350.f;
     fallingTime = 0.f;
     dashingTime = 0;
+	velocity = 0.f;
+    fallingMovement = 0.f;
+	jumpMovement = 5.f;
+	for (int i = 1; i < 11; ++i) {
+		sf::RectangleShape rect;
+		rect.setSize(sf::Vector2f(250.f, 30.f));
+		rect.setPosition(i * 250.f, 1080 - (i * 60.f));
+		rect.setFillColor(sf::Color::White);
+		platforms.push_back(rect);
+	}
+}
+
+void Player::resize(sf::RenderWindow& window) {
+	shape.setSize(sf::Vector2f(window.getSize().x / 20.f, (window.getSize().y / 4.f) * (3.f/4.f)));
 }
 
 void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 
-    if (shape.getPosition().y < (window.getSize().y - shape.getSize().y) && !hasPlatform) {
-        if(fallingTime < maxFallingSpeed)
-            fallingTime += deltaTime * gravityConst;
-        shape.move(0, fallingTime);
+    if (shape.getPosition().y < (window.getSize().y - shape.getSize().y) && !hasPlatform && !isJumping) {
+        if(fallingMovement < maxFallingForce)
+            fallingMovement += deltaTime * gravityConst;
+        shape.move(0, fallingMovement);
     }
     else {
-        fallingTime = 0.f;
+        fallingMovement = 0.f;
     }
 
-    if (Keyboard::isKeyPressed(Keyboard::Z)) {
-        shape.move(0, -speed * deltaTime);
-    }
-    if (Keyboard::isKeyPressed(Keyboard::S)) {
-        shape.move(0, speed * deltaTime);
-    }
     if (Keyboard::isKeyPressed(Keyboard::D)) {
         isGoingRight = true;
         isGoingLeft = false;
@@ -39,9 +47,11 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
         isGoingRight = false;
         shape.move(-speed * deltaTime, 0);
     }
-    if (Keyboard::isKeyPressed(Keyboard::Space)) {
+
+    if (Keyboard::isKeyPressed(Keyboard::Space) && (shape.getPosition().y >= window.getSize().y - shape.getSize().y || hasPlatform)) {
         isJumping = true;
     }
+
     if (Keyboard::isKeyPressed(Keyboard::F))
     {
         isDashing = true;
@@ -67,7 +77,17 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
             isDashing = false;
         }
     }
-    
+	if (isJumping) {
+		if (jumpMovement > 0)
+			jumpMovement -= deltaTime * jumpForce;
+		else {
+			isJumping = false;
+		}
+		shape.move(0, -jumpMovement);
+	}
+	else {
+		jumpMovement = 5.f;
+	}
 }
 
 void Player::Colision(RenderWindow& window, const float& deltaTime) {
@@ -87,8 +107,21 @@ void Player::Colision(RenderWindow& window, const float& deltaTime) {
 	{
 		shape.move(0, -speed * deltaTime);
 	}
+	int count = 0;
+	for (auto& platform : platforms) {
+		if (shape.getGlobalBounds().intersects(platform.getGlobalBounds())) {
+			hasPlatform = true;
+			count++;
+		}
+	}
+	if (!count) {
+		hasPlatform = false;
+	}
 }
 
 void Player::draw(sf::RenderWindow& window) {
 	window.draw(shape);
+	for (auto& platform : platforms) {
+		window.draw(platform);
+	}
 }
