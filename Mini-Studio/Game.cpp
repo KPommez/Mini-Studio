@@ -10,6 +10,11 @@ Game::Game() : window(sf::VideoMode::getFullscreenModes().at(0), "Mini-Studio", 
 
 void Game::Run() {
 
+    // Chargement des assets
+    // Chargement de la map
+    // Ajout des menus
+    // Appel du dessin du menu
+
     while (window.isOpen() && isRunning) {
         
         deltaTime = Clock.restart().asSeconds();
@@ -33,20 +38,8 @@ void Game::pollEvents() {
 
 void Game::update(const float& deltaTime) {
 
-    player.update(deltaTime);
+    player.update(deltaTime, window);
 
-    if (Keyboard::isKeyPressed(Keyboard::Z)) {
-        player.shape.move(0, -200 * deltaTime);
-    }
-    if (Keyboard::isKeyPressed(Keyboard::S)) {
-        player.shape.move(0, 200 * deltaTime);
-    }
-    if (Keyboard::isKeyPressed(Keyboard::D)) {
-        player.shape.move(200 * deltaTime, 0);
-    }
-    if (Keyboard::isKeyPressed(Keyboard::Q)) {
-        player.shape.move(-200 * deltaTime, 0);
-    }
     if (Keyboard::isKeyPressed(Keyboard::J)) {
         isRunning = false;
     }
