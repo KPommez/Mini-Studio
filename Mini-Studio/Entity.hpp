@@ -10,7 +10,7 @@ public:
 	sf::Sprite sprite;
 
 public:
-	virtual void update(const float& deltaTime) = 0;
+	virtual void update(const float& deltaTime, sf::RenderWindow& window) = 0;
 	virtual void draw(sf::RenderWindow& window) = 0;
 
 public:
