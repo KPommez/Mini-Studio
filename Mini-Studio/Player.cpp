@@ -3,10 +3,13 @@
 Player::Player() {
 	isJumping = false;
     hasPlatform = false;
+    isDashing = false;
 	shape.setSize(sf::Vector2f(40.f, 40.f));
 	shape.setFillColor(sf::Color::Green);
 	shape.setPosition(100, 100);
 	speed = 350.f;
+    fallingTime = 0.f;
+    dashingTime = 0;
 	velocity = 0.f;
     fallingMovement = 0.f;
 	jumpMovement = 5.f;
@@ -37,9 +40,13 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 
 	// Inputs gauche/droite
     if (Keyboard::isKeyPressed(Keyboard::D)) {
+        isGoingRight = true;
+        isGoingLeft = false;
         shape.move(speed * deltaTime, 0);
     }
     if (Keyboard::isKeyPressed(Keyboard::Q)) {
+        isGoingLeft = true;
+        isGoingRight = false;
         shape.move(-speed * deltaTime, 0);
     }
 
@@ -48,6 +55,31 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
         isJumping = true;
     }
 
+    if (Keyboard::isKeyPressed(Keyboard::F))
+    {
+        isDashing = true;
+    }
+    if (clockDash.getElapsedTime().asSeconds() >= 2 && !isDashing)
+    {
+        clockDash.restart();
+        dashingTime = 0;
+    }
+    if (isDashing)
+    {
+        dashingTime += deltaTime;
+        if (isGoingLeft && dashingTime < 0.25f)
+        {
+            shape.move(-dashSpeed, 0);
+        }
+        else if (isGoingRight && dashingTime < 0.25f)
+        {
+            shape.move(dashSpeed, 0);
+        }
+        else
+        {
+            isDashing = false;
+        }
+    }
 	// Force d'impulsion du saut qui descend graduellement
 	if (isJumping) {
 		if (jumpMovement > 0)
@@ -60,7 +92,6 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 	else {
 		jumpMovement = 5.f;
 	}
-
 }
 
 void Player::Colision(RenderWindow& window, const float& deltaTime) {
