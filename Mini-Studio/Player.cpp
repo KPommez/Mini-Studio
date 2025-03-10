@@ -3,11 +3,13 @@
 Player::Player() {
 	isJumping = false;
     hasPlatform = false;
+    isDashing = false;
 	shape.setSize(sf::Vector2f(40.f, 40.f));
 	shape.setFillColor(sf::Color::Green);
 	shape.setPosition(100, 100);
 	speed = 350.f;
     fallingTime = 0.f;
+    dashingTime = 0;
 }
 
 void Player::update(const float& deltaTime, sf::RenderWindow& window) {
@@ -28,18 +30,44 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
         shape.move(0, speed * deltaTime);
     }
     if (Keyboard::isKeyPressed(Keyboard::D)) {
+        isGoingRight = true;
+        isGoingLeft = false;
         shape.move(speed * deltaTime, 0);
     }
     if (Keyboard::isKeyPressed(Keyboard::Q)) {
+        isGoingLeft = true;
+        isGoingRight = false;
         shape.move(-speed * deltaTime, 0);
     }
     if (Keyboard::isKeyPressed(Keyboard::Space)) {
         isJumping = true;
     }
-
-    if (isJumping && hasPlatform) {
-
+    if (Keyboard::isKeyPressed(Keyboard::F))
+    {
+        isDashing = true;
     }
+    if (clockDash.getElapsedTime().asSeconds() >= 2 && !isDashing)
+    {
+        clockDash.restart();
+        dashingTime = 0;
+    }
+    if (isDashing)
+    {
+        dashingTime += deltaTime;
+        if (isGoingLeft && dashingTime < 0.25f)
+        {
+            shape.move(-dashSpeed, 0);
+        }
+        else if (isGoingRight && dashingTime < 0.25f)
+        {
+            shape.move(dashSpeed, 0);
+        }
+        else
+        {
+            isDashing = false;
+        }
+    }
+    
 }
 
 void Player::Colision(RenderWindow& window, const float& deltaTime) {

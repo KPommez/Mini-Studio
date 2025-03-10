@@ -31,8 +31,14 @@ void Game::Run() {
 
 void Game::pollEvents() {
     while (window.pollEvent(event)) {
-        if (event.type == Event::Closed)
+        if (event.type == Event::Closed) {
             isRunning = false;
+
+        }
+        if (event.type==Event::KeyReleased&& event.key.code==Keyboard::F)
+        {
+            player.isDashing = false;
+        }
     }
 }
 
