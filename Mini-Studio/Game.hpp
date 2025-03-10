@@ -1,15 +1,25 @@
 #pragma once
-#include "includeAll.hpp"
+
+#include "Player.hpp"
 
 class Game
 {
+private:
+	bool isRunning;	
+	float deltaTime;
+	sf::RenderWindow window;
+	sf::Event event;
+	sf::Clock Clock;
+
+private:
+	Player player;
+
 public:
-
 	Game();
+	void Run();
 
-	
-
-
-	void Run(RenderWindow& window);
+private:
+	void update(const float& deltaTime);
+	void pollEvents();
+	void draw();
 };
-

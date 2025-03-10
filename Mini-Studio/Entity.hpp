@@ -3,7 +3,7 @@
 #include "includeAll.hpp"
 
 class Entity {
-protected:
+public:
 	// rectangle pour test tech
 	sf::RectangleShape shape;
 	sf::Texture texture;
@@ -14,5 +14,5 @@ public:
 	virtual void draw(sf::RenderWindow& window) = 0;
 
 public:
-	virtual ~Entity();
+	//virtual ~Entity();
 };

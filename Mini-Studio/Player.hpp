@@ -4,7 +4,8 @@
 
 class Player : public Entity {
 private:
-	// Pour les variables membres plus tard
+	float speed;
+	float velocity;
 
 public:
 	Player();
