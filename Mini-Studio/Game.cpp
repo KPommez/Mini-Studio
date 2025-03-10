@@ -19,7 +19,7 @@ void Game::Run() {
 
     player.resize(window);
 
-    while (window.isOpen() && isRunning) {
+    while (isRunning) {
         
         deltaTime = Clock.restart().asSeconds();
 

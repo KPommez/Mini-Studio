@@ -10,15 +10,9 @@ Map::Map()
 void Map::loadMap(/*string filename*/)
 {
 	ifstream file("Assets/map/test_map1.txt");
-	//ifstream file(filename);
-
-	
-
 
 	string line;
 	float y = 0.f;
-
-
 
 	while (getline(file, line)) {
 		for (int x = 0; x < line.size(); ++x) {
@@ -39,7 +33,7 @@ void Map::loadMap(/*string filename*/)
 
 void Map::drawMap(RenderWindow& window) {
 
-	for (auto Rectangle : listeMur) {
+	for (auto& Rectangle : listeMur) {
 		window.draw(Rectangle);
 	}
 
