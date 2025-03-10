@@ -3,9 +3,9 @@
 #include "Entity.hpp"
 
 class Player : public Entity {
-private:
+public:
 	float speed;
-	float velocity;
+	float gravity;
 
 public:
 	Player();
@@ -13,4 +13,6 @@ public:
 public:
 	void update(const float& deltaTime) override;
 	void draw(sf::RenderWindow& window) override;
+
+	void Colision(RenderWindow& window, const float& deltaTime);
 };
