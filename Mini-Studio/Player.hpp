@@ -9,6 +9,7 @@ public:
 	float fallingMovement;
 	float jumpMovement;
 	float velocity;
+	float fallingTime;
 	const int maxFallingForce = 20; // ~2 fois la gravit�
 	const int maxJumpingSpeed = 10;
 	const float gravityConst = 9.81f;

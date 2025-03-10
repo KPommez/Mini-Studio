@@ -12,15 +12,14 @@ private:
 	sf::Event event;
 	sf::Clock Clock;
 	
-
 private:
+	Map level;
 	Player player;
 
 public:
 	Game();
 	void Run();
-	Map level;
-
+	
 private:
 	void update(const float& deltaTime);
 	void pollEvents();

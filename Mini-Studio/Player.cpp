@@ -25,6 +25,7 @@ void Player::resize(sf::RenderWindow& window) {
 
 void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 
+	// Tombe de plus en plus vite jusqu'à atteindre une limite.
     if (shape.getPosition().y < (window.getSize().y - shape.getSize().y) && !hasPlatform && !isJumping) {
         if(fallingMovement < maxFallingForce)
             fallingMovement += deltaTime * gravityConst;
@@ -34,6 +35,7 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
         fallingMovement = 0.f;
     }
 
+	// Inputs gauche/droite
     if (Keyboard::isKeyPressed(Keyboard::D)) {
         shape.move(speed * deltaTime, 0);
     }
@@ -41,10 +43,12 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
         shape.move(-speed * deltaTime, 0);
     }
 
+	// Input spacebar pour jump + vérifications d'éligibilité
     if (Keyboard::isKeyPressed(Keyboard::Space) && (shape.getPosition().y >= window.getSize().y - shape.getSize().y || hasPlatform)) {
         isJumping = true;
     }
 
+	// Force d'impulsion du saut qui descend graduellement
 	if (isJumping) {
 		if (jumpMovement > 0)
 			jumpMovement -= deltaTime * jumpForce;
