@@ -1,18 +1,24 @@
 #include "Player.hpp"
 
 Player::Player() {
-	isJumping = false;
-    hasPlatform = false;
-    isDashing = false;
+	// Boolean members
+	isGoingLeft  = false;
+	isGoingRight = false;
+	isJumping    = false;
+    hasPlatform  = false;
+    isDashing    = false;
+	// Float members
+	speed           = 350.f;
+	fallingTime     = 0.f;
+	dashingTime     = 0.f;
+	velocity        = 0.f;
+	fallingMovement = 0.f;
+	jumpMovement    = 5.f;
+	// Player's shape definition
 	shape.setSize(sf::Vector2f(40.f, 40.f));
 	shape.setFillColor(sf::Color::Green);
 	shape.setPosition(100, 100);
-	speed = 350.f;
-    fallingTime = 0.f;
-    dashingTime = 0;
-	velocity = 0.f;
-    fallingMovement = 0.f;
-	jumpMovement = 5.f;
+	// temporary : testing collisions
 	for (int i = 1; i < 11; ++i) {
 		sf::RectangleShape rect;
 		rect.setSize(sf::Vector2f(250.f, 30.f));
@@ -28,7 +34,7 @@ void Player::resize(sf::RenderWindow& window) {
 
 void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 
-	// Tombe de plus en plus vite jusqu'à atteindre une limite.
+	// Keeps falling faster until he reaches a certain limit
     if (shape.getPosition().y < (window.getSize().y - shape.getSize().y) && !hasPlatform && !isJumping) {
         if(fallingMovement < maxFallingForce)
             fallingMovement += deltaTime * gravityConst;
@@ -38,7 +44,7 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
         fallingMovement = 0.f;
     }
 
-	// Inputs gauche/droite
+	// Inputs left & right
     if (Keyboard::isKeyPressed(Keyboard::D)) {
         isGoingRight = true;
         isGoingLeft = false;
@@ -50,11 +56,10 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
         shape.move(-speed * deltaTime, 0);
     }
 
-	// Input spacebar pour jump + vérifications d'éligibilité
+	// Input spacebar for jumping / F for dashing (once every 2 seconds, temporary timing)
     if (Keyboard::isKeyPressed(Keyboard::Space) && (shape.getPosition().y >= window.getSize().y - shape.getSize().y || hasPlatform)) {
         isJumping = true;
     }
-
     if (Keyboard::isKeyPressed(Keyboard::F))
     {
         isDashing = true;
@@ -69,18 +74,19 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
         dashingTime += deltaTime;
         if (isGoingLeft && dashingTime < 0.25f)
         {
-            shape.move(-dashSpeed, 0);
+            shape.move((float)-dashSpeed, 0);
         }
         else if (isGoingRight && dashingTime < 0.25f)
         {
-            shape.move(dashSpeed, 0);
+            shape.move((float)dashSpeed, 0);
         }
         else
         {
             isDashing = false;
         }
     }
-	// Force d'impulsion du saut qui descend graduellement
+
+	// Impulsion force slowly going down
 	if (isJumping) {
 		if (jumpMovement > 0)
 			jumpMovement -= deltaTime * jumpForce;
@@ -95,6 +101,7 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 }
 
 void Player::Colision(RenderWindow& window, const float& deltaTime) {
+	// Collisions with the window borders
 	if (shape.getPosition().x <= 0)
 	{
 		shape.move(speed * deltaTime, 0);
@@ -109,8 +116,10 @@ void Player::Colision(RenderWindow& window, const float& deltaTime) {
 	}
 	if (shape.getPosition().y >= window.getSize().y - shape.getSize().y)
 	{
-		shape.move(0, -speed * deltaTime);
+		shape.move(0, 0);
 	}
+
+	// Collisions with platforms
 	int count = 0;
 	for (auto& platform : platforms) {
 		if (shape.getGlobalBounds().intersects(platform.getGlobalBounds())) {
