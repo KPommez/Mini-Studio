@@ -2,6 +2,6 @@
 
 int main()
 {
-    Game jeu;
-    jeu.Run();
+    Game MiniStudio;
+    MiniStudio.Run();
 }

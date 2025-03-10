@@ -12,17 +12,15 @@ public:
 	float fallingMovement;
 	float jumpMovement;
 	float velocity;
-	float fallingTime;
-	const int maxFallingForce = 20; // ~2 fois la gravit�
-	const int maxJumpingSpeed = 10;
-	const float gravityConst = 9.81f;
-	float dashingTime = 0.5f;
-	const int dashSpeed = 5;
-	const float jumpForce = 6.54f;
 	float speed;
+	float fallingTime;
+	const int maxFallingForce = 20; // About twice as much as gravity force
+	const int maxJumpingSpeed = 10;
+	const int dashSpeed       = 5;
+	const float gravityConst  = 9.81f;
+	const float jumpForce     = 6.54f; // ~= Gravity force / 1.5f
+	float dashingTime         = 0.5f;
 	Clock clockDash;
-
-public:
 	std::vector<sf::RectangleShape> platforms;
 
 public:
