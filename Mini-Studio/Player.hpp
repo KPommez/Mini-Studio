@@ -16,6 +16,9 @@ public:
 	float speed;
 
 public:
+	std::vector<sf::RectangleShape> platforms;
+
+public:
 	Player();
 
 public:
