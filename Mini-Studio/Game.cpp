@@ -11,7 +11,7 @@ void Game::Run() {
   
     // Chargement des assets
     // Chargement de la map
-    level.loadMap("Assets/map/test_map1.txt");
+    level.loadMap("Assets/map/test_map1.txt", window);
     // Ajout des menus
     // Appel du dessin du menu
 
@@ -47,12 +47,12 @@ void Game::pollEvents() {
 
 void Game::update(const float& deltaTime) {
     player.update(deltaTime, window);
-    player.Colision(window, deltaTime);
+    player.Colision(window, deltaTime, level);
 }
 
 void Game::draw() {
     window.clear();
-    player.draw(window);
     level.drawMap(window);
+    player.draw(window);
     window.display();
 }
