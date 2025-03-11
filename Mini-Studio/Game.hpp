@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Player.hpp"
+#include "Lampadaire.hpp"
+#include "EntityManager.hpp"
 #include "Map.hpp"
 
 class Game
@@ -11,26 +12,22 @@ private:
 	sf::RenderWindow window;
 	sf::Event event;
 	sf::Clock Clock;
-	
-private:
-	Map level;
-	Player player;
+	std::shared_ptr<EntityManager>  m_entityManager;
 	View vue;
 	int screenX = 1920;
 	int screenY = 1080;
 
-	void update(const float& deltaTime);
-	void pollEvents();
-	void draw();
-	void view();
-
 public:
 	Game();
 	void Run();
+
+public:
 	Map level;
+	Player player;
 
 private:
 	void update(const float& deltaTime);
 	void pollEvents();
 	void draw();
+	void view();
 };
