@@ -35,7 +35,6 @@ void Menu::start(RenderWindow& window)
 		option(window);
 		break;
 	case START:
-		game.Run(window);
 		menuState = MENU;
 		break;
 	case WIN:
@@ -43,6 +42,8 @@ void Menu::start(RenderWindow& window)
 		break;
 	case LOOSE:
 		loose(window);
+		break;
+	default:
 		break;
 	}
 }
@@ -89,34 +90,31 @@ void Menu::menu(RenderWindow& window) {
 
 	window.display();
 
-	
-		Event gameEvent;
-		while (window.pollEvent(gameEvent)) {
+	Event gameEvent;
+	while (window.pollEvent(gameEvent)) {
 
-			if (gameEvent.type == Event::Closed)
+		if (gameEvent.type == Event::Closed)
+			window.close();
+
+		if (Keyboard::isKeyPressed(Keyboard::K))
+			window.close();
+
+		if (Mouse::isButtonPressed(Mouse::Left)) {
+			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
+				listeTexte.clear();
+				listeRectangle.clear();
+				menuState = START;
+			}
+			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
+				listeTexte.clear();
+				listeRectangle.clear();
+				menuState = OPTION;
+			}
+			if (Mouse::getPosition(window).x > RecPartir.posX && Mouse::getPosition(window).y > RecPartir.posY && Mouse::getPosition(window).x < RecPartir.posX + RecPartir.tailleX && Mouse::getPosition(window).y < RecPartir.posY + RecPartir.tailleY) {
 				window.close();
-
-			if (Keyboard::isKeyPressed(Keyboard::K))
-				window.close();
-
-			if (Mouse::isButtonPressed(Mouse::Left)) {
-				if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
-					listeTexte.clear();
-					listeRectangle.clear();
-					game.inGame = true;
-					menuState = START;
-				}
-				if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
-					listeTexte.clear();
-					listeRectangle.clear();
-					menuState = OPTION;
-				}
-				if (Mouse::getPosition(window).x > RecPartir.posX && Mouse::getPosition(window).y > RecPartir.posY && Mouse::getPosition(window).x < RecPartir.posX + RecPartir.tailleX && Mouse::getPosition(window).y < RecPartir.posY + RecPartir.tailleY) {
-					window.close();
-				}
 			}
 		}
-	
+	}
 }
 
 void Menu::option(RenderWindow& window) {
@@ -178,7 +176,7 @@ void Menu::win(RenderWindow& window)
 	listeTexte.clear();
 	listeRectangle.clear();
 
-	Texte Titre(font, "Vous avez .... Gagner ??", 80, 255, 0, 0, 480, 255); //font, texte, taille,R,G,B, X, Y , 
+	Texte Titre(font, "Vous avez .... Gagne ??", 80, 255, 0, 0, 480, 255); //font, texte, taille,R,G,B, X, Y , 
 	listeTexte.push_back(Titre);
 
 	Texte start(font, "Restart", 40, 0, 0, 0, 880, 410);
@@ -215,7 +213,6 @@ void Menu::win(RenderWindow& window)
 			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
 				listeTexte.clear();
 				listeRectangle.clear();
-				game.inGame = true;
 				menuState = START;
 			}
 			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
@@ -234,7 +231,7 @@ void Menu::loose(RenderWindow& window)
 	listeTexte.clear();
 	listeRectangle.clear();
 
-	Texte Titre(font, "Vous avez Perdus, vous n'etes pas le hero", 80, 255, 0, 0, 180, 255); //font, texte, taille,R,G,B, X, Y , 
+	Texte Titre(font, "Vous avez perdu, vous n'etes pas le heros", 80, 255, 0, 0, 180, 255); //font, texte, taille,R,G,B, X, Y , 
 	listeTexte.push_back(Titre);
 
 	Texte start(font, "Restart", 40, 0, 0, 0, 880, 410);
@@ -271,7 +268,6 @@ void Menu::loose(RenderWindow& window)
 			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
 				listeTexte.clear();
 				listeRectangle.clear();
-				game.inGame = true;
 				menuState = START;
 			}
 			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {

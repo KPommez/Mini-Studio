@@ -24,7 +24,6 @@ public:
     void option(RenderWindow& window);
 
     Font font;
-    Game game;
 
     vector<Texte> listeTexte;
     vector<Rectangle> listeRectangle;

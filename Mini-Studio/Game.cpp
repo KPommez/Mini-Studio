@@ -1,46 +1,99 @@
 #include "Game.hpp"
-
-
-Game::Game()
-{
+    
+Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", sf::Style::Fullscreen) {
+    m_entityManager = make_shared<EntityManager>();
+    window.setVerticalSyncEnabled(true);
+    deltaTime = 0.f;
+    event = {};
+    isRunning = true;
 }
 
-void Game::Run(RenderWindow& window) {
+void Game::Run() {
+    Menu menu;
+    menu.start(window);
+
+    shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(200, 1000), &player);
+    m_entityManager->addEnnemy(test);
     
+    // Chargement des assets
+    // Chargement de la map
+    level.loadMap("Assets/map/test_map1.txt");
+    // Ajout des menus
+    // Appel du dessin du menu
 
-    RectangleShape joueur(Vector2f(40, 40));
-    joueur.setPosition(100, 100);
-    joueur.setFillColor(Color(0, 255, 0));
+    player.resize(window);
 
+    while (isRunning) {
+        deltaTime = Clock.restart().asSeconds();
 
-    while (window.isOpen()) {
-        Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == Event::Closed)
-                window.close();
+        pollEvents();
+        update(deltaTime);
+        draw();
+        view();
+
+    }
+    vue.reset(FloatRect(0, 0, screenX, screenY));
+    vue.zoom(1);
+
+    window.setView(vue);
+    window.close();
+
+}
+
+void Game::pollEvents() {
+    while (window.pollEvent(event)) {
+        if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::J)) {
+            isRunning = false;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Z)) {
-            joueur.move(0, -1);
+        if (event.type == Event::KeyReleased && event.key.code == Keyboard::F) {
+            player.isDashing = false;
         }
-        if (Keyboard::isKeyPressed(Keyboard::S)) {
-            joueur.move(0, 1);
+        if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space) {
+            player.isJumping = false;
         }
-        if (Keyboard::isKeyPressed(Keyboard::D)) {
-            joueur.move(1, 0);
-        }
-        if (Keyboard::isKeyPressed(Keyboard::Q)) {
-            joueur.move(-1, 0);
-        }
-        if (Keyboard::isKeyPressed(Keyboard::J)) {
-            window.close();
-        }
-
-
-
-        window.clear();
-        window.draw(joueur);
-
-        window.display();
     }
 }
 
+void Game::update(const float& deltaTime) {
+    m_entityManager->updateEntities(window, deltaTime);
+    player.update(deltaTime, window);
+    if (Keyboard::isKeyPressed(Keyboard::J)) {
+        isRunning = false;
+    }
+    player.Colision(window, deltaTime, level.platforms);
+}
+
+void Game::draw() {
+    window.clear();
+    level.drawMap(window);
+    player.draw(window);
+    m_entityManager->drawEntities(window);
+    window.display();
+}
+
+void Game::view() {
+    vue.reset(FloatRect(0, 0, screenX, screenY));
+    Vector2f position(screenX / 2, screenY / 2);
+    position.x = (player.shape.getPosition().x + (128 / 2) - (screenX / 2));
+    position.y = (player.shape.getPosition().y + (128 / 2) - (screenY / 2));
+
+    // permet de fixer une limite donc a voir avec les carré noir de Kiliann
+
+    if (position.x < -480) {
+        position.x = -480;
+    }
+    if (position.y < -270) {
+        position.y = -270;
+    }
+
+    if (position.x > 2000) {
+        position.x = 1920;
+    }
+    if (position.y > 270) {
+        position.y = 270;
+    }
+
+    vue.reset(FloatRect(position.x, position.y, screenX, screenY));
+    vue.zoom(1);
+    window.setView(vue);
+}

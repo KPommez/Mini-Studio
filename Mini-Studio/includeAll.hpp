@@ -1,7 +1,11 @@
 #pragma once
-#include <iostream>
+
+// SFML
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+
+// STD LIBRARY
+#include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
