@@ -147,6 +147,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Lampadaire.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +156,7 @@
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="includeAll.hpp" />
     <ClInclude Include="Lampadaire.hpp" />
+    <ClInclude Include="Map.hpp" />
     <ClInclude Include="Player.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

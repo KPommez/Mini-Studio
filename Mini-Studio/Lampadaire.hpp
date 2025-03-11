@@ -1,4 +1,5 @@
-#include "Entity.hpp"
+#pragma once
+
 #include "Player.hpp"
 
 class Lampadaire : public Entity
@@ -23,7 +24,4 @@ public:
 		RIGHT
 	};
 	MOVEMENTSIDE moveSide;
-private:
-
 };
-

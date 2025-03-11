@@ -1,20 +1,12 @@
 #pragma once
-#include "Entity.hpp"
 
 #include "Player.hpp"
 
-#include <iostream>
-#include <vector>
-#include <memory>
-
 using SharedPtrEntityVector_t = std::vector<std::shared_ptr<Entity>>;
 
-class EntityManager
-{
+class EntityManager {
 public:
-	
-
-	void											updateEntities(sf::RenderWindow& window, float deltaTime);
+	void updateEntities(sf::RenderWindow& window, float deltaTime);
 
 	//GETTERS
 	shared_ptr<Entity>								checkEntity(const Vector2f& playerPosition, float detectionRange);
@@ -33,7 +25,6 @@ public:
 	void drawPlayer(RenderWindow& window);
 	void drawEntities(RenderWindow& window);
 	void							removeEntity(std::shared_ptr<Entity> entitySharedPtr);
-	//void							removeEntity(std::shared_ptr<Entity> entitySharedPtr); //You can remove an entity from the m_entities vector with a weak_ptr
 
 	void                            deleteAllEnnemy();
 
@@ -42,6 +33,6 @@ private:
 	SharedPtrEntityVector_t			m_entities;
 
 	SharedPtrEntityVector_t			m_ennemies;
-	SharedPtrEntityVector_t		m_npc;
+	SharedPtrEntityVector_t		    m_npc;
 
 };

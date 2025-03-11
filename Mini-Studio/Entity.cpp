@@ -1,3 +1,3 @@
 #include "Entity.hpp"
 
-// Pour des définitions globales à la classe, utilisable plus tard
+// For the global class definitions, may be usable in the future.

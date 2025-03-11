@@ -6,13 +6,10 @@ std::weak_ptr<Entity> EntityManager::addEntity(std::shared_ptr<Entity> entitySha
 	return entitySharedPtr;
 }
 
-
-
 std::weak_ptr<Entity> EntityManager::addEnnemy(std::shared_ptr<Entity> entitySharedPtr) {
 	m_ennemies.push_back(entitySharedPtr);
 	return entitySharedPtr;
 }
-
 
 std::weak_ptr<Entity> EntityManager::addNPC(std::shared_ptr<Entity> entitySharedPtr) {
 	m_npc.push_back(entitySharedPtr);
@@ -79,8 +76,6 @@ void EntityManager::removeEntity(std::shared_ptr<Entity> entitySharedPtr)
 	}
 }
 
-
-
 void EntityManager::deleteAllEnnemy()
 {
 	for (auto& enemy : m_ennemies) {
@@ -91,10 +86,6 @@ void EntityManager::deleteAllEnnemy()
 		enemy.reset();
 	}
 	m_entities.clear();
-
-	
-
-	
 
 	for (auto& enemy : m_npc) {
 		enemy.reset();
@@ -135,7 +126,4 @@ void EntityManager::updateEntities(sf::RenderWindow& window, float deltaTime)
 	{
 		npc->update(deltaTime, window);
 	}
-	
-	
 }
-

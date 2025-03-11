@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Fichiers sources\Ennemies">
-      <UniqueIdentifier>{734712f1-bfa3-44ab-939a-2d93dfcb2119}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête\Ennemies">
-      <UniqueIdentifier>{97900df1-664b-4a57-8968-334b9a60b262}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,10 +27,7 @@
     <ClCompile Include="Player.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Lampadaire.cpp">
-      <Filter>Fichiers sources\Ennemies</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityManager.cpp">
+    <ClCompile Include="Map.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,10 +44,7 @@
     <ClInclude Include="Player.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Lampadaire.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityManager.hpp">
+    <ClInclude Include="Map.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
