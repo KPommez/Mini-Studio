@@ -74,11 +74,11 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
         dashingTime += deltaTime;
         if (isGoingLeft && dashingTime < 0.25f)
         {
-            shape.move((float)-dashSpeed, 0);
+            shape.move((float)-deltaTime * dashSpeed, 0);
         }
         else if (isGoingRight && dashingTime < 0.25f)
         {
-            shape.move((float)dashSpeed, 0);
+            shape.move((float)deltaTime * dashSpeed, 0);
         }
         else
         {
