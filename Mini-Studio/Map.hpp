@@ -11,8 +11,7 @@ private:
 
 public:
 	Map();
-
-public:
+	vector<RectangleShape> platforms;
 	void loadMap(const string& filename);
 	void drawMap(RenderWindow& window);
 };

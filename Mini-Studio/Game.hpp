@@ -13,17 +13,21 @@ private:
 	sf::Event event;
 	sf::Clock Clock;
 	std::shared_ptr<EntityManager>  m_entityManager;
-
-public:
-	Player player;
-	Map level;
+	View vue;
+	int screenX = 1920;
+	int screenY = 1080;
 
 public:
 	Game();
 	void Run();
-	
+
+public:
+	Map level;
+	Player player;
+
 private:
 	void update(const float& deltaTime);
 	void pollEvents();
 	void draw();
+	void view();
 };

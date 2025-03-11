@@ -19,7 +19,8 @@ void Map::loadMap(const string& filename) {
 				mur.setSize({ 40.f,40.f });
 				mur.setFillColor(Color::Blue);
 				mur.setPosition(posX, posY);
-				listeMur.push_back(mur);
+				platforms.push_back(mur);
+				
 			}
 		}
 		++y;
@@ -28,7 +29,7 @@ void Map::loadMap(const string& filename) {
 }
 
 void Map::drawMap(RenderWindow& window) {
-	for (auto& Rectangle : listeMur) {
+	for (auto& Rectangle : platforms) {
 		window.draw(Rectangle);
 	}
 }

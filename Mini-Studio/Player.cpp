@@ -2,6 +2,8 @@
 
 Player::Player() {
 	// Boolean members
+	isJumping = false;
+    hasPlatform = false;
 	isGoingLeft  = false;
 	isGoingRight = false;
 	isJumping    = false;
@@ -18,14 +20,6 @@ Player::Player() {
 	shape.setSize(sf::Vector2f(40.f, 40.f));
 	shape.setFillColor(sf::Color::Green);
 	shape.setPosition(100, 100);
-	// temporary : testing collisions
-	for (int i = 1; i < 11; ++i) {
-		sf::RectangleShape rect;
-		rect.setSize(sf::Vector2f(250.f, 30.f));
-		rect.setPosition(i * 250.f, 1080 - (i * 60.f));
-		rect.setFillColor(sf::Color::White);
-		platforms.push_back(rect);
-	}
 }
 
 void Player::resize(sf::RenderWindow& window) {
@@ -57,20 +51,9 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
     }
 
 	// Input spacebar for jumping / F for dashing (once every 2 seconds, temporary timing)
-    if (Keyboard::isKeyPressed(Keyboard::Space) && (shape.getPosition().y >= window.getSize().y - shape.getSize().y || hasPlatform)) {
-        isJumping = true;
-    }if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-        window.close();
-    }
-    if (Keyboard::isKeyPressed(Keyboard::F))
-    {
-        isDashing = true;
-    }
-    if (clockDash.getElapsedTime().asSeconds() >= 2 && !isDashing)
-    {
-        clockDash.restart();
-        dashingTime = 0;
-    }
+	if (Keyboard::isKeyPressed(Keyboard::Space) && (shape.getPosition().y >= window.getSize().y - shape.getSize().y || hasPlatform)) {
+		isJumping = true;
+	}
     if (isDashing)
     {
         dashingTime += deltaTime;
@@ -87,6 +70,18 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
             isDashing = false;
         }
     }
+	if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+        window.close();
+    }
+    if (Keyboard::isKeyPressed(Keyboard::F))
+    {
+        isDashing = true;
+    }
+    if (clockDash.getElapsedTime().asSeconds() >= 2 && !isDashing)
+    {
+        clockDash.restart();
+        dashingTime = 0;
+    }
 
 	// Impulsion force slowly going down
 	if (isJumping) {
@@ -102,16 +97,15 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 	}
 }
 
-void Player::Colision(RenderWindow& window, const float& deltaTime) {
-	// Collisions with the window borders
+void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms) {
 	if (shape.getPosition().x <= 0)
 	{
 		shape.move(speed * deltaTime, 0);
 	}
-	if (shape.getPosition().x >= window.getSize().x - shape.getSize().x)
+	/*if (shape.getPosition().x >= window.getSize().x - shape.getSize().x)
 	{
 		shape.move(-speed * deltaTime, 0);
-	}
+	}*/
 	if (shape.getPosition().y <= 0)
 	{
 		shape.move(0, speed * deltaTime);
@@ -136,7 +130,4 @@ void Player::Colision(RenderWindow& window, const float& deltaTime) {
 
 void Player::draw(sf::RenderWindow& window) {
 	window.draw(shape);
-	for (auto& platform : platforms) {
-		window.draw(platform);
-	}
 }

@@ -21,7 +21,6 @@ public:
 	const float jumpForce     = 6.54f; // ~= Gravity force / 1.5f
 	float dashingTime         = 0.5f;
 	Clock clockDash;
-	std::vector<sf::RectangleShape> platforms;
 
 public:
 	Player();
@@ -29,6 +28,6 @@ public:
 public:
 	void update(const float& deltaTime, sf::RenderWindow& window) override;
 	void draw(sf::RenderWindow& window) override;
-	void Colision(RenderWindow& window, const float& deltaTime);
+	void Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms);
 	void resize(sf::RenderWindow& window);
 };
