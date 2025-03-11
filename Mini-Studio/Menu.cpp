@@ -50,68 +50,71 @@ void Menu::start(RenderWindow& window)
 
 void Menu::menu(RenderWindow& window) {
 
-	window.clear(Color::Black);
-	listeTexte.clear();
-	listeRectangle.clear();
+	bool hasStarted = false;
 
-	setTexture("assets/backMenu/image.png");
-	drawback(window);
+	while (!hasStarted) {
+		window.clear(Color::Black);
+		listeTexte.clear();
+		listeRectangle.clear();
 
-	Texte Titre(font, "try game", 80, 255, 0, 0, 550, 150); //font, texte, taille,R,G,B, X, Y , 
-	listeTexte.push_back(Titre);
+		setTexture("assets/backMenu/image.png");
+		drawback(window);
 
-	Texte start(font, "Start", 40, 0, 0, 0, 880, 410);
-	listeTexte.push_back(start);
+		Texte Titre(font, "try game", 80, 255, 0, 0, 550, 150); //font, texte, taille,R,G,B, X, Y , 
+		listeTexte.push_back(Titre);
 
-	Texte touche(font, "Touches", 40, 0, 0, 0, 880, 550);
-	listeTexte.push_back(touche);
+		Texte start(font, "Start", 40, 0, 0, 0, 880, 410);
+		listeTexte.push_back(start);
 
-	Texte Partir(font, "Partir", 40, 0, 0, 0, 880, 690);
-	listeTexte.push_back(Partir);
+		Texte touche(font, "Touches", 40, 0, 0, 0, 880, 550);
+		listeTexte.push_back(touche);
 
-	Rectangle RecTitre(120, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-	listeRectangle.push_back(RecTitre);
+		Texte Partir(font, "Partir", 40, 0, 0, 0, 880, 690);
+		listeTexte.push_back(Partir);
 
-	Rectangle RecTouche(190, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-	listeRectangle.push_back(RecTouche);
+		Rectangle RecTitre(120, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+		listeRectangle.push_back(RecTitre);
 
-	Rectangle RecPartir(130, 70, 870, 680, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-	listeRectangle.push_back(RecPartir);
+		Rectangle RecTouche(190, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+		listeRectangle.push_back(RecTouche);
 
+		Rectangle RecPartir(130, 70, 870, 680, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+		listeRectangle.push_back(RecPartir);
 
+		for (auto& Rectangle : listeRectangle) {
+			window.draw(Rectangle.creation());
+		}
 
-	for (auto& Rectangle : listeRectangle) {
-		window.draw(Rectangle.creation());
-	}
+		for (auto& Texte : listeTexte) {
+			window.draw(Texte.creation());
+		}
 
-	for (auto& Texte : listeTexte) {
-		window.draw(Texte.creation());
-	}
+		window.display();
 
-	window.display();
+		Event gameEvent;
+		while (window.pollEvent(gameEvent)) {
 
-	Event gameEvent;
-	while (window.pollEvent(gameEvent)) {
-
-		if (gameEvent.type == Event::Closed)
-			window.close();
-
-		if (Keyboard::isKeyPressed(Keyboard::K))
-			window.close();
-
-		if (Mouse::isButtonPressed(Mouse::Left)) {
-			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
-				listeTexte.clear();
-				listeRectangle.clear();
-				menuState = START;
-			}
-			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
-				listeTexte.clear();
-				listeRectangle.clear();
-				menuState = OPTION;
-			}
-			if (Mouse::getPosition(window).x > RecPartir.posX && Mouse::getPosition(window).y > RecPartir.posY && Mouse::getPosition(window).x < RecPartir.posX + RecPartir.tailleX && Mouse::getPosition(window).y < RecPartir.posY + RecPartir.tailleY) {
+			if (gameEvent.type == Event::Closed)
 				window.close();
+
+			if (Keyboard::isKeyPressed(Keyboard::K))
+				window.close();
+
+			if (Mouse::isButtonPressed(Mouse::Left)) {
+				if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
+					listeTexte.clear();
+					listeRectangle.clear();
+					menuState = START;
+					hasStarted = true;
+				}
+				if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
+					listeTexte.clear();
+					listeRectangle.clear();
+					menuState = OPTION;
+				}
+				if (Mouse::getPosition(window).x > RecPartir.posX && Mouse::getPosition(window).y > RecPartir.posY && Mouse::getPosition(window).x < RecPartir.posX + RecPartir.tailleX && Mouse::getPosition(window).y < RecPartir.posY + RecPartir.tailleY) {
+					window.close();
+				}
 			}
 		}
 	}
