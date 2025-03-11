@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+C:\Users\aponce\source\repos\KPommez\Mini-Studio\Mini-Studio\Entity.cpp;C:\Users\aponce\source\repos\KPommez\Mini-Studio\Mini-Studio\Release\Entity.obj
+C:\Users\aponce\source\repos\KPommez\Mini-Studio\Mini-Studio\Game.cpp;C:\Users\aponce\source\repos\KPommez\Mini-Studio\Mini-Studio\Release\Game.obj
+C:\Users\aponce\source\repos\KPommez\Mini-Studio\Mini-Studio\main.cpp;C:\Users\aponce\source\repos\KPommez\Mini-Studio\Mini-Studio\Release\main.obj
+C:\Users\aponce\source\repos\KPommez\Mini-Studio\Mini-Studio\Menu.cpp;C:\Users\aponce\source\repos\KPommez\Mini-Studio\Mini-Studio\Release\Menu.obj
+C:\Users\aponce\source\repos\KPommez\Mini-Studio\Mini-Studio\Player.cpp;C:\Users\aponce\source\repos\KPommez\Mini-Studio\Mini-Studio\Release\Player.obj
+=======
 C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\Entity.cpp;C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\Release\Entity.obj
 C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\EntityManager.cpp;C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\Release\EntityManager.obj
 C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\Game.cpp;C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\Release\Game.obj
@@ -5,3 +12,4 @@ C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\Lampadaire.cpp;
 C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\main.cpp;C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\Release\main.obj
 C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\Map.cpp;C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\Release\Map.obj
 C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\Player.cpp;C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\Mini-Studio\Release\Player.obj
+>>>>>>> ebbb2972a8dba16937ab71119e741b367da031ed

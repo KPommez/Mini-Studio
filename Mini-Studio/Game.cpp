@@ -9,6 +9,9 @@ Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", sf::Style:
 }
 
 void Game::Run() {
+    Menu menu;
+    menu.start(window);
+
     shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(200, 1000), &player);
     m_entityManager->addEnnemy(test);
     

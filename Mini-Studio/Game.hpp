@@ -3,6 +3,7 @@
 #include "Lampadaire.hpp"
 #include "EntityManager.hpp"
 #include "Map.hpp"
+#include "Menu.hpp"
 
 class Game
 {
@@ -18,6 +19,7 @@ private:
 	int screenY = 1080;
 
 public:
+	bool inGame;
 	Game();
 	void Run();
 
