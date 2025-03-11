@@ -2,11 +2,13 @@
 
 Player::Player() {
 	// Boolean members
-	isGoingLeft  = false;
-	isGoingRight = false;
-	isJumping    = false;
-    hasPlatform  = false;
-    isDashing    = false;
+	isGoingLeft   = false;
+	isGoingRight  = false;
+	isJumping     = false;
+    hasPlatform   = false;
+    isDashing     = false;
+	canDoubleJump = false;
+	isTuching     = false;
 	// Float members
 	speed           = 350.f;
 	fallingTime     = 0.f;
@@ -33,7 +35,7 @@ void Player::resize(sf::RenderWindow& window) {
 }
 
 void Player::update(const float& deltaTime, sf::RenderWindow& window) {
-
+	
 	// Keeps falling faster until he reaches a certain limit
     if (shape.getPosition().y < (window.getSize().y - shape.getSize().y) && !hasPlatform && !isJumping) {
         if(fallingMovement < maxFallingForce)
@@ -64,6 +66,10 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
     {
         isDashing = true;
     }
+	if (shape.getPosition().y >= window.getSize().y - shape.getSize().y)
+	{
+		canDoubleJump = true;
+	}
     if (clockDash.getElapsedTime().asSeconds() >= 2 && !isDashing)
     {
         clockDash.restart();
@@ -92,11 +98,18 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 			jumpMovement -= deltaTime * jumpForce;
 		else {
 			isJumping = false;
-		}
+		}		
+
 		shape.move(0, -jumpMovement);
 	}
 	else {
 		jumpMovement = 5.f;
+	}
+	// Double Jump
+	if (Keyboard::isKeyPressed(Keyboard::C) && canDoubleJump)
+	{
+		isJumping = true;
+		canDoubleJump = false;
 	}
 }
 

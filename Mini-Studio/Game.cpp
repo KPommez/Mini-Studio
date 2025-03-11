@@ -41,6 +41,7 @@ void Game::pollEvents() {
         }
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space) {
             player.isJumping = false;
+            /*player.canDoubleJump = true;*/
         }
     }
 }

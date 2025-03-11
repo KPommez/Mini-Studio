@@ -8,6 +8,8 @@ public:
 	bool isGoingRight;
 	bool isDashing;
 	bool isJumping;
+	bool canDoubleJump;
+	bool isTuching;
 	bool hasPlatform;
 	float fallingMovement;
 	float jumpMovement;
