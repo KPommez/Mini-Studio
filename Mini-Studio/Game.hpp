@@ -2,7 +2,7 @@
 
 #include "Player.hpp"
 #include "Lampadaire.hpp"
-
+#include "EntityManager.hpp"
 class Game
 {
 private:
@@ -11,9 +11,13 @@ private:
 	sf::RenderWindow window;
 	sf::Event event;
 	sf::Clock Clock;
-
-private:
+	std::shared_ptr<EntityManager>  m_entityManager;
 	Player player;
+private:
+
+	
+
+	
 
 public:
 	Game();

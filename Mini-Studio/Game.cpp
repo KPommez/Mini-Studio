@@ -1,9 +1,10 @@
 #include "Game.hpp"
-Lampadaire lamp({ 200,200 });
 
 
-Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", Style::Fullscreen)
+Game::Game() : window(sf::VideoMode::getFullscreenModes().at(0), "Mini-Studio", sf::Style::Fullscreen)
 {
+    
+    m_entityManager = make_shared<EntityManager>();
     window.setFramerateLimit(144);
     deltaTime = 0.f;
     event = {};
@@ -11,6 +12,8 @@ Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", Style::Ful
 }
 
 void Game::Run() {
+    shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(200, 1000), &player);
+    m_entityManager->addEnnemy(test);
     
     // Chargement des assets
     // Chargement de la map
@@ -22,9 +25,18 @@ void Game::Run() {
         deltaTime = Clock.restart().asSeconds();
 
         pollEvents();
+        m_entityManager->updateEntities(window,deltaTime);
+        window.clear();
+        player.draw(window);
+        m_entityManager->drawEntities(window);
+        window.display();
+        player.update(deltaTime, window);
+        player.Colision(window, deltaTime);
+        if (Keyboard::isKeyPressed(Keyboard::J)) {
+            isRunning = false;
+        }
+       
         
-        update(deltaTime);
-        draw();
         
     }
 
@@ -39,20 +51,3 @@ void Game::pollEvents() {
     }
 }
 
-void Game::update(const float& deltaTime) {
-    lamp.playerPos = player.shape.getPosition();
-    lamp.update(deltaTime, window);
-    player.update(deltaTime, window);
-    player.Colision(window, deltaTime);
-    if (Keyboard::isKeyPressed(Keyboard::J)) {
-        isRunning = false;
-    }
-}
-
-void Game::draw() {
-    window.clear();
-    player.draw(window);
-    lamp.draw(window);
-    window.display();
-    
-}

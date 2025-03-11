@@ -1,32 +1,37 @@
 #include "Lampadaire.hpp"
 
-Lampadaire::Lampadaire(Vector2f pos) {
+Lampadaire::Lampadaire(Vector2f pos, Player* players) {
+	player = players;
 	position = pos;
 	shape.setPosition(pos);
 	shape.setFillColor(Color::Blue);
 	shape.setSize({ 50, 50 });
+	currentState = PATROL;
+	moveSide = LEFT;
 	
-	 
 	//lum.setPosition(shape.getPosition());
 	lum.setFillColor(Color::Yellow);
 }
 void Lampadaire::update(const float& deltaTime, sf::RenderWindow& window) {
+	
 	switch (currentState) {
 	case PATROL:
+		
 		patrol();
-		if (detectPlayer(playerPos)) currentState = CHASE; cout << "detected";
+		if (detectPlayer(player->shape.getPosition())) currentState = PATROL;
 		break;
 
 	case CHASE:
-		chase(playerPos);
-		if (!detectPlayer(playerPos)) {
-			currentState = SEARCH;
+		chase(player->shape.getPosition());
+		if (!detectPlayer(player->shape.getPosition())) {
+			currentState = PATROL;
 		}
 		break;
 
 	case SEARCH:
 		break;
 	}
+
 	switch(moveSide) {
 		case LEFT:
 			lum.setPointCount(4);
@@ -52,14 +57,19 @@ void Lampadaire::chase(sf::Vector2f playerPos) {
 		direction /= distance;
 		position += direction * 2.0f;
 	}
+	shape.move(direction);
+	position = shape.getPosition();
+	//lum.move(direction);
 }
 void Lampadaire::draw(sf::RenderWindow& window) {
 	window.draw(shape);
 	window.draw(lum);
 }
 bool Lampadaire::detectPlayer(sf::Vector2f playerPos) {
-	float distance = std::sqrt(std::pow(playerPos.x - position.x, 2) + std::pow(playerPos.y - position.y, 2));
-	return (distance < detectionRadius);
+	if (shape.getGlobalBounds().intersects(player->shape.getGlobalBounds())) {
+		cout << "detected";
+		return true;
+	}
 }
 void Lampadaire::patrol() {
 	static int currentWaypoint = 0;
@@ -67,7 +77,12 @@ void Lampadaire::patrol() {
 	sf::Vector2f target = waypoints[currentWaypoint];
 	sf::Vector2f direction = target - position;
 	float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-
+	switch (currentWaypoint) {
+	case 0 : 
+		moveSide = LEFT;
+	case 1:
+		moveSide = RIGHT;
+	}
 	if (distance < 5.0f) {
 		currentWaypoint = (currentWaypoint + 1) % 2;
 	}
@@ -76,5 +91,6 @@ void Lampadaire::patrol() {
 		position += direction * 2.0f;
 	}
 	shape.move(direction);
-	lum.move(direction);
+	position = shape.getPosition();
+	//lum.move(direction);
 }
