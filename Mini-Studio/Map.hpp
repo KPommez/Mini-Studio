@@ -5,7 +5,6 @@
 class Map {
 private:
 	RectangleShape mur;
-	vector<RectangleShape> listeMur;
 	float posX;
 	float posY;
 

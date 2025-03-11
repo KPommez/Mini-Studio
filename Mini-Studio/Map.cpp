@@ -25,7 +25,6 @@ void Map::loadMap(const string& filename) {
 		}
 		++y;
 	}
-
 }
 
 void Map::drawMap(RenderWindow& window) {

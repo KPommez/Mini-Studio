@@ -50,7 +50,7 @@ shared_ptr<Entity> EntityManager::checkEntity(const sf::Vector2f& playerPosition
 	return nullptr;
 }
 
-shared_ptr<Entity> EntityManager::getObject(string type) {
+[[nodiscard]] shared_ptr<Entity> EntityManager::getObject(string type) {
 	for (auto& object : m_entities) {
 		if (object->type == type) {
 			return object;

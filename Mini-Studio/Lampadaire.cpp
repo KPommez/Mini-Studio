@@ -65,7 +65,7 @@ void Lampadaire::draw(sf::RenderWindow& window) {
 	window.draw(shape);
 	window.draw(lum);
 }
-bool Lampadaire::detectPlayer(sf::Vector2f playerPos) {
+[[nodiscard]] bool Lampadaire::detectPlayer(sf::Vector2f playerPos) {
 	if (shape.getGlobalBounds().intersects(player->shape.getGlobalBounds())) {
 		cout << "detected";
 		return true;

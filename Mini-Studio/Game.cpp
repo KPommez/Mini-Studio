@@ -57,7 +57,7 @@ void Game::update(const float& deltaTime) {
     if (Keyboard::isKeyPressed(Keyboard::J)) {
         isRunning = false;
     }
-    player.Colision(window, deltaTime,level.platforms);
+    player.Colision(window, deltaTime, level.platforms);
 }
 
 void Game::draw() {
