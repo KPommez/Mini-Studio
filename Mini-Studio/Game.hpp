@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Player.hpp"
+#include "Lampadaire.hpp"
+#include "EntityManager.hpp"
 #include "Map.hpp"
 
 class Game
@@ -11,10 +12,11 @@ private:
 	sf::RenderWindow window;
 	sf::Event event;
 	sf::Clock Clock;
-	
-private:
-	Map level;
+	std::shared_ptr<EntityManager>  m_entityManager;
+
+public:
 	Player player;
+	Map level;
 
 public:
 	Game();

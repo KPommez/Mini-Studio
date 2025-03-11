@@ -1,6 +1,7 @@
 #include "Game.hpp"
-
+    
 Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", sf::Style::Fullscreen) {
+    m_entityManager = make_shared<EntityManager>();
     window.setVerticalSyncEnabled(true);
     deltaTime = 0.f;
     event = {};
@@ -8,7 +9,9 @@ Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", sf::Style:
 }
 
 void Game::Run() {
-  
+    shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(200, 1000), &player);
+    m_entityManager->addEnnemy(test);
+    
     // Chargement des assets
     // Chargement de la map
     level.loadMap("Assets/map/test_map1.txt");
@@ -18,13 +21,14 @@ void Game::Run() {
     player.resize(window);
 
     while (isRunning) {
-        
         deltaTime = Clock.restart().asSeconds();
 
         pollEvents();
         update(deltaTime);
         draw();
-
+        if (Keyboard::isKeyPressed(Keyboard::J)) {
+            isRunning = false;
+        }
     }
 
     window.close();
@@ -46,13 +50,15 @@ void Game::pollEvents() {
 }
 
 void Game::update(const float& deltaTime) {
+    m_entityManager->updateEntities(window, deltaTime);
     player.update(deltaTime, window);
     player.Colision(window, deltaTime);
 }
 
 void Game::draw() {
     window.clear();
-    player.draw(window);
     level.drawMap(window);
+    player.draw(window);
+    m_entityManager->drawEntities(window);
     window.display();
 }

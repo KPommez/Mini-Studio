@@ -59,6 +59,8 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 	// Input spacebar for jumping / F for dashing (once every 2 seconds, temporary timing)
     if (Keyboard::isKeyPressed(Keyboard::Space) && (shape.getPosition().y >= window.getSize().y - shape.getSize().y || hasPlatform)) {
         isJumping = true;
+    }if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+        window.close();
     }
     if (Keyboard::isKeyPressed(Keyboard::F))
     {
