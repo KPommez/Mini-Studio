@@ -9,17 +9,25 @@ public:
 	bool isGoingRight;
 	bool isDashing;
 	bool isJumping;
+	bool isFalling;
+	bool canDoubleJump;
+	bool isTuching;
 	bool hasPlatform;
 	bool invertedGravity;
+	bool isSpacePressed;
+	int spacebarPresses;
 	float fallingMovement;
 	float jumpMovement;
 	float velocity;
 	float speed;
+	float lastYPos;
 	float fallingTime;
+	float floorLevel;
 	const int maxFallingForce = 30; // About twice as much as gravity force
 	const int maxJumpingSpeed = 10;
 	const int dashSpeed       = 700;
 	const float gravityConst  = 9.81f;
+	const float jumpForce     = 10.f;
 	float dashingTime         = 0.5f;
 	Clock clockDash;
 

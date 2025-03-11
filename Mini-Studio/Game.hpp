@@ -8,15 +8,16 @@
 class Game
 {
 private:
-	bool isRunning;	
+	bool isRunning;
 	float deltaTime;
 	sf::RenderWindow window;
 	sf::Event event;
 	sf::Clock Clock;
 	std::shared_ptr<EntityManager>  m_entityManager;
 	View vue;
-	int screenX = 1920;
-	int screenY = 1080;
+	int screenX;
+	int screenY;
+	int spaceReleases;
 
 public:
 	bool inGame;

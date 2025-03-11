@@ -52,34 +52,36 @@ void Menu::menu(RenderWindow& window) {
 
 	bool hasStarted = false;
 
+	listeTexte.clear();
+	listeRectangle.clear();
+
+	Texte Titre(font, "try game", 80, 255, 0, 0, 550, 150); //font, texte, taille,R,G,B, X, Y , 
+	listeTexte.push_back(Titre);
+
+	Texte start(font, "Start", 40, 0, 0, 0, 880, 410);
+	listeTexte.push_back(start);
+
+	Texte touche(font, "Touches", 40, 0, 0, 0, 880, 550);
+	listeTexte.push_back(touche);
+
+	Texte Partir(font, "Partir", 40, 0, 0, 0, 880, 690);
+	listeTexte.push_back(Partir);
+
+	Rectangle RecTitre(120, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	listeRectangle.push_back(RecTitre);
+
+	Rectangle RecTouche(190, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	listeRectangle.push_back(RecTouche);
+
+	Rectangle RecPartir(130, 70, 870, 680, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	listeRectangle.push_back(RecPartir);
+
 	while (!hasStarted) {
 		window.clear(Color::Black);
-		listeTexte.clear();
-		listeRectangle.clear();
+		
 
 		setTexture("assets/backMenu/image.png");
 		drawback(window);
-
-		Texte Titre(font, "try game", 80, 255, 0, 0, 550, 150); //font, texte, taille,R,G,B, X, Y , 
-		listeTexte.push_back(Titre);
-
-		Texte start(font, "Start", 40, 0, 0, 0, 880, 410);
-		listeTexte.push_back(start);
-
-		Texte touche(font, "Touches", 40, 0, 0, 0, 880, 550);
-		listeTexte.push_back(touche);
-
-		Texte Partir(font, "Partir", 40, 0, 0, 0, 880, 690);
-		listeTexte.push_back(Partir);
-
-		Rectangle RecTitre(120, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-		listeRectangle.push_back(RecTitre);
-
-		Rectangle RecTouche(190, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-		listeRectangle.push_back(RecTouche);
-
-		Rectangle RecPartir(130, 70, 870, 680, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-		listeRectangle.push_back(RecPartir);
 
 		for (auto& Rectangle : listeRectangle) {
 			window.draw(Rectangle.creation());
