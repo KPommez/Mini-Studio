@@ -1,6 +1,5 @@
 #include "Game.hpp"
 
-//WindowConfig* windowConfigs = WindowConfig::getInstance();
 
 Game::Game()
 {
@@ -45,7 +44,3 @@ void Game::Run(RenderWindow& window) {
     }
 }
 
-MenuManager* Game::createMenu(sf::RenderWindow& window)
-{
-    return new MenuManager;
-}

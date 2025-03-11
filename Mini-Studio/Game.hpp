@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Menu.hpp"
+#include "includeAll.hpp"
 
 class Game
 {
 public:
-
+	bool inGame;
 	Game();
 
 	void Run(RenderWindow& window);
-	MenuManager* createMenu(sf::RenderWindow& window);
 };
 

@@ -1,12 +1,16 @@
-#include "Game.hpp"
+#include "Menu.hpp"
 
 int main()
 {
-    RenderWindow window(VideoMode(500, 500), "Mini-Studio");
+    RenderWindow window(VideoMode(1920, 1080), "Mini-Studio",Style::Fullscreen);
+    
     window.setFramerateLimit(60);
 
-    Game jeu;
-    jeu.Run(window);
+    Menu jeu;
+    while (window.isOpen()) 
+    {
+        jeu.start(window);
+    }
 
     return 0;
 }

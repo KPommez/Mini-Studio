@@ -1,196 +1,284 @@
 #include "Menu.hpp"
 
-Button::Button(sf::Vector2f position_, ButtonID id_, sf::Color color_, sf::RectangleShape hitbox_, sf::Vector2f textureCoords_)
+
+Menu::Menu() {
+	if (!font.loadFromFile("assets/font/Minecraft.ttf")) {}
+	menuState = MENU;
+}
+
+
+
+void Menu::setTexture(const string& PNGfile)
 {
-	this->position = position_;
-	this->id = id_;
-	this->color = color_;
-	this->hitbox = hitbox_;
-	this->hitbox.setOrigin({ this->hitbox.getSize().x / 2.f, this->hitbox.getSize().y / 2.f });
-	this->hitbox.setPosition(this->position);
-	this->hitbox.setFillColor(this->color);
-	this->sprite = nullptr;
-	this->textureCoords = textureCoords_;
-
-}
-
-Button::Button(sf::Vector2f position_, ButtonID id_, sf::Color color_, sf::RectangleShape hitbox_)
-{
-	this->position = position_;
-	this->id = id_;
-	this->color = color_;
-	this->hitbox = hitbox_;
-	this->hitbox.setOrigin({ this->hitbox.getSize().x / 2.f, this->hitbox.getSize().y / 2.f });
-	this->hitbox.setPosition(this->position);
-	this->hitbox.setFillColor(this->color);
-	this->sprite = nullptr;
-	this->textureCoords = { 0, 0 };
-
-}
-
-Button::~Button() {};
-
-MenuManager::MenuManager() {
-	smallButtons = { NOTHING, PLAY, QUIT };
-	background = new Sprite;
-
-	if (!loadTexture()) { cout << "Buttons texture failed" << endl; }
-	openMenu();
-}
-
-void MenuManager::addBackground(sf::Texture& texture)
-{
-	background = new sf::Sprite;
-	background->setTexture(texture);
-
-	sf::FloatRect bounds = background->getLocalBounds();
-	sf::Vector2u textureSize = background->getTexture()->getSize();
-	background->setScale(
-		float(1920) / textureSize.x,
-		float(1080) / textureSize.y
-	);
-
-	background->setOrigin(bounds.width / 2.f, bounds.height / 2.f);
-	background->setPosition(1920 / 2.f, 1080 / 2.f);
-}
-
-void MenuManager::openGame()
-{
-}
-
-void MenuManager::openMenu()
-{
-	this->buttons.clear();
-
-	addBackground(menuTexture);
-
-	this->buttons.push_back(new Button(sf::Vector2f{ 1920 / 2,410 }, PLAY, sf::Color::Blue, sf::RectangleShape(sf::Vector2f(250, 75)), { 0, 2 }));
-	this->buttons.push_back(new Button(sf::Vector2f{ 1920 / 2,515 }, SETTINGS, sf::Color::Magenta, sf::RectangleShape(sf::Vector2f(250, 75)), { 0, 0 }));
-	this->buttons.push_back(new Button(sf::Vector2f{ 1920 / 2,620 }, QUIT, sf::Color::Yellow, sf::RectangleShape(sf::Vector2f(250, 75)), { 0, 1 }));
-
-	setSprites();
-}
-
-void MenuManager::openOption()
-{
-	this->buttons.clear();
-	addBackground(optionsTexture);
-	setSprites();
-}
-
-void MenuManager::openVictory() {
-}
-
-void MenuManager::openLose(){
-}
-
-
-void MenuManager::drawButtons(sf::RenderWindow& window)
-{
-	if (background)
+	if (texture.loadFromFile(PNGfile))
 	{
-		window.draw(*background);
-	}
-
-	for (Button* button : this->buttons)
-	{
-		if (button->getSprite() == nullptr) { window.draw(button->getHitbox()); continue; }
-		button->getSprite()->setPosition(button->getposition());
-		window.draw(*button->getSprite());
+		sprite.setTexture(texture);
+		Vector2u textureSize = texture.getSize();
+		float scaleX = static_cast<float> (1920) / textureSize.x;
+		float scaleY = static_cast<float>(1080) / textureSize.y;
+		sprite.setScale(scaleX, scaleY);
 	}
 }
 
-void MenuManager::activateButtons(ButtonID id)
+void Menu::drawback(RenderWindow& window)
 {
-	switch (id)
-	{
-	case NOTHING: break;
-	case PLAY: openGame(); break;
-	case SETTINGS: openOption(); break;
-	case QUIT: break;
-	case BACK: openMenu(); break;
+	window.draw(sprite);
+}
+
+void Menu::start(RenderWindow& window)
+{
+	switch (menuState) {
+	case MENU:
+		menu(window);
+		break;
+	case OPTION:
+		option(window);
+		break;
+	case START:
+		game.Run(window);
+		menuState = MENU;
+		break;
+	case WIN:
+		win(window);
+		break;
+	case LOOSE:
+		loose(window);
+		break;
 	}
 }
 
-ButtonID MenuManager::isMouseOnButton(sf::Vector2i mousePosition)
-{
-	for (Button* button : this->buttons)
-	{
-		if (button->getHitbox().getGlobalBounds().contains(mousePosition.x, mousePosition.y))
-		{
-			//std::cout << "Button clicked\n";
-			return button->getId();
-		}
+void Menu::menu(RenderWindow& window) {
+
+	window.clear(Color::Black);
+	listeTexte.clear();
+	listeRectangle.clear();
+
+	setTexture("assets/backMenu/image.png");
+	drawback(window);
+
+	Texte Titre(font, "try game", 80, 255, 0, 0, 550, 150); //font, texte, taille,R,G,B, X, Y , 
+	listeTexte.push_back(Titre);
+
+	Texte start(font, "Start", 40, 0, 0, 0, 880, 410);
+	listeTexte.push_back(start);
+
+	Texte touche(font, "Touches", 40, 0, 0, 0, 880, 550);
+	listeTexte.push_back(touche);
+
+	Texte Partir(font, "Partir", 40, 0, 0, 0, 880, 690);
+	listeTexte.push_back(Partir);
+
+	Rectangle RecTitre(120, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	listeRectangle.push_back(RecTitre);
+
+	Rectangle RecTouche(190, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	listeRectangle.push_back(RecTouche);
+
+	Rectangle RecPartir(130, 70, 870, 680, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	listeRectangle.push_back(RecPartir);
+
+
+
+	for (auto& Rectangle : listeRectangle) {
+		window.draw(Rectangle.creation());
 	}
-	return NOTHING;
-}
 
-bool MenuManager::loadTexture()
-{
-	if (!this->smallButtonsTexture.loadFromFile("assets/textures/SmallButtons.png")) return false;
-	if (!this->bigButtonsTexture.loadFromFile("assets/textures/Buttons.png")) return false;
+	for (auto& Texte : listeTexte) {
+		window.draw(Texte.creation());
+	}
 
-	if (!this->menuTexture.loadFromFile("assets/textures/MenuBackground.png")) return false;
+	window.display();
 
-	if (!this->victoryTexture.loadFromFile("assets/textures/VictoryBackground.png")) return false;
-	if (!this->losingTexture.loadFromFile("assets/textures/LosingBackground.png")) return false;
+	
+		Event gameEvent;
+		while (window.pollEvent(gameEvent)) {
 
-	if (!this->optionsTexture.loadFromFile("assets/textures/OptionsBackground.png")) return false;
-	if (!this->levelsSelectTexture.loadFromFile("assets/textures/SpaceBackground.png")) return false;
-	this->setSprites();
-	return true;
-}
+			if (gameEvent.type == Event::Closed)
+				window.close();
 
-void MenuManager::setSprites()
-{
-	for (Button* adress : this->buttons)
-	{
-		if (adress->getSprite() != nullptr) continue;
+			if (Keyboard::isKeyPressed(Keyboard::K))
+				window.close();
 
-		Sprite* sprite = nullptr;
-		bool isSmall = false;
-
-		for (ButtonID id : this->smallButtons)
-		{
-			if (adress->getId() == id)
-			{
-				isSmall = true;
-				sprite = new sf::Sprite;
-				sprite->setTexture(this->smallButtonsTexture);
-
-				sprite->setScale({ smallButtonsTexture.getSize().x / adress->getHitbox().getSize().x / 1.5f, smallButtonsTexture.getSize().y / adress->getHitbox().getSize().y / 1.5f });
-				sprite->setOrigin({
-					adress->getHitbox().getOrigin().x / sprite->getScale().x,
-					adress->getHitbox().getOrigin().y / sprite->getScale().y
-					});
-
-				sprite->setTextureRect(sf::IntRect(
-					adress->getTextureCoords().x * 25,
-					adress->getTextureCoords().y * 31,
-					25,
-					31));
-
-				adress->setSprite(sprite);
+			if (Mouse::isButtonPressed(Mouse::Left)) {
+				if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
+					listeTexte.clear();
+					listeRectangle.clear();
+					game.inGame = true;
+					menuState = START;
+				}
+				if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
+					listeTexte.clear();
+					listeRectangle.clear();
+					menuState = OPTION;
+				}
+				if (Mouse::getPosition(window).x > RecPartir.posX && Mouse::getPosition(window).y > RecPartir.posY && Mouse::getPosition(window).x < RecPartir.posX + RecPartir.tailleX && Mouse::getPosition(window).y < RecPartir.posY + RecPartir.tailleY) {
+					window.close();
+				}
 			}
 		}
+	
+}
 
-		if (isSmall) continue;
+void Menu::option(RenderWindow& window) {
+	window.clear(Color::Black);
+	listeTexte.clear();
+	listeRectangle.clear();
+	setTexture("assets/backMenu/menu.png");
+	drawback(window);
 
-		sprite = new sf::Sprite;
-		sprite->setTexture(this->bigButtonsTexture);
+	Texte retour(font, "Retour", 40, 0, 0, 0, 1700, 1000);
+	listeTexte.push_back(retour);
 
-		sprite->setScale({ bigButtonsTexture.getSize().x / .2f / adress->getHitbox().getSize().x, bigButtonsTexture.getSize().y / .42f / adress->getHitbox().getSize().y });
-		sprite->setOrigin({
-			adress->getHitbox().getOrigin().x / sprite->getScale().x,
-			adress->getHitbox().getOrigin().y / sprite->getScale().y
-			});
+	////////////////////////////////////////////////////////////////////
 
-		sprite->setTextureRect(sf::IntRect(
-			adress->getTextureCoords().x * 98,
-			adress->getTextureCoords().y * 32,
-			98,
-			32));
 
-		adress->setSprite(sprite);
+	Rectangle RecClicd(400, 60, window.getSize().x / 2 - 200, window.getSize().y / 2, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	listeRectangle.push_back(RecClicd);
+
+
+
+	Rectangle RecRetour(155, 55, 1690, 1000, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	listeRectangle.push_back(RecRetour);
+
+
+
+	for (auto& Rectangle : listeRectangle) {
+		window.draw(Rectangle.creation());
+	}
+
+	for (auto& Texte : listeTexte) {
+		window.draw(Texte.creation());
+	}
+
+	window.display();
+
+	Event gameEvent;
+	while (window.pollEvent(gameEvent)) {
+
+		if (gameEvent.type == Event::Closed)
+			window.close();
+
+		if (Keyboard::isKeyPressed(Keyboard::K))
+			window.close();
+
+		if (Mouse::isButtonPressed(Mouse::Left)) {
+			if (Mouse::getPosition(window).x > RecRetour.posX && Mouse::getPosition(window).y > RecRetour.posY && Mouse::getPosition(window).x < RecRetour.posX + RecRetour.tailleX && Mouse::getPosition(window).y < RecRetour.posY + RecRetour.tailleY) {
+				listeTexte.clear();
+				listeRectangle.clear();
+				menuState = MENU;
+			}
+
+		}
+	}
+}
+
+void Menu::win(RenderWindow& window)
+{
+	window.clear(Color::Black);
+	listeTexte.clear();
+	listeRectangle.clear();
+
+	Texte Titre(font, "Vous avez .... Gagner ??", 80, 255, 0, 0, 480, 255); //font, texte, taille,R,G,B, X, Y , 
+	listeTexte.push_back(Titre);
+
+	Texte start(font, "Restart", 40, 0, 0, 0, 880, 410);
+	listeTexte.push_back(start);
+
+	Texte touche(font, "Quitter", 40, 0, 0, 0, 880, 550);
+	listeTexte.push_back(touche);
+
+	Rectangle RecTitre(170, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	listeRectangle.push_back(RecTitre);
+
+	Rectangle RecTouche(150, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	listeRectangle.push_back(RecTouche);
+
+	for (auto& Rectangle : listeRectangle) {
+		window.draw(Rectangle.creation());
+	}
+
+	for (auto& Texte : listeTexte) {
+		window.draw(Texte.creation());
+	}
+
+	window.display();
+
+
+	Event gameEvent;
+	while (window.pollEvent(gameEvent)) {
+
+		if (gameEvent.type == Event::Closed)
+			window.close();
+
+
+		if (Mouse::isButtonPressed(Mouse::Left)) {
+			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
+				listeTexte.clear();
+				listeRectangle.clear();
+				game.inGame = true;
+				menuState = START;
+			}
+			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
+				listeTexte.clear();
+				listeRectangle.clear();
+				menuState = MENU;
+			}
+		}
+	}
+
+}
+
+void Menu::loose(RenderWindow& window)
+{
+	window.clear(Color::Black);
+	listeTexte.clear();
+	listeRectangle.clear();
+
+	Texte Titre(font, "Vous avez Perdus, vous n'etes pas le hero", 80, 255, 0, 0, 180, 255); //font, texte, taille,R,G,B, X, Y , 
+	listeTexte.push_back(Titre);
+
+	Texte start(font, "Restart", 40, 0, 0, 0, 880, 410);
+	listeTexte.push_back(start);
+
+	Texte touche(font, "Quitter", 40, 0, 0, 0, 880, 550);
+	listeTexte.push_back(touche);
+
+	Rectangle RecTitre(170, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	listeRectangle.push_back(RecTitre);
+
+	Rectangle RecTouche(150, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	listeRectangle.push_back(RecTouche);
+
+	for (auto& Rectangle : listeRectangle) {
+		window.draw(Rectangle.creation());
+	}
+
+	for (auto& Texte : listeTexte) {
+		window.draw(Texte.creation());
+	}
+
+	window.display();
+
+
+	Event gameEvent;
+	while (window.pollEvent(gameEvent)) {
+
+		if (gameEvent.type == Event::Closed)
+			window.close();
+
+
+		if (Mouse::isButtonPressed(Mouse::Left)) {
+			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
+				listeTexte.clear();
+				listeRectangle.clear();
+				game.inGame = true;
+				menuState = START;
+			}
+			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
+				listeTexte.clear();
+				listeRectangle.clear();
+				menuState = MENU;
+			}
+		}
 	}
 }

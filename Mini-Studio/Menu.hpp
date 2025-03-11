@@ -1,68 +1,33 @@
 #pragma once
 
-#include "includeAll.hpp"
-//#include "Window.hpp"
+#include "Texte.hpp"
+#include "Button.hpp"
+#include "Game.hpp"
 
-enum ButtonID {
-	NOTHING, PLAY, QUIT, SETTINGS, BACK
+enum MenuState {
+    MENU, OPTION, START, WIN, LOOSE
 };
 
-class Button {
-private:
-	Vector2f position;
-	ButtonID id;
-	Color color;
-	RectangleShape hitbox;	
-	Vector2f textureCoords;
-	Sprite* sprite;
-
+class Menu {
 public:
-	Button(Vector2f position_, ButtonID id_, Color color_, RectangleShape hitbox_, Vector2f textureCoords_);
-	Button(Vector2f position_, ButtonID id_, Color color_, RectangleShape hitbox_);
+    //RectangleShape test;
+    Sprite sprite;
+    Texture texture;
+    Menu();
 
-	virtual ~Button();
+    void setTexture(const string& PNGfile);
+    void drawback(RenderWindow& window);
+    void start(RenderWindow& window);
+    void menu(RenderWindow& window);
+    void win(RenderWindow& window);
+    void loose(RenderWindow& window);
+    void option(RenderWindow& window);
 
-	ButtonID getId() const { return id; }
-	Vector2f getposition() const { return position; }
-	RectangleShape getHitbox() const { return hitbox; }
-	Vector2f getTextureCoords() const { return textureCoords; }
-	Sprite* getSprite() const { if (sprite) { return sprite; } return nullptr; }
-	void setSprite(Sprite* newSprite) { sprite = newSprite; }
-	void setTextureCoords(Vector2f newCoords) { sprite = nullptr; textureCoords = newCoords; }
+    Font font;
+    Game game;
 
-};
+    vector<Texte> listeTexte;
+    vector<Rectangle> listeRectangle;
 
-class MenuManager {
-private:
-	vector <Button*> buttons;
-	
-	sf::Sprite* background;
-
-	sf::Texture smallButtonsTexture;
-	sf::Texture bigButtonsTexture;
-
-	sf::Texture menuTexture;
-	sf::Texture optionsTexture;
-	sf::Texture levelsSelectTexture;
-	sf::Texture victoryTexture;
-	sf::Texture losingTexture;
-
-
-	vector <ButtonID> smallButtons;
-
-public: 
-	MenuManager();
-
-	bool loadTexture();
-	void setSprites();
-
-	void addBackground(sf::Texture& texture);
-	void openGame();
-	void openMenu();
-	void openOption();
-	void openVictory();
-	void openLose();
-	void drawButtons(RenderWindow& window);
-	void activateButtons(ButtonID id);
-	ButtonID isMouseOnButton(Vector2i mousePosition);
+    MenuState menuState;
 };
