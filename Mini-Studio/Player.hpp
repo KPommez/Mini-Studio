@@ -22,7 +22,6 @@ public:
 	const float gravityConst  = 9.81f;
 	float dashingTime         = 0.5f;
 	Clock clockDash;
-	std::vector<sf::RectangleShape> platforms;
 
 public:
 	Player();
@@ -30,7 +29,7 @@ public:
 public:
 	void update(const float& deltaTime, sf::RenderWindow& window) override;
 	void draw(sf::RenderWindow& window) override;
-	void Colision(RenderWindow& window, const float& deltaTime, Map& level);
+	void Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms);
 	void resize(sf::RenderWindow& window);
 
 private:

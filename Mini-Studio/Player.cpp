@@ -3,6 +3,7 @@
 Player::Player() {
 	// Boolean members
 	invertedGravity = false;
+	hasPlatform     = false;
 	isGoingLeft     = false;
 	isGoingRight    = false;
 	isJumping       = false;
@@ -19,14 +20,6 @@ Player::Player() {
 	shape.setSize(sf::Vector2f(40.f, 40.f));
 	shape.setFillColor(sf::Color::Blue);
 	shape.setPosition(100, 100);
-	// temporary : testing collisions
-	for (int i = 1; i < 11; ++i) {
-		sf::RectangleShape rect;
-		rect.setSize(sf::Vector2f(250.f, 30.f));
-		rect.setPosition(i * 250.f, 1080 - (i * 60.f));
-		rect.setFillColor(sf::Color::White);
-		platforms.push_back(rect);
-	}
 }
 
 void Player::resize(sf::RenderWindow& window) {
@@ -128,16 +121,15 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 	}
 }
 
-void Player::Colision(RenderWindow& window, const float& deltaTime, Map& level) {
-	// Collisions with the window borders
+void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms) {
 	if (shape.getPosition().x <= 0)
 	{
 		shape.move(speed * deltaTime, 0);
 	}
-	if (shape.getPosition().x >= window.getSize().x - shape.getSize().x)
+	/*if (shape.getPosition().x >= window.getSize().x - shape.getSize().x)
 	{
 		shape.move(-speed * deltaTime, 0);
-	}
+	}*/
 	if (shape.getPosition().y <= 0)
 	{
 		shape.move(0, 0);
@@ -147,12 +139,12 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, Map& level) 
 		shape.move(0, 0);
 	}
 	// Gravity check
-	if (shape.getGlobalBounds().intersects(level.listeMur[0].getGlobalBounds())) {
+	/*if (shape.getGlobalBounds().intersects(level.listeMur[0].getGlobalBounds())) {
 		invertedGravity = false;
 	}
 	else {
 		invertedGravity = true;
-	}
+	}*/
 }
 
 void Player::draw(sf::RenderWindow& window) {

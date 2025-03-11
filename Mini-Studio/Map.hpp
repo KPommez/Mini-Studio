@@ -10,12 +10,7 @@ private:
 
 public:
 	Map();
-
-	vector<RectangleShape> listeMur;
-	RectangleShape rectNormalGravity;
-	RectangleShape rectInvertedGravity;
-
-public:
-	void loadMap(const string& filename, RenderWindow& window);
+	vector<RectangleShape> platforms;
+	void loadMap(const string& filename);
 	void drawMap(RenderWindow& window);
 };
