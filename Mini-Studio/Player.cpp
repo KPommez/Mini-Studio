@@ -18,7 +18,7 @@ Player::Player() {
 	jumpMovement    = 350.f;
 	// Player's shape definition
 	shape.setSize(sf::Vector2f(40.f, 40.f));
-	shape.setFillColor(sf::Color::Blue);
+	shape.setFillColor(sf::Color::Green);
 	shape.setPosition(100, 100);
 }
 
@@ -130,21 +130,25 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 	{
 		shape.move(-speed * deltaTime, 0);
 	}*/
-	if (shape.getPosition().y <= 0)
+	if (shape.getPosition().y <= 0 || hasPlatform)
 	{
 		shape.move(0, 0);
 	}
-	if (shape.getPosition().y >= window.getSize().y - shape.getSize().y)
+	if (shape.getPosition().y >= window.getSize().y - shape.getSize().y || hasPlatform)
 	{
 		shape.move(0, 0);
 	}
-	// Gravity check
-	/*if (shape.getGlobalBounds().intersects(level.listeMur[0].getGlobalBounds())) {
-		invertedGravity = false;
+
+	int count = 0;
+	for (auto& platform : platforms) {
+		if (shape.getGlobalBounds().intersects(platform.getGlobalBounds())) {
+			hasPlatform = true;
+			count++;
+		}
 	}
-	else {
-		invertedGravity = true;
-	}*/
+	if (!count) {
+		hasPlatform = false;
+	}
 }
 
 void Player::draw(sf::RenderWindow& window) {

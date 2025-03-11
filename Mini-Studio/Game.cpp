@@ -14,7 +14,7 @@ void Game::Run() {
     
     // Chargement des assets
     // Chargement de la map
-    level.loadMap("Assets/map/test_map1.txt", window);
+    level.loadMap("Assets/map/test_map1.txt");
     // Ajout des menus
     // Appel du dessin du menu
 
@@ -57,7 +57,7 @@ void Game::update(const float& deltaTime) {
     if (Keyboard::isKeyPressed(Keyboard::J)) {
         isRunning = false;
     }
-    player.Colision(window, deltaTime,level.platforms);
+    player.Colision(window, deltaTime, level.platforms);
 }
 
 void Game::draw() {
