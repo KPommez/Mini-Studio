@@ -16,7 +16,7 @@ public:
 	float fallingTime;
 	const int maxFallingForce = 20; // About twice as much as gravity force
 	const int maxJumpingSpeed = 10;
-	const int dashSpeed       = 5;
+	const int dashSpeed       = 700;
 	const float gravityConst  = 9.81f;
 	const float jumpForce     = 6.54f; // ~= Gravity force / 1.5f
 	float dashingTime         = 0.5f;
