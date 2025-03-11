@@ -1,7 +1,2 @@
-<<<<<<< HEAD
-PlatformToolSet=v143:VCToolArchitecture=Native32Bit:VCToolsVersion=14.36.32532:TargetPlatformVersion=10.0.26100.0:
-Release|Win32|C:\Users\aponce\source\repos\KPommez\Mini-Studio\|
-=======
-PlatformToolSet=v143:VCToolArchitecture=Native32Bit:VCToolsVersion=14.41.34120:TargetPlatformVersion=10.0.22621.0:
-Release|Win32|C:\Users\jggui\OneDrive\Documents\GitHub\Mini-Studio\|
->>>>>>> ebbb2972a8dba16937ab71119e741b367da031ed
+PlatformToolSet=v143:VCToolArchitecture=Native32Bit:VCToolsVersion=14.43.34808:TargetPlatformVersion=10.0.26100.0:
+Release|Win32|C:\Users\PC\source\repos\KPommez\Mini-Studio\|

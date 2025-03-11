@@ -6,11 +6,16 @@ Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", sf::Style:
     deltaTime = 0.f;
     event = {};
     isRunning = true;
+    inGame = false;
+    screenX = window.getSize().x;
+    screenY = window.getSize().y;
+    spaceReleases = 0;
 }
 
 void Game::Run() {
     Menu menu;
     menu.start(window);
+    inGame = true;
 
     shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(200, 1000), &player);
     m_entityManager->addEnnemy(test);
@@ -45,10 +50,10 @@ void Game::pollEvents() {
         if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::J)) {
             isRunning = false;
         }
-        if (event.type == Event::KeyReleased && event.key.code == Keyboard::F) {
+        if (event.type == Event::KeyReleased && event.key.code == Keyboard::F && inGame) {
             player.isDashing = false;
         }
-        if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space) {
+        if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space && inGame) {
             player.isJumping = false;
         }
     }
