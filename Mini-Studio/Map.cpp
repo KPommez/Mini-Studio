@@ -1,19 +1,12 @@
 #include "Map.hpp"
 
-Map::Map()
-{
+Map::Map() {
 	posX = 0;
 	posY = 0;
 }
 
-
-void Map::loadMap(/*string filename*/)
-{
-	ifstream file("Assets/map/test_map1.txt");
-	//ifstream file(filename);
-
-	
-
+void Map::loadMap(const string& filename) {
+	ifstream file(filename);
 
 	string line;
 	float y = 0.f;
@@ -29,7 +22,8 @@ void Map::loadMap(/*string filename*/)
 				mur.setSize({ 40.f,40.f });
 				mur.setFillColor(Color::Blue);
 				mur.setPosition(posX, posY);
-				listeMur.push_back(mur);
+				platforms.push_back(mur);
+				
 			}
 		}
 		++y;
@@ -38,8 +32,7 @@ void Map::loadMap(/*string filename*/)
 }
 
 void Map::drawMap(RenderWindow& window) {
-
-	for (auto Rectangle : listeMur) {
+	for (auto& Rectangle : platforms) {
 		window.draw(Rectangle);
 	}
 

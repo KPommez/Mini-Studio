@@ -12,9 +12,17 @@ private:
 	sf::Event event;
 	sf::Clock Clock;
 	
-
 private:
+	Map level;
 	Player player;
+	View vue;
+	int screenX = 1920;
+	int screenY = 1080;
+
+	void update(const float& deltaTime);
+	void pollEvents();
+	void draw();
+	void view();
 
 public:
 	Game();

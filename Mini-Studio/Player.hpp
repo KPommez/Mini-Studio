@@ -4,16 +4,23 @@
 
 class Player : public Entity {
 public:
+	bool isGoingLeft;
+	bool isGoingRight;
+	bool isDashing;
 	bool isJumping;
 	bool hasPlatform;
 	float fallingMovement;
 	float jumpMovement;
 	float velocity;
-	const int maxFallingForce = 20; // ~2 fois la gravit�
-	const int maxJumpingSpeed = 10;
-	const float gravityConst = 9.81f;
-	const float jumpForce = 6.54f;
 	float speed;
+	float fallingTime;
+	const int maxFallingForce = 20; // About twice as much as gravity force
+	const int maxJumpingSpeed = 10;
+	const int dashSpeed       = 5;
+	const float gravityConst  = 9.81f;
+	const float jumpForce     = 6.54f; // ~= Gravity force / 1.5f
+	float dashingTime         = 0.5f;
+	Clock clockDash;
 
 public:
 	std::vector<sf::RectangleShape> platforms;
@@ -24,6 +31,6 @@ public:
 public:
 	void update(const float& deltaTime, sf::RenderWindow& window) override;
 	void draw(sf::RenderWindow& window) override;
-	void Colision(RenderWindow& window, const float& deltaTime);
+	void Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms);
 	void resize(sf::RenderWindow& window);
 };
