@@ -17,12 +17,12 @@ void Lampadaire::update(const float& deltaTime, sf::RenderWindow& window) {
 	switch (currentState) {
 	case PATROL:
 		
-		patrol();
+		patrol(deltaTime);
 		if (detectPlayer(player->shape.getPosition())) currentState = PATROL;
 		break;
 
 	case CHASE:
-		chase(player->shape.getPosition());
+		chase(player->shape.getPosition(), deltaTime);
 		if (!detectPlayer(player->shape.getPosition())) {
 			currentState = PATROL;
 		}
@@ -49,7 +49,7 @@ void Lampadaire::update(const float& deltaTime, sf::RenderWindow& window) {
 	
 	
 }
-void Lampadaire::chase(sf::Vector2f playerPos) {
+void Lampadaire::chase(sf::Vector2f playerPos, const float& deltaTime) {
 	sf::Vector2f direction = playerPos - position;
 	float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
@@ -57,7 +57,7 @@ void Lampadaire::chase(sf::Vector2f playerPos) {
 		direction /= distance;
 		position += direction * 2.0f;
 	}
-	shape.move(direction);
+	shape.move(direction * 300.f * deltaTime);
 	position = shape.getPosition();
 	//lum.move(direction);
 }
@@ -71,7 +71,7 @@ void Lampadaire::draw(sf::RenderWindow& window) {
 		return true;
 	}
 }
-void Lampadaire::patrol() {
+void Lampadaire::patrol(const float& deltaTime) {
 	static int currentWaypoint = 0;
 	static sf::Vector2f waypoints[2] = { sf::Vector2f(100, 300), sf::Vector2f(500, 300) };
 	sf::Vector2f target = waypoints[currentWaypoint];
@@ -90,7 +90,7 @@ void Lampadaire::patrol() {
 		direction /= distance;
 		position += direction * 2.0f;
 	}
-	shape.move(direction);
+	shape.move(direction * 300.f * deltaTime);
 	position = shape.getPosition();
 	//lum.move(direction);
 }
