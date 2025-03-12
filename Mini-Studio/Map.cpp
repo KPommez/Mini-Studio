@@ -12,7 +12,7 @@ void Map::loadMap(const string& filename) {
 	float y = 0.f;
 
 	while (getline(file, line)) {
-		for (int x = 0; x < line.size(); ++x) {
+		for (size_t x = 0; x < line.size(); ++x) {
 			posX = (float)x * 40.f;
 			posY = (float)y * 40.f;
 			if (line[x] == '/') {
@@ -20,7 +20,6 @@ void Map::loadMap(const string& filename) {
 				mur.setFillColor(Color::Blue);
 				mur.setPosition(posX, posY);
 				platforms.push_back(mur);
-				
 			}
 		}
 		++y;

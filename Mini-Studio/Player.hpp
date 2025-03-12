@@ -11,7 +11,6 @@ public:
 	bool isJumping;
 	bool isFalling;
 	bool canDoubleJump;
-	bool isTuching;
 	bool hasPlatform;
 	bool invertedGravity;
 	bool isSpacePressed;
@@ -22,13 +21,11 @@ public:
 	float speed;
 	float lastYPos;
 	float fallingTime;
-	float floorLevel;
-	const int maxFallingForce = 30; // About twice as much as gravity force
-	const int maxJumpingSpeed = 10;
-	const int dashSpeed       = 700;
-	const float gravityConst  = 9.81f;
-	const float jumpForce     = 10.f;
-	float dashingTime         = 0.5f;
+	float fallingSpeed;
+	const float maxFallingForce = 9.81f;
+	const int dashSpeed         = 700;
+	const float gravityConst    = 9.81f;
+	float dashingTime           = 0.5f;
 	Clock clockDash;
 
 public:
@@ -38,10 +35,10 @@ public:
 	void update(const float& deltaTime, sf::RenderWindow& window) override;
 	void draw(sf::RenderWindow& window) override;
 	void Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms);
-	void resize(sf::RenderWindow& window);
+	void resize(sf::RenderWindow& window, const Vector2f& size);
 
 private:
-	void jumpGestion(const float& deltaTime, RenderWindow& window, const float& jumpDuration);
+	void jumpGestion(const float& deltaTime, RenderWindow& window);
 	void dashGestion(const float& deltaTime, RenderWindow& window);
 	void gravityGestion(const float& deltaTime, RenderWindow& window);
 };
