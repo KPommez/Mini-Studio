@@ -15,7 +15,7 @@ private:
 	sf::Clock Clock;
 	std::shared_ptr<EntityManager>  m_entityManager;
 	View vue;
-	sf::Vector2f playerSize;
+	sf::Vector2i playerSize;
 	int screenX;
 	int screenY;
 	int spaceReleases;
