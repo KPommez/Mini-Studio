@@ -10,6 +10,7 @@ public:
 	Sprite playerSprite;
 
 private:
+	bool firstInputDetected;
 	bool isGoingLeft;
 	bool isGoingRight;
 	bool isFalling;

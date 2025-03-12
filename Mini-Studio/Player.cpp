@@ -2,6 +2,7 @@
 
 Player::Player() {
 	// Boolean members
+	firstInputDetected       = false;
 	isIdling                 = true;
 	isIdlingAnimationStarted = true;
 	isLeftAnimationStarted   = false;
@@ -28,11 +29,8 @@ Player::Player() {
 }
 
 void Player::resize(sf::RenderWindow& window) {
-	playerTexture.loadFromFile("Assets/Player/idle_Right.png");
-	float ratio = playerTexture.getSize().y / (float)window.getSize().y;
-	playerSprite.setTexture(playerTexture);
-	playerSprite.scale(ratio / 6.5f, ratio / 6.5f);
-	playerSprite.setPosition(Vector2f(100, window.getSize().y - playerSprite.getLocalBounds().height - 40.f));
+	playerSprite = playerSprites[4];
+	playerSprite.setPosition(Vector2f(100, window.getSize().y - playerSprite.getGlobalBounds().height - 40.f));
 }
 
 void Player::loadAssets(RenderWindow& window) {
@@ -79,9 +77,11 @@ void Player::loadAssets(RenderWindow& window) {
 void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 	inputGestion(deltaTime);
 	animationGestion(deltaTime);
-	gravityGestion(deltaTime, window);
-	jumpGestion(deltaTime, window);
-	dashGestion(deltaTime, window);
+	if (firstInputDetected) {
+		gravityGestion(deltaTime, window);
+		jumpGestion(deltaTime, window);
+		dashGestion(deltaTime, window);
+	}
 }
 
 void Player::inputGestion(const float& deltaTime) {
@@ -102,6 +102,7 @@ void Player::inputGestion(const float& deltaTime) {
 		isIdling = true;
 	}
 	else {
+		firstInputDetected = true;
 		isIdling = false;
 	}
 }
@@ -157,7 +158,6 @@ void Player::jumpGestion(const float& deltaTime, RenderWindow& window) {
 	// Impulsion force slowly going down
 	if ((isJumping && hasPlatform) || (isJumping && !hasPlatform && spacebarPresses == 1) || (isJumping && !hasPlatform && spacebarPresses == 2)) {
 		if (jumpMovement > 0) {
-			cout << jumpMovement << endl;
 			jumpMovement -= deltaTime * speed;
 		}
 		else {
@@ -275,7 +275,6 @@ void Player::animationGestion(const float& deltaTime) {
 }
 
 void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms) {
-	cout << playerSprite.getPosition().y << endl;
 	if (playerSprite.getPosition().x <= 0) {
 		playerSprite.move(speed * deltaTime, 0);
 	}
