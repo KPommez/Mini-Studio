@@ -1,7 +1,2 @@
-<<<<<<< HEAD
 PlatformToolSet=v143:VCToolArchitecture=Native64Bit:VCToolsVersion=14.36.32532:TargetPlatformVersion=10.0.26100.0:
-Debug|x64|C:\Users\aponce\source\repos\KPommez\Mini-Studio\|
-=======
-PlatformToolSet=v143:VCToolArchitecture=Native64Bit:VCToolsVersion=14.38.33130:TargetPlatformVersion=10.0.22621.0:
-Debug|x64|D:\GitHub\Mini-Studio\|
->>>>>>> ebbb2972a8dba16937ab71119e741b367da031ed
+Debug|x64|C:\Users\kpommez\source\repos\Mini-Studio\|
