@@ -5,8 +5,7 @@ Player::Player() {
 	firstInputDetected       = false;
 	isIdling                 = true;
 	isIdlingAnimationStarted = true;
-	isLeftAnimationStarted   = false;
-	isRightAnimationStarted  = false;
+	isAnimationStarted       = false;
 	invertedGravity          = false;
 	hasPlatform              = true;
 	isGoingLeft              = false;
@@ -29,49 +28,34 @@ Player::Player() {
 }
 
 void Player::resize(sf::RenderWindow& window) {
-	playerSprite = playerSprites[4];
+	playerSprite = playerSprites[0];
 	playerSprite.setPosition(Vector2f(100, window.getSize().y - playerSprite.getGlobalBounds().height - 40.f));
 }
 
 void Player::loadAssets(RenderWindow& window) {
-	playerTexture.loadFromFile("Assets/Player/idle_Right.png");
-	float ratio = playerTexture.getSize().y / (float)window.getSize().y;
 	// Loading the assets
-	playerIdleTextureLeft.loadFromFile("Assets/Player/idle_Left.png");
-	playerWalk1Left.loadFromFile("Assets/Player/walk1_Left.png");
-	playerWalk2Left.loadFromFile("Assets/Player/walk2_Left.png");
-	playerWalk3Left.loadFromFile("Assets/Player/walk3_Left.png");
-	playerIdleTextureRight.loadFromFile("Assets/Player/idle_Right.png");
-	playerWalk1Right.loadFromFile("Assets/Player/walk1_Right.png");
-	playerWalk2Right.loadFromFile("Assets/Player/walk2_Right.png");
-	playerWalk3Right.loadFromFile("Assets/Player/walk3_Right.png");
-	// Transferring them to sprites
-	playerIdleSpriteLeft.setTexture(playerIdleTextureLeft);
-	playerIdleSpriteLeft.scale(ratio / 6.5f, ratio / 6.5f);
-	playerWalk1SpriteLeft.setTexture(playerWalk1Left);
-	playerWalk1SpriteLeft.scale(ratio / 6.5f, ratio / 6.5f);
-	playerWalk2SpriteLeft.setTexture(playerWalk2Left);
-	playerWalk2SpriteLeft.scale(ratio / 6.5f, ratio / 6.5f);
-	playerWalk3SpriteLeft.setTexture(playerWalk3Left);
-	playerWalk3SpriteLeft.scale(ratio / 6.5f, ratio / 6.5f);
-	playerIdleSpriteRight.setTexture(playerIdleTextureRight);
-	playerIdleSpriteRight.scale(ratio / 6.5f, ratio / 6.5f);
-	playerWalk1SpriteRight.setTexture(playerWalk1Right);
-	playerWalk1SpriteRight.scale(ratio / 6.5f, ratio / 6.5f);
-	playerWalk2SpriteRight.setTexture(playerWalk2Right);
-	playerWalk2SpriteRight.scale(ratio / 6.5f, ratio / 6.5f);
-	playerWalk3SpriteRight.setTexture(playerWalk3Right);
-	playerWalk3SpriteRight.scale(ratio / 6.5f, ratio / 6.5f);
+	playerIdleTexture.loadFromFile("Assets/Player/idle.png");
+	playerWalk1.loadFromFile("Assets/Player/walk1.png");
+	playerWalk2.loadFromFile("Assets/Player/walk2.png");
+	playerWalk3.loadFromFile("Assets/Player/walk3.png");
+	// Setting the default player's texture
+	playerTexture = playerIdleTexture;
+	// Applying textures
+	playerIdleSprite.setTexture(playerIdleTexture);
+	playerWalk1Sprite.setTexture(playerWalk1);
+	playerWalk2Sprite.setTexture(playerWalk2);
+	playerWalk3Sprite.setTexture(playerWalk3);
 	// Adding them to the vector of sprites
-	playerSprites.reserve(8);
-	playerSprites.emplace_back(playerIdleSpriteLeft);
-	playerSprites.emplace_back(playerWalk1SpriteLeft);
-	playerSprites.emplace_back(playerWalk2SpriteLeft);
-	playerSprites.emplace_back(playerWalk3SpriteLeft);
-	playerSprites.emplace_back(playerIdleSpriteRight);
-	playerSprites.emplace_back(playerWalk1SpriteRight);
-	playerSprites.emplace_back(playerWalk2SpriteRight);
-	playerSprites.emplace_back(playerWalk3SpriteRight);
+	playerSprites.reserve(4);
+	playerSprites.emplace_back(playerIdleSprite);
+	playerSprites.emplace_back(playerWalk1Sprite);
+	playerSprites.emplace_back(playerWalk2Sprite);
+	playerSprites.emplace_back(playerWalk3Sprite);
+	// Applying a new scale to all the loaded sprites
+	float ratio = playerTexture.getSize().y / (float)window.getSize().y;
+	for (auto& _sprite : playerSprites) {
+		_sprite.scale(ratio / 6.5f, ratio / 6.5f);
+	}
 }
 
 void Player::update(const float& deltaTime, sf::RenderWindow& window) {
@@ -204,12 +188,11 @@ void Player::dashGestion(const float& deltaTime, RenderWindow& window) {
 }
 
 void Player::animationGestion(const float& deltaTime) {
+	sf::Vector2f scale = sprite.getScale();
 	animationTime += deltaTime;
-	// Going left (index 1 to 3)
-	if (isGoingLeft && !isIdling) {
-		if (!isLeftAnimationStarted) {
-			isLeftAnimationStarted = true;
-			isRightAnimationStarted = false;
+	if (!isIdling) {
+		if (!isAnimationStarted) {
+			isAnimationStarted = true;
 			isIdlingAnimationStarted = false;
 			animationTime = 0.f;
 		}
@@ -230,47 +213,21 @@ void Player::animationGestion(const float& deltaTime) {
 			playerSprite = playerSprites[3];
 		}
 	}
-	// Going right (index 5 to 7)
-	else if (isGoingRight && !isIdling) {
-		if (!isRightAnimationStarted) {
-			isRightAnimationStarted = true;
-			isLeftAnimationStarted = false;
-			isIdlingAnimationStarted = false;
-			animationTime = 0.f;
-		}
-		// Restart the animation loop after 0.5 seconds
-		if (animationTime > .5f) {
-			animationTime = 0.f;
-		}
-		else if (animationTime < (.5f / 3.f)) {
-			playerSprites[5].setPosition(playerSprite.getPosition());
-			playerSprite = playerSprites[5];
-		}
-		else if (animationTime < (.5f / 2.f)) {
-			playerSprites[6].setPosition(playerSprite.getPosition());
-			playerSprite = playerSprites[6];
-		}
-		else {
-			playerSprites[7].setPosition(playerSprite.getPosition());
-			playerSprite = playerSprites[7];
-		}
-	}
-	// Idle (left : 0, right : 4)
+	// Idle : index = 0
 	else {
 		if (!isIdlingAnimationStarted) {
 			isIdlingAnimationStarted = true;
-			isLeftAnimationStarted = false;
-			isRightAnimationStarted = false;
+			isAnimationStarted = false;
 			animationTime = 0.f;
 		}
-		if (isGoingLeft) {
-			playerSprites[0].setPosition(playerSprite.getPosition());
-			playerSprite = playerSprites[0];
-		}
-		else {
-			playerSprites[4].setPosition(playerSprite.getPosition());
-			playerSprite = playerSprites[4];
-		}
+		playerSprites[0].setPosition(playerSprite.getPosition());
+		playerSprite = playerSprites[0];
+	}
+	if (isGoingLeft) {
+		playerSprite.scale(-abs(scale.x), scale.y);
+	}
+	else {
+		playerSprite.scale(abs(scale.x), scale.y);
 	}
 }
 

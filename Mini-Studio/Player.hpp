@@ -20,8 +20,7 @@ private:
 	bool isSpacePressed;
 	bool isIdling;
 	bool isIdlingAnimationStarted;
-	bool isLeftAnimationStarted;
-	bool isRightAnimationStarted;
+	bool isAnimationStarted;
 	int spacebarPresses;
 	float animationTime;
 	float fallingMovement;
@@ -35,9 +34,9 @@ private:
 	const float gravityConst    = 9.81f;
 	float dashingTime           = 0.5f;
 	Texture playerTexture;
-	Texture playerIdleTextureLeft, playerIdleTextureRight, playerWalk1Left, playerWalk1Right, playerWalk2Left, playerWalk2Right, playerWalk3Left, playerWalk3Right;
+	Texture playerIdleTexture, playerWalk1, playerWalk2, playerWalk3;
 	vector<Sprite>  playerSprites;
-	Sprite playerIdleSpriteLeft, playerIdleSpriteRight, playerWalk1SpriteLeft, playerWalk1SpriteRight, playerWalk2SpriteLeft, playerWalk2SpriteRight, playerWalk3SpriteLeft, playerWalk3SpriteRight;
+	Sprite playerIdleSprite, playerWalk1Sprite, playerWalk2Sprite, playerWalk3Sprite;
 	Clock clockDash;
 
 public:
