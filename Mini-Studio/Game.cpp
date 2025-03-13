@@ -10,6 +10,7 @@ Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", sf::Style:
     screenX = window.getSize().x;
     screenY = window.getSize().y;
     spaceReleases = 0;
+    index = 0;
 }
 
 void Game::Run() {
@@ -19,7 +20,7 @@ void Game::Run() {
     
     // Chargement des assets
     // Chargement de la map
-    level.loadMap("Assets/map/test_map1.txt");
+    level.loadMap(level.allLevels.at(index)); //level.allLevels.at(index)"Assets/map/test_map1.txt"
     // Ajout des menus
     // Appel du dessin du menu
 
@@ -69,6 +70,9 @@ void Game::update(const float& deltaTime) {
     if (Keyboard::isKeyPressed(Keyboard::J)) {
         isRunning = false;
     }
+    for (auto& Plateforme : level.plateformeTest) {
+        Plateforme->platUpdate();
+    }
 }
 
 void Game::draw() {
@@ -90,11 +94,11 @@ void Game::view() {
     if (position.x < 0) {
         position.x = 0;
     }
-    if (position.x > window.getSize().x) {
-        position.x = window.getSize().x;
+    if (position.x > window.getSize().x * 3) {
+        position.x = window.getSize().x * 3;
     }
-    if (position.y > 0) {
-        position.y = 0;
+    if (position.y > window.getSize().y /2) {
+        position.y = window.getSize().y /2;
     }
 
     vue.reset(FloatRect(position.x, position.y, screenX, screenY));

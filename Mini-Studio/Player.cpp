@@ -10,7 +10,7 @@ Player::Player() {
     isDashing       = false;
 	canDoubleJump   = true;
 	isSpacePressed  = false;
-	isFalling       = false;
+	isFalling       = true;
 	// Float members
 	speed           = 400.f;
 	fallingTime     = 0.f;
@@ -25,7 +25,7 @@ Player::Player() {
 void Player::resize(sf::RenderWindow& window, const Vector2f& size) {
 	shape.setSize(size);
 	shape.setFillColor(sf::Color::Green);
-	shape.setPosition(Vector2f(100, window.getSize().y - shape.getSize().y - 40.f));
+	shape.setPosition(Vector2f(100, window.getSize().y));
 }
 
 void Player::update(const float& deltaTime, sf::RenderWindow& window) {
@@ -84,15 +84,15 @@ void Player::jumpGestion(const float& deltaTime, RenderWindow& window) {
 void Player::gravityGestion(const float& deltaTime, RenderWindow& window) {
 	// Keeps falling faster until he reaches a certain limit (gravity inversible)
 	if (!invertedGravity) {
-		if ((shape.getPosition().y < (window.getSize().y - shape.getSize().y)) && !hasPlatform && !isJumping) {
+		if (/*(shape.getPosition().y < (window.getSize().y - shape.getSize().y)) && */!hasPlatform && !isJumping) {
 			isFalling = true;
 			if (fallingMovement < maxFallingForce) {
 				fallingMovement += deltaTime * gravityConst;
 			}
-			if (shape.getPosition().y > (window.getSize().y - shape.getSize().y))
-				shape.setPosition(0, 0);
-			else
-				shape.move(0, fallingMovement * deltaTime * fallingSpeed);
+			//if (shape.getPosition().y > (window.getSize().y - shape.getSize().y)){}
+			//	//shape.setPosition(0, 0);
+			//else{}
+			shape.move(0, fallingMovement * deltaTime * fallingSpeed);
 		}
 		else {
 			fallingMovement = 0.f;
@@ -160,11 +160,11 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		shape.move(0, 0);
 		isFalling = false;
 	}
-	if ((shape.getPosition().y >= (window.getSize().y - shape.getSize().y)) || hasPlatform)
+	/*if ((shape.getPosition().y >= (window.getSize().y - shape.getSize().y)) || hasPlatform)
 	{
 		shape.move(0, 0);
 		isFalling = false;
-	}
+	}*/
 }
 
 void Player::draw(sf::RenderWindow& window) {
