@@ -28,6 +28,8 @@ void Game::Run() {
 
     shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(500, 900), &player);
     m_entityManager->addEnnemy(test);
+    shared_ptr<Petrifeu> test2 = make_shared<Petrifeu>(Vector2f(500, 900), &player);
+    m_entityManager->addEnnemy(test2);
 
     vue.reset(FloatRect(0, 0, screenX, screenY));
     vue.zoom(1);
