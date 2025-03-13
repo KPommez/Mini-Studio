@@ -1,6 +1,6 @@
 #include "Game.hpp"
     
-Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", sf::Style::Fullscreen) {
+Game::Game() : window(VideoMode::getDesktopMode(), "Mini-Studio", Style::Fullscreen) {
     m_entityManager = make_shared<EntityManager>();
     window.setVerticalSyncEnabled(true);
     deltaTime = 0.f;
@@ -29,14 +29,11 @@ void Game::Run() {
     player.resize(window);
 
     shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(500, 900), &player);
-    m_entityManager->addEnnemy(test);
     shared_ptr<Petrifeu> test2 = make_shared<Petrifeu>(Vector2f(500, 900), &player);
+    m_entityManager->addEnnemy(test);
     m_entityManager->addEnnemy(test2);
 
-    vue.reset(FloatRect(0, 0, screenX, screenY));
-    vue.zoom(1);
     view();
-    window.setView(vue);
 
     while (isRunning) {
         deltaTime = Clock.restart().asSeconds();
@@ -70,25 +67,14 @@ void Game::update(const float& deltaTime) {
     m_entityManager->updateEntities(window, deltaTime);
     player.Colision(window, deltaTime, level.platforms);
     player.update(deltaTime, window);
-    if (Keyboard::isKeyPressed(Keyboard::J)) {
-        isRunning = false;
-    }
     for (auto& Plateforme : level.plateformeTest) {
         Plateforme->platUpdate();
     }
 }
 
-void Game::draw() {
-    window.clear();
-    level.drawMap(window);
-    player.draw(window);
-    m_entityManager->drawEntities(window);
-    window.display();
-}
-
 void Game::view() {
-    vue.reset(FloatRect(0, 0, screenX, screenY));
-    Vector2f position(screenX / 2, screenY / 2);
+    vue.reset(FloatRect(0, 0, (float)screenX, (float)screenY));
+    Vector2f position(screenX / 2.f, screenY / 2.f);
     position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2.f) - (screenX / 2.f));
     position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2.f) - (screenY / 2.f));
 
@@ -104,7 +90,15 @@ void Game::view() {
         position.y = window.getSize().y / 2.f;
     }
 
-    vue.reset(FloatRect(position.x, position.y, screenX, screenY));
+    vue.reset(FloatRect(position.x, position.y, (float)screenX, (float)screenY));
     vue.zoom(1);
     window.setView(vue);
+}
+
+void Game::draw() {
+    window.clear();
+    level.drawMap(window);
+    player.draw(window);
+    m_entityManager->drawEntities(window);
+    window.display();
 }

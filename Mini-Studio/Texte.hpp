@@ -1,21 +1,12 @@
 #pragma once
+
 #include "includeAll.hpp"
-class Texte
-{
+
+class Texte {
 public:
-    Font font;
-    string texte;
-    int tailleChar;
-    int R;
-    int G;
-    int B;
-    float X;
-    float Y;
-
-
-    Texte(Font a, String b, int c, int d, int e, int f, float g, float h) : font(a), texte(b), tailleChar(c), R(d), G(e), B(f), X(g), Y(h) {}
-
-    Text creation() {
+    Texte(Font typeface, String text, int fontSize, int red, int green, int blue, float xPos, float yPos) : 
+        font(typeface), texte(text), tailleChar(fontSize), R(red), G(green), B(blue), X(xPos), Y(yPos) {}
+    Text creation() const {
         Text text;
         text.setFont(font);
         text.setString(texte);
@@ -24,4 +15,14 @@ public:
         text.setPosition(X, Y);
         return text;
     }
+
+private:
+    Font font;
+    string texte;
+    int tailleChar;
+    int R;
+    int G;
+    int B;
+    float X;
+    float Y;
 };

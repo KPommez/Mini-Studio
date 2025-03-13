@@ -28,7 +28,7 @@ Player::Player() {
 	animationTime   = 0.f;
 }
 
-void Player::resize(sf::RenderWindow& window) {
+void Player::resize(RenderWindow& window) {
 	playerSprite = playerSprites[0];
 	playerSprite.setPosition(Vector2f(100, window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f));
 }
@@ -59,7 +59,7 @@ void Player::loadAssets(RenderWindow& window) {
 	}
 }
 
-void Player::update(const float& deltaTime, sf::RenderWindow& window) {
+void Player::update(const float& deltaTime, RenderWindow& window) {
 	inputGestion(deltaTime, window);
 	animationGestion(deltaTime);
 	gravityGestion(deltaTime, window);
@@ -191,7 +191,7 @@ void Player::dashGestion(const float& deltaTime, RenderWindow& window) {
 }
 
 void Player::animationGestion(const float& deltaTime) {
-	sf::Vector2f scale = sprite.getScale();
+	Vector2f scale = sprite.getScale();
 	animationTime += deltaTime;
 	if (!isIdling) {
 		if (!isAnimationStarted) {
@@ -216,7 +216,7 @@ void Player::animationGestion(const float& deltaTime) {
 			playerSprite = playerSprites[3];
 		}
 	}
-	// Idle : index = 0
+	// Idle
 	else {
 		if (!isIdlingAnimationStarted) {
 			isIdlingAnimationStarted = true;
@@ -236,8 +236,9 @@ void Player::animationGestion(const float& deltaTime) {
 
 void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms) {
 	float posY;
-	if(!invertedGravity)
+	if (!invertedGravity) {
 		posY = playerSprite.getPosition().y + playerSprite.getGlobalBounds().height;
+	}
 	else {
 		posY = playerSprite.getPosition().y - playerSprite.getGlobalBounds().height;
 	}
@@ -245,6 +246,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		playerSprite.move(speed * 2.f * deltaTime, 0);
 	}
 	hasPlatform = false;
+	// Change to floorLevel
 	if (playerSprite.getPosition().y >= window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f) {
 		hasPlatform = true;
 		isFalling = false;
@@ -252,31 +254,33 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		canDoubleJump = true;
 		spacebarPresses = 0;
 	}
-	for (auto& platform : platforms) {
-		if (playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) && !hasPressedS) {
-			canDoubleJump = true;
-			hasPlatform = true;
-			if (isFalling) {
-				playerSprite.move(0, 0);
-				isFalling = false;
-				isJumping = false;
-				spacebarPresses = 0;
-			}
-			if (!isFalling && !isJumping) {
-				if (!invertedGravity) {
-					playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
+	else {
+		for (auto& platform : platforms) {
+			if (playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) && !hasPressedS) {
+				canDoubleJump = true;
+				hasPlatform = true;
+				if (isFalling) {
+					playerSprite.move(0, 0);
+					isFalling = false;
+					isJumping = false;
+					spacebarPresses = 0;
 				}
-				else {
-					playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y + platform.getSize().y + 0.1f);
+				if (!isFalling && !isJumping) {
+					if (!invertedGravity) {
+						playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
+					}
+					else {
+						playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y + platform.getSize().y + 0.1f);
+					}
 				}
 			}
 		}
-	}
-	if (!hasPlatform) {
-		isFalling = true;
+		if (!hasPlatform) {
+			isFalling = true;
+		}
 	}
 }
 
-void Player::draw(sf::RenderWindow& window) {
+void Player::draw(RenderWindow& window) {
 	window.draw(playerSprite);
 }
