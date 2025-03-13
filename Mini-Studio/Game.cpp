@@ -24,8 +24,9 @@ void Game::Run() {
     // Ajout des menus
     // Appel du dessin du menu
 
-    playerSize = { window.getSize().y / 16.f, (window.getSize().y / 8.f) };
-    player.resize(window, playerSize);
+    playerSize = { (int)((float)window.getSize().y / 16.f), (int)((float)window.getSize().y / 8.f) };
+    player.loadAssets(window);
+    player.resize(window);
 
     shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(200, 1000), &player);
     m_entityManager->addEnnemy(test);
@@ -57,8 +58,8 @@ void Game::pollEvents() {
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::F && inGame) {
             player.isDashing = false;
         }
-        if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space && inGame) {
-            player.isJumping = false;
+        if (event.type == Event::KeyReleased && event.key.code == Keyboard::S && inGame) {
+            player.hasPressedS = false;
         }
     }
 }
@@ -86,19 +87,19 @@ void Game::draw() {
 void Game::view() {
     vue.reset(FloatRect(0, 0, screenX, screenY));
     Vector2f position(screenX / 2, screenY / 2);
-    position.x = (player.shape.getPosition().x + (playerSize.x / 2) - (screenX / 2));
-    position.y = (player.shape.getPosition().y + (playerSize.y / 2) - (screenY / 2));
+    position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2.f) - (screenX / 2.f));
+    position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2.f) - (screenY / 2.f));
 
     // permet de fixer une limite donc a voir avec les carré noir de Kiliann
 
     if (position.x < 0) {
         position.x = 0;
     }
-    if (position.x > window.getSize().x * 3) {
-        position.x = window.getSize().x * 3;
+    if (position.x > window.getSize().x * 3.f) {
+        position.x = window.getSize().x * 3.f;
     }
-    if (position.y > window.getSize().y /2) {
-        position.y = window.getSize().y /2;
+    if (position.y > window.getSize().y / 2.f) {
+        position.y = window.getSize().y / 2.f;
     }
 
     vue.reset(FloatRect(position.x, position.y, screenX, screenY));
