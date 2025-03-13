@@ -1,22 +1,24 @@
 #pragma once
+
 #include "includeAll.hpp"
 
 class Rectangle {
 public:
-    int tailleX;
-    int tailleY;
+    float tailleX;
+    float tailleY;
     float posX;
     float posY;
     int R;
     int G;
     int B;
 
-    Rectangle(int a, int b, float c, float d, int e, int f, int g) : tailleX(a), tailleY(b), posX(c), posY(d), R(e), G(f), B(g) {}
+    Rectangle(float sizeX, float sizeY, float xPos, float yPos, int red, int green, int blue) : 
+        tailleX(sizeX), tailleY(sizeY), posX(xPos), posY(yPos), R(red), G(green), B(blue) {}
 
-    RectangleShape creation() {
-        RectangleShape shape1(Vector2f(tailleX, tailleY)); // Rayon de 50 pixels
-        shape1.setPosition(posX, posY);
-        shape1.setFillColor(Color(R, G, B));
-        return shape1;
+    RectangleShape creation() const {
+        RectangleShape rect(Vector2f(tailleX, tailleY)); // Rayon de 50 pixels
+        rect.setPosition(posX, posY);
+        rect.setFillColor(Color(R, G, B));
+        return rect;
     }
 };

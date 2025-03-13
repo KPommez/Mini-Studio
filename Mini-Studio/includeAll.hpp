@@ -19,7 +19,6 @@
 #include <memory>
 #include <filesystem>
 
-
 using namespace std;
 using namespace sf;
-namespace fs = std::filesystem;
+namespace fs = filesystem;

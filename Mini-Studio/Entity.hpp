@@ -4,14 +4,14 @@
 
 class Entity {
 public:
-	// rectangle pour test tech
-	sf::RectangleShape shape;
-	sf::Texture texture;
-	sf::Sprite sprite;
+	RectangleShape shape;
+	Texture texture;
+	Sprite sprite;
 	string type;
+
 public:
-	virtual void update(const float& deltaTime, sf::RenderWindow& window) = 0;
-	virtual void draw(sf::RenderWindow& window) = 0;
+	virtual void update(const float& deltaTime, RenderWindow& window) = 0;
+	virtual void draw(RenderWindow& window) = 0;
 
 public:
 	//virtual ~Entity();

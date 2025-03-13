@@ -6,25 +6,18 @@ Map::Map() {
 	loadAllMaps();
 }
 
-namespace fs = filesystem;
-
 void Map::loadAllMaps() {
-
-
 	try {
-		
-		for (auto path : allLevelsTypePath) {
+		for (auto& path : allLevelsTypePath) {
 			try {				
 				for (const auto& entry : fs::directory_iterator(path)) {
-					
 					if (fs::is_regular_file(entry) && entry.path().extension() == ".txt") {
 						allLevels.push_back(entry.path().string());
 					}
 				}
 			}
 			catch (const exception& e) {
-				
-				cerr << "Erreur lors du chargement des maps depuis le répertoire " << path << ": " << e.what() << endl;
+				cerr << "Erreur lors du chargement des maps depuis le repertoire " << path << " : " << e.what() << endl;
 			}
 		}
 	}
@@ -47,17 +40,13 @@ void Map::loadMap(const string& filename) {
 			posX = (float)x * 40.f;
 			posY = (float)y * 40.f;
 			if (line[x] == '/') {
-				
 				mur.setSize({ 40.f,40.f });
 				mur.setFillColor(Color::Blue);
 				mur.setPosition(posX, posY);
 				platforms.push_back(mur);
-
 			}
-			if (line[x] == '*') {
-
+			else if (line[x] == '*') {
 				plateformeTest.push_back(new Plateforme(posX,posY,1));
-				
 			}
 		}
 		++y;

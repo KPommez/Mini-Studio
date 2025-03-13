@@ -5,11 +5,28 @@
 
 class Player : public Entity {
 public:
+	Player();
+
+public:
+	void update(const float& deltaTime, RenderWindow& window) override;
+	void draw(RenderWindow& window) override;
+	void Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms);
+	void resize(RenderWindow& window);
+	void loadAssets(RenderWindow& window);
+
+public:
 	bool isDashing;
 	bool isGoingLeft;
 	bool isGoingRight;
 	bool hasPressedS;
 	Sprite playerSprite;
+
+private:
+	void inputGestion(const float& deltaTime, RenderWindow& window);
+	void jumpGestion(const float& deltaTime, RenderWindow& window);
+	void dashGestion(const float& deltaTime, RenderWindow& window);
+	void gravityGestion(const float& deltaTime, RenderWindow& window);
+	void animationGestion(const float& deltaTime);
 
 private:
 	bool isJumping;
@@ -39,21 +56,4 @@ private:
 	vector<Sprite>  playerSprites;
 	Sprite playerIdleSprite, playerWalk1Sprite, playerWalk2Sprite, playerWalk3Sprite;
 	Clock clockDash;
-
-public:
-	Player();
-
-public:
-	void update(const float& deltaTime, RenderWindow& window) override;
-	void draw(RenderWindow& window) override;
-	void Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms);
-	void resize(RenderWindow& window);
-	void loadAssets(RenderWindow& window);
-
-private:
-	void inputGestion(const float& deltaTime, RenderWindow& window);
-	void jumpGestion(const float& deltaTime, RenderWindow& window);
-	void dashGestion(const float& deltaTime, RenderWindow& window);
-	void gravityGestion(const float& deltaTime, RenderWindow& window);
-	void animationGestion(const float& deltaTime);
 };

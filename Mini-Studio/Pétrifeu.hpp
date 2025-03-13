@@ -2,19 +2,17 @@
 
 #include "Player.hpp"
 
-class Petrifeu : public Entity
-{
+class Petrifeu : public Entity {
 public:
 	Petrifeu(Vector2f pos, Player* players);
+	void update(const float& deltaTime, RenderWindow& window) override;
+	void draw(RenderWindow& window) override;
+
+private:
+	void patrol(const float& deltaTime);
+
+private:
 	Player* player;
-	void update(const float& deltaTime, sf::RenderWindow& window) override;
-	void draw(sf::RenderWindow& window) override;
 	RectangleShape zone;
 	Vector2f position;
-
-
-	
-	void patrol(const float& deltaTime);
-	
-	
 };

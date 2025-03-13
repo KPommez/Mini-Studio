@@ -1,32 +1,23 @@
 #include "Menu.hpp"
 
-
 Menu::Menu() {
-	if (!font.loadFromFile("assets/font/Minecraft.ttf")) {}
+	if (!font.loadFromFile("Assets/font/Minecraft.ttf")) {
+		cerr << "Police d'ecriture \"Minecraft\" non chargee!" << endl;
+	}
 	menuState = MENU;
 }
 
-
-
-void Menu::setTexture(const string& PNGfile)
-{
-	if (texture.loadFromFile(PNGfile))
-	{
+void Menu::setTexture(const string& PNGfile, RenderWindow& window) {
+	if (texture.loadFromFile(PNGfile)) {
 		sprite.setTexture(texture);
 		Vector2u textureSize = texture.getSize();
-		float scaleX = static_cast<float> (1920) / textureSize.x;
-		float scaleY = static_cast<float>(1080) / textureSize.y;
+		float scaleX = static_cast<float>(window.getSize().x) / textureSize.x;
+		float scaleY = static_cast<float>(window.getSize().y) / textureSize.y;
 		sprite.setScale(scaleX, scaleY);
 	}
 }
 
-void Menu::drawback(RenderWindow& window)
-{
-	window.draw(sprite);
-}
-
-void Menu::start(RenderWindow& window)
-{
+void Menu::start(RenderWindow& window) {
 	switch (menuState) {
 	case MENU:
 		menu(window);
@@ -55,7 +46,7 @@ void Menu::menu(RenderWindow& window) {
 	listeTexte.clear();
 	listeRectangle.clear();
 
-	Texte Titre(font, "try game", 80, 255, 0, 0, 550, 150); //font, texte, taille,R,G,B, X, Y , 
+	Texte Titre(font, "try game", 80, 255, 0, 0, 550, 150);
 	listeTexte.push_back(Titre);
 
 	Texte start(font, "Start", 40, 0, 0, 0, 880, 410);
@@ -67,20 +58,19 @@ void Menu::menu(RenderWindow& window) {
 	Texte Partir(font, "Partir", 40, 0, 0, 0, 880, 690);
 	listeTexte.push_back(Partir);
 
-	Rectangle RecTitre(120, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	Rectangle RecTitre(120, 70, 870, 400, 255, 255, 255);
 	listeRectangle.push_back(RecTitre);
 
-	Rectangle RecTouche(190, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	Rectangle RecTouche(190, 70, 870, 540, 255, 255, 255);
 	listeRectangle.push_back(RecTouche);
 
-	Rectangle RecPartir(130, 70, 870, 680, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	Rectangle RecPartir(130, 70, 870, 680, 255, 255, 255);
 	listeRectangle.push_back(RecPartir);
 
 	while (!hasStarted) {
 		window.clear(Color::Black);
-		
 
-		setTexture("assets/backMenu/image.png");
+		setTexture("assets/backMenu/image.png", window);
 		drawback(window);
 
 		for (auto& Rectangle : listeRectangle) {
@@ -95,7 +85,6 @@ void Menu::menu(RenderWindow& window) {
 
 		Event gameEvent;
 		while (window.pollEvent(gameEvent)) {
-
 			if (gameEvent.type == Event::Closed)
 				window.close();
 
@@ -126,7 +115,7 @@ void Menu::option(RenderWindow& window) {
 	window.clear(Color::Black);
 	listeTexte.clear();
 	listeRectangle.clear();
-	setTexture("assets/backMenu/menu.png");
+	setTexture("assets/backMenu/menu.png", window);
 	drawback(window);
 
 	Texte retour(font, "Retour", 40, 0, 0, 0, 1700, 1000);
@@ -134,16 +123,11 @@ void Menu::option(RenderWindow& window) {
 
 	////////////////////////////////////////////////////////////////////
 
-
-	Rectangle RecClicd(400, 60, window.getSize().x / 2 - 200, window.getSize().y / 2, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	Rectangle RecClicd(400, 60, window.getSize().x / 2.f - 200.f, window.getSize().y / 2.f, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
 	listeRectangle.push_back(RecClicd);
-
-
 
 	Rectangle RecRetour(155, 55, 1690, 1000, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
 	listeRectangle.push_back(RecRetour);
-
-
 
 	for (auto& Rectangle : listeRectangle) {
 		window.draw(Rectangle.creation());
@@ -157,7 +141,6 @@ void Menu::option(RenderWindow& window) {
 
 	Event gameEvent;
 	while (window.pollEvent(gameEvent)) {
-
 		if (gameEvent.type == Event::Closed)
 			window.close();
 
@@ -175,13 +158,12 @@ void Menu::option(RenderWindow& window) {
 	}
 }
 
-void Menu::win(RenderWindow& window)
-{
+void Menu::win(RenderWindow& window) {
 	window.clear(Color::Black);
 	listeTexte.clear();
 	listeRectangle.clear();
 
-	Texte Titre(font, "Vous avez .... Gagne ??", 80, 255, 0, 0, 480, 255); //font, texte, taille,R,G,B, X, Y , 
+	Texte Titre(font, "Vous avez .... gagné ??", 80, 255, 0, 0, 480, 255);
 	listeTexte.push_back(Titre);
 
 	Texte start(font, "Restart", 40, 0, 0, 0, 880, 410);
@@ -190,10 +172,10 @@ void Menu::win(RenderWindow& window)
 	Texte touche(font, "Quitter", 40, 0, 0, 0, 880, 550);
 	listeTexte.push_back(touche);
 
-	Rectangle RecTitre(170, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	Rectangle RecTitre(170, 70, 870, 400, 255, 255, 255);
 	listeRectangle.push_back(RecTitre);
 
-	Rectangle RecTouche(150, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	Rectangle RecTouche(150, 70, 870, 540, 255, 255, 255);
 	listeRectangle.push_back(RecTouche);
 
 	for (auto& Rectangle : listeRectangle) {
@@ -206,13 +188,10 @@ void Menu::win(RenderWindow& window)
 
 	window.display();
 
-
 	Event gameEvent;
 	while (window.pollEvent(gameEvent)) {
-
 		if (gameEvent.type == Event::Closed)
 			window.close();
-
 
 		if (Mouse::isButtonPressed(Mouse::Left)) {
 			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
@@ -230,13 +209,12 @@ void Menu::win(RenderWindow& window)
 
 }
 
-void Menu::loose(RenderWindow& window)
-{
+void Menu::loose(RenderWindow& window) {
 	window.clear(Color::Black);
 	listeTexte.clear();
 	listeRectangle.clear();
 
-	Texte Titre(font, "Vous avez perdu, vous n'etes pas le heros", 80, 255, 0, 0, 180, 255); //font, texte, taille,R,G,B, X, Y , 
+	Texte Titre(font, "Vous avez perdu, vous n'êtes pas le héros", 80, 255, 0, 0, 180, 255);
 	listeTexte.push_back(Titre);
 
 	Texte start(font, "Restart", 40, 0, 0, 0, 880, 410);
@@ -245,10 +223,10 @@ void Menu::loose(RenderWindow& window)
 	Texte touche(font, "Quitter", 40, 0, 0, 0, 880, 550);
 	listeTexte.push_back(touche);
 
-	Rectangle RecTitre(170, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	Rectangle RecTitre(170, 70, 870, 400, 255, 255, 255);
 	listeRectangle.push_back(RecTitre);
 
-	Rectangle RecTouche(150, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	Rectangle RecTouche(150, 70, 870, 540, 255, 255, 255);
 	listeRectangle.push_back(RecTouche);
 
 	for (auto& Rectangle : listeRectangle) {
@@ -261,13 +239,10 @@ void Menu::loose(RenderWindow& window)
 
 	window.display();
 
-
 	Event gameEvent;
 	while (window.pollEvent(gameEvent)) {
-
 		if (gameEvent.type == Event::Closed)
 			window.close();
-
 
 		if (Mouse::isButtonPressed(Mouse::Left)) {
 			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
@@ -282,4 +257,8 @@ void Menu::loose(RenderWindow& window)
 			}
 		}
 	}
+}
+
+void Menu::drawback(RenderWindow& window) {
+	window.draw(sprite);
 }
