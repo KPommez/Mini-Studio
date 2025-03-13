@@ -63,7 +63,7 @@ void Player::jumpGestion(const float& deltaTime, RenderWindow& window, const flo
 		canDoubleJump = true;
 		isJumping = false;
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Space) || Joystick::isButtonPressed(0,0) && canDoubleJump && !isJumping) {
+	if (Keyboard::isKeyPressed(Keyboard::Space) && canDoubleJump && !isJumping || Joystick::isButtonPressed(0,0) && canDoubleJump && !isJumping) {
 		if (spacebarPresses < 2) {
 			canDoubleJump = true;
 			isJumping = true;
