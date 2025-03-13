@@ -1,8 +1,8 @@
 #include "Game.hpp"
     
-Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", sf::Style::Fullscreen) {
+Game::Game(RenderWindow& window)
+{
     m_entityManager = make_shared<EntityManager>();
-    window.setVerticalSyncEnabled(true);
     deltaTime = 0.f;
     event = {};
     isRunning = true;
@@ -12,9 +12,7 @@ Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", sf::Style:
     spaceReleases = 0;
 }
 
-void Game::Run() {
-    Menu menu;
-    menu.start(window);
+void Game::Run(RenderWindow& window) {
     inGame = true;
 
     shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(200, 1000), &player);
@@ -31,10 +29,10 @@ void Game::Run() {
     while (isRunning) {
         deltaTime = Clock.restart().asSeconds();
 
-        pollEvents();
-        update(deltaTime);
-        draw();
-        view();
+        pollEvents(window);
+        update(deltaTime, window);
+        draw(window);
+        view(window);
 
     }
     vue.reset(FloatRect(0, 0, screenX, screenY));
@@ -45,7 +43,7 @@ void Game::Run() {
 
 }
 
-void Game::pollEvents() {
+void Game::pollEvents(RenderWindow& window) {
     while (window.pollEvent(event)) {
         if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::J)) {
             isRunning = false;
@@ -59,7 +57,7 @@ void Game::pollEvents() {
     }
 }
 
-void Game::update(const float& deltaTime) {
+void Game::update(const float& deltaTime, RenderWindow& window) {
     m_entityManager->updateEntities(window, deltaTime);
     player.update(deltaTime, window);
     if (Keyboard::isKeyPressed(Keyboard::J)) {
@@ -68,7 +66,7 @@ void Game::update(const float& deltaTime) {
     player.Colision(window, deltaTime, level.platforms);
 }
 
-void Game::draw() {
+void Game::draw(RenderWindow& window) {
     window.clear();
     level.drawMap(window);
     player.draw(window);
@@ -76,7 +74,7 @@ void Game::draw() {
     window.display();
 }
 
-void Game::view() {
+void Game::view(RenderWindow& window) {
     vue.reset(FloatRect(0, 0, screenX, screenY));
     Vector2f position(screenX / 2, screenY / 2);
     position.x = (player.shape.getPosition().x + (128 / 2) - (screenX / 2));

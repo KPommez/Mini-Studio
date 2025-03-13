@@ -1,7 +1,7 @@
 #include "Menu.hpp"
 
 
-Menu::Menu() {
+Menu::Menu(RenderWindow& window) : game(window) {
 	if (!font.loadFromFile("assets/font/Minecraft.ttf")) {}
 	menuState = MENU;
 }
@@ -35,6 +35,7 @@ void Menu::start(RenderWindow& window)
 		option(window);
 		break;
 	case START:
+		game.Run(window);
 		menuState = MENU;
 		break;
 	case WIN:
@@ -50,7 +51,7 @@ void Menu::start(RenderWindow& window)
 
 void Menu::menu(RenderWindow& window) {
 
-	bool hasStarted = false;
+
 
 	listeTexte.clear();
 	listeRectangle.clear();
@@ -76,11 +77,10 @@ void Menu::menu(RenderWindow& window) {
 	Rectangle RecPartir(130, 70, 870, 680, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
 	listeRectangle.push_back(RecPartir);
 
-	while (!hasStarted) {
-		window.clear(Color::Black);
-		
 
-		setTexture("assets/backMenu/image.png");
+		window.clear(Color::Black);
+	
+		setTexture("assets/backMenu/menutel.png");
 		drawback(window);
 
 		for (auto& Rectangle : listeRectangle) {
@@ -120,7 +120,7 @@ void Menu::menu(RenderWindow& window) {
 			}
 		}
 	}
-}
+
 
 void Menu::option(RenderWindow& window) {
 	window.clear(Color::Black);

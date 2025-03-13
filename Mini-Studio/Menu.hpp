@@ -13,7 +13,9 @@ public:
     //RectangleShape test;
     Sprite sprite;
     Texture texture;
-    Menu();
+    Menu(RenderWindow& window);
+
+    bool hasStarted = false;
 
     void setTexture(const string& PNGfile);
     void drawback(RenderWindow& window);
@@ -24,6 +26,7 @@ public:
     void option(RenderWindow& window);
 
     Font font;
+    Game game;
 
     vector<Texte> listeTexte;
     vector<Rectangle> listeRectangle;

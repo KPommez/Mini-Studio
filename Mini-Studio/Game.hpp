@@ -3,7 +3,6 @@
 #include "Lampadaire.hpp"
 #include "EntityManager.hpp"
 #include "Map.hpp"
-#include "Menu.hpp"
 
 class Game
 {
@@ -21,16 +20,16 @@ private:
 
 public:
 	bool inGame;
-	Game();
-	void Run();
+	Game(RenderWindow& window);
+	void Run(RenderWindow& window);
 
 public:
 	Map level;
 	Player player;
 
 private:
-	void update(const float& deltaTime);
-	void pollEvents();
-	void draw();
-	void view();
+	void update(const float& deltaTime, RenderWindow& window);
+	void pollEvents(RenderWindow& window);
+	void draw(RenderWindow& window);
+	void view(RenderWindow& window);
 };
