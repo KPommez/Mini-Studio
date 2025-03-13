@@ -43,12 +43,12 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 	jumpGestion(deltaTime, window, 1.f);
 	dashGestion(deltaTime, window);
 	// Inputs left & right
-	if (Keyboard::isKeyPressed(Keyboard::D)) {
+	if (Keyboard::isKeyPressed(Keyboard::D) || Joystick::getAxisPosition(0,Joystick::X) >= 10) {
 		isGoingRight = true;
 		isGoingLeft = false;
 		shape.move(speed * deltaTime, 0);
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Q)) {
+	if (Keyboard::isKeyPressed(Keyboard::Q) || Joystick::getAxisPosition(0, Joystick::X) <= -10) {
 		isGoingLeft = true;
 		isGoingRight = false;
 		shape.move(-speed * deltaTime, 0);
@@ -63,7 +63,7 @@ void Player::jumpGestion(const float& deltaTime, RenderWindow& window, const flo
 		canDoubleJump = true;
 		isJumping = false;
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Space) && canDoubleJump && !isJumping) {
+	if (Keyboard::isKeyPressed(Keyboard::Space) || Joystick::isButtonPressed(0,0) && canDoubleJump && !isJumping) {
 		if (spacebarPresses < 2) {
 			canDoubleJump = true;
 			isJumping = true;
@@ -154,7 +154,7 @@ void Player::gravityGestion(const float& deltaTime, RenderWindow& window) {
 }
 
 void Player::dashGestion(const float& deltaTime, RenderWindow& window) {
-	if (Keyboard::isKeyPressed(Keyboard::F))
+	if (Keyboard::isKeyPressed(Keyboard::F) || Joystick::isButtonPressed(0,5))
 	{
 		isDashing = true;
 	}
