@@ -16,9 +16,11 @@ private:
 	std::shared_ptr<EntityManager>  m_entityManager;
 	View vue;
 	sf::Vector2i playerSize;
+	int index;
 	int screenX;
 	int screenY;
 	int spaceReleases;
+
 
 public:
 	bool inGame;

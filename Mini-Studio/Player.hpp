@@ -6,13 +6,13 @@
 class Player : public Entity {
 public:
 	bool isDashing;
-	bool isJumping;
+	bool isGoingLeft;
+	bool isGoingRight;
 	bool hasPressedS;
 	Sprite playerSprite;
 
 private:
-	bool isGoingLeft;
-	bool isGoingRight;
+	bool isJumping;
 	bool isFalling;
 	bool canDoubleJump;
 	bool hasPlatform;

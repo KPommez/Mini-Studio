@@ -10,6 +10,7 @@ Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", sf::Style:
     screenX = window.getSize().x;
     screenY = window.getSize().y;
     spaceReleases = 0;
+    index = 0;
 }
 
 void Game::Run() {
@@ -19,7 +20,7 @@ void Game::Run() {
     
     // Chargement des assets
     // Chargement de la map
-    level.loadMap("Assets/map/test_map1.txt");
+    level.loadMap(level.allLevels.at(index)); //level.allLevels.at(index)"Assets/map/test_map1.txt"
     // Ajout des menus
     // Appel du dessin du menu
 
@@ -70,6 +71,9 @@ void Game::update(const float& deltaTime) {
     if (Keyboard::isKeyPressed(Keyboard::J)) {
         isRunning = false;
     }
+    for (auto& Plateforme : level.plateformeTest) {
+        Plateforme->platUpdate();
+    }
 }
 
 void Game::draw() {
@@ -83,19 +87,19 @@ void Game::draw() {
 void Game::view() {
     vue.reset(FloatRect(0, 0, screenX, screenY));
     Vector2f position(screenX / 2, screenY / 2);
-    position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2) - (screenX / 2));
-    position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2) - (screenY / 2));
+    position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2.f) - (screenX / 2.f));
+    position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2.f) - (screenY / 2.f));
 
     // permet de fixer une limite donc a voir avec les carré noir de Kiliann
 
     if (position.x < 0) {
         position.x = 0;
     }
-    if (position.x > window.getSize().x) {
-        position.x = window.getSize().x;
+    if (position.x > window.getSize().x * 3.f) {
+        position.x = window.getSize().x * 3.f;
     }
-    if (position.y > 0) {
-        position.y = 0;
+    if (position.y > window.getSize().y / 2.f) {
+        position.y = window.getSize().y / 2.f;
     }
 
     vue.reset(FloatRect(position.x, position.y, screenX, screenY));
