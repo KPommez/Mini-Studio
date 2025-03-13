@@ -2,6 +2,8 @@
 #include "includeAll.hpp"
 
 class Rectangle {
+
+private:
 public:
     int tailleX;
     int tailleY;
@@ -19,4 +21,14 @@ public:
         shape1.setFillColor(Color(R, G, B));
         return shape1;
     }
+
+    bool contains(Vector2i& mouse) {
+        float mouseX = mouse.x;
+        float mouseY = mouse.y;
+        if ((mouseX >= posX && mouseX <= posX + tailleX) && (mouseY > posY && mouseY < posY + tailleY))
+            return true;
+        return false;
+    }
+
+
 };

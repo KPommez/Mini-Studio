@@ -9,6 +9,4 @@ int main()
     while (window.isOpen()) {
         MiniStudio.start(window);
     }
-    //Game game(window);
-    //game.Run(window);
 }

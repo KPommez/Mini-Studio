@@ -8,6 +8,7 @@ Menu::Menu(RenderWindow& window) : game(window) {
 
 
 
+
 void Menu::setTexture(const string& PNGfile)
 {
 	if (texture.loadFromFile(PNGfile))
@@ -51,7 +52,11 @@ void Menu::start(RenderWindow& window)
 
 void Menu::menu(RenderWindow& window) {
 
+	bool hasStarted = false;
 
+	hitbox.push_back(new Rectangle(120, 70, 870, 400, 255, 255, 255));
+	hitbox.push_back(new Rectangle(190, 70, 870, 540, 255, 255, 255));
+	hitbox.push_back(new Rectangle(130, 70, 870, 680, 255, 255, 255));
 
 	listeTexte.clear();
 	listeRectangle.clear();
@@ -68,14 +73,14 @@ void Menu::menu(RenderWindow& window) {
 	Texte Partir(font, "Partir", 40, 0, 0, 0, 880, 690);
 	listeTexte.push_back(Partir);
 
-	Rectangle RecTitre(120, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-	listeRectangle.push_back(RecTitre);
+	//Rectangle RecTitre(120, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	//listeRectangle.push_back(RecTitre);
 
-	Rectangle RecTouche(190, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-	listeRectangle.push_back(RecTouche);
+	//Rectangle RecTouche(190, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	//listeRectangle.push_back(RecTouche);
 
-	Rectangle RecPartir(130, 70, 870, 680, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-	listeRectangle.push_back(RecPartir);
+	//Rectangle RecPartir(130, 70, 870, 680, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	//listeRectangle.push_back(RecPartir);
 
 
 		window.clear(Color::Black);
@@ -83,8 +88,8 @@ void Menu::menu(RenderWindow& window) {
 		setTexture("assets/backMenu/menutel.png");
 		drawback(window);
 
-		for (auto& Rectangle : listeRectangle) {
-			window.draw(Rectangle.creation());
+		for (auto& Rectangle : hitbox) {
+			window.draw(Rectangle->creation());
 		}
 
 		for (auto& Texte : listeTexte) {
@@ -93,6 +98,7 @@ void Menu::menu(RenderWindow& window) {
 
 		window.display();
 
+		Vector2i mouse = Mouse::getPosition(window);
 		Event gameEvent;
 		while (window.pollEvent(gameEvent)) {
 
@@ -103,22 +109,33 @@ void Menu::menu(RenderWindow& window) {
 				window.close();
 
 			if (Mouse::isButtonPressed(Mouse::Left)) {
-				if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
+				if (hitbox[1]->contains(mouse)) {
 					listeTexte.clear();
 					listeRectangle.clear();
 					menuState = START;
 					hasStarted = true;
 				}
-				if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
-					listeTexte.clear();
-					listeRectangle.clear();
-					menuState = OPTION;
-				}
-				if (Mouse::getPosition(window).x > RecPartir.posX && Mouse::getPosition(window).y > RecPartir.posY && Mouse::getPosition(window).x < RecPartir.posX + RecPartir.tailleX && Mouse::getPosition(window).y < RecPartir.posY + RecPartir.tailleY) {
-					window.close();
-				}
+				//if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
+				//	listeTexte.clear();
+				//	listeRectangle.clear();
+				//	menuState = OPTION;
+				//}
+				//if (Mouse::getPosition(window).x > RecPartir.posX && Mouse::getPosition(window).y > RecPartir.posY && Mouse::getPosition(window).x < RecPartir.posX + RecPartir.tailleX && Mouse::getPosition(window).y < RecPartir.posY + RecPartir.tailleY) {
+				//	window.close();
+				//}
+			}
+
+			if (Joystick::getAxisPosition(0, Joystick::PovY) >= 10) {
+				posButon++;
+			}
+			else if (Joystick::getAxisPosition(0, Joystick::PovY) <= -10) {
+				posButon--;
 			}
 		}
+		for (auto& rect : hitbox) {
+			//if (rect->contains)
+		}
+
 	}
 
 

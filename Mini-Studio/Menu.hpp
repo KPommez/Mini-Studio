@@ -9,13 +9,18 @@ enum MenuState {
 };
 
 class Menu {
+private:
+    vector <Rectangle*> hitbox;
+
 public:
     //RectangleShape test;
     Sprite sprite;
     Texture texture;
     Menu(RenderWindow& window);
 
+    int posButon;
     bool hasStarted = false;
+
 
     void setTexture(const string& PNGfile);
     void drawback(RenderWindow& window);
