@@ -10,6 +10,7 @@ Game::Game() : window(sf::VideoMode::getDesktopMode(), "Mini-Studio", sf::Style:
     screenX = window.getSize().x;
     screenY = window.getSize().y;
     spaceReleases = 0;
+    index = 0;
 }
 
 void Game::Run() {
@@ -19,12 +20,13 @@ void Game::Run() {
     
     // Chargement des assets
     // Chargement de la map
-    level.loadMap("Assets/map/test_map1.txt");
+    level.loadMap(level.allLevels.at(index)); //level.allLevels.at(index)"Assets/map/test_map1.txt"
     // Ajout des menus
     // Appel du dessin du menu
 
-    playerSize = { window.getSize().y / 16.f, (window.getSize().y / 8.f) };
-    player.resize(window, playerSize);
+    playerSize = { (int)((float)window.getSize().y / 16.f), (int)((float)window.getSize().y / 8.f) };
+    player.loadAssets(window);
+    player.resize(window);
 
     shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(500, 900), &player);
     m_entityManager->addEnnemy(test);
@@ -58,8 +60,8 @@ void Game::pollEvents() {
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::F && inGame) {
             player.isDashing = false;
         }
-        if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space && inGame) {
-            player.isJumping = false;
+        if (event.type == Event::KeyReleased && event.key.code == Keyboard::S && inGame) {
+            player.hasPressedS = false;
         }
     }
 }
@@ -70,6 +72,9 @@ void Game::update(const float& deltaTime) {
     player.update(deltaTime, window);
     if (Keyboard::isKeyPressed(Keyboard::J)) {
         isRunning = false;
+    }
+    for (auto& Plateforme : level.plateformeTest) {
+        Plateforme->platUpdate();
     }
 }
 
@@ -84,19 +89,19 @@ void Game::draw() {
 void Game::view() {
     vue.reset(FloatRect(0, 0, screenX, screenY));
     Vector2f position(screenX / 2, screenY / 2);
-    position.x = (player.shape.getPosition().x + (playerSize.x / 2) - (screenX / 2));
-    position.y = (player.shape.getPosition().y + (playerSize.y / 2) - (screenY / 2));
+    position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2.f) - (screenX / 2.f));
+    position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2.f) - (screenY / 2.f));
 
     // permet de fixer une limite donc a voir avec les carré noir de Kiliann
 
     if (position.x < 0) {
         position.x = 0;
     }
-    if (position.x > window.getSize().x) {
-        position.x = window.getSize().x;
+    if (position.x > window.getSize().x * 3.f) {
+        position.x = window.getSize().x * 3.f;
     }
-    if (position.y > 0) {
-        position.y = 0;
+    if (position.y > window.getSize().y / 2.f) {
+        position.y = window.getSize().y / 2.f;
     }
 
     vue.reset(FloatRect(position.x, position.y, screenX, screenY));

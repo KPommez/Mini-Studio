@@ -149,6 +149,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Plateforme.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Pétrifeu.cpp" />
   </ItemGroup>
@@ -161,6 +162,7 @@
     <ClInclude Include="Menu.hpp" />
     <ClInclude Include="Lampadaire.hpp" />
     <ClInclude Include="Map.hpp" />
+    <ClInclude Include="Plateforme.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Pétrifeu.hpp" />
     <ClInclude Include="Texte.hpp" />
