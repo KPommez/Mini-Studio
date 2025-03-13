@@ -5,12 +5,13 @@
 #include "Game.hpp"
 
 enum MenuState {
-    MENU, OPTION, START, WIN, LOOSE
+    MENU, OPTION, START, WIN, LOOSE, PAUSE
 };
 
 class Menu {
 private:
     vector <Rectangle*> hitbox;
+    vector <Texte*> listeText;
 
 public:
     //RectangleShape test;

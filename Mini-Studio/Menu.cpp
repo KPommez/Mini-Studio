@@ -58,29 +58,12 @@ void Menu::menu(RenderWindow& window) {
 	hitbox.push_back(new Rectangle(190, 70, 870, 540, 255, 255, 255));
 	hitbox.push_back(new Rectangle(130, 70, 870, 680, 255, 255, 255));
 
-	listeTexte.clear();
-	listeRectangle.clear();
 
-	Texte Titre(font, "try game", 80, 255, 0, 0, 550, 150); //font, texte, taille,R,G,B, X, Y , 
-	listeTexte.push_back(Titre);
+	listeText.push_back(new Texte(font, "try game", 80, 255, 0, 0, 550, 150));
+	listeText.push_back(new Texte(font, "Start", 40, 0, 0, 0, 880, 410));
+	listeText.push_back(new Texte(font, "Touches", 40, 0, 0, 0, 880, 550));
+	listeText.push_back(new Texte(font, "Partir", 40, 0, 0, 0, 880, 690));
 
-	Texte start(font, "Start", 40, 0, 0, 0, 880, 410);
-	listeTexte.push_back(start);
-
-	Texte touche(font, "Touches", 40, 0, 0, 0, 880, 550);
-	listeTexte.push_back(touche);
-
-	Texte Partir(font, "Partir", 40, 0, 0, 0, 880, 690);
-	listeTexte.push_back(Partir);
-
-	//Rectangle RecTitre(120, 70, 870, 400, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-	//listeRectangle.push_back(RecTitre);
-
-	//Rectangle RecTouche(190, 70, 870, 540, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-	//listeRectangle.push_back(RecTouche);
-
-	//Rectangle RecPartir(130, 70, 870, 680, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-	//listeRectangle.push_back(RecPartir);
 
 
 		window.clear(Color::Black);
@@ -92,8 +75,8 @@ void Menu::menu(RenderWindow& window) {
 			window.draw(Rectangle->creation());
 		}
 
-		for (auto& Texte : listeTexte) {
-			window.draw(Texte.creation());
+		for (auto& Texte : listeText) {
+			window.draw(Texte->creation());
 		}
 
 		window.display();
@@ -109,22 +92,22 @@ void Menu::menu(RenderWindow& window) {
 				window.close();
 
 			if (Mouse::isButtonPressed(Mouse::Left)) {
-				if (hitbox[1]->contains(mouse)) {
+				if (hitbox[0]->contains(mouse)) {
 					listeTexte.clear();
 					listeRectangle.clear();
 					menuState = START;
 					hasStarted = true;
+					game.setRunning(true);
 				}
-				//if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
-				//	listeTexte.clear();
-				//	listeRectangle.clear();
-				//	menuState = OPTION;
-				//}
-				//if (Mouse::getPosition(window).x > RecPartir.posX && Mouse::getPosition(window).y > RecPartir.posY && Mouse::getPosition(window).x < RecPartir.posX + RecPartir.tailleX && Mouse::getPosition(window).y < RecPartir.posY + RecPartir.tailleY) {
-				//	window.close();
-				//}
+				if (hitbox[1]->contains(mouse)) {
+					listeTexte.clear();
+					listeRectangle.clear();
+					menuState = OPTION;
+				}
+				if (hitbox[2]->contains(mouse)) {
+					window.close();
+				}
 			}
-
 			if (Joystick::getAxisPosition(0, Joystick::PovY) >= 10) {
 				posButon++;
 			}
@@ -132,8 +115,14 @@ void Menu::menu(RenderWindow& window) {
 				posButon--;
 			}
 		}
-		for (auto& rect : hitbox) {
-			//if (rect->contains)
+		hitbox.clear();
+		listeText.clear();
+
+		for (auto& Rectangle : hitbox) {
+			delete Rectangle;
+		}
+		for (auto& Texte : listeText) {
+			delete Texte;
 		}
 
 	}
@@ -149,12 +138,7 @@ void Menu::option(RenderWindow& window) {
 	Texte retour(font, "Retour", 40, 0, 0, 0, 1700, 1000);
 	listeTexte.push_back(retour);
 
-	////////////////////////////////////////////////////////////////////
-
-
-	Rectangle RecClicd(400, 60, window.getSize().x / 2 - 200, window.getSize().y / 2, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-	listeRectangle.push_back(RecClicd);
-
+	///////////////////////////////////////////////////////////////////
 
 
 	Rectangle RecRetour(155, 55, 1690, 1000, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 

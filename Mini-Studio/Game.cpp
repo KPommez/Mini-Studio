@@ -34,13 +34,24 @@ void Game::Run(RenderWindow& window) {
         draw(window);
         view(window);
 
+        if (Keyboard::isKeyPressed(Keyboard::P) && inGame == true)
+        {
+            inGame = false;
+            isRunning = false;
+        }
     }
     vue.reset(FloatRect(0, 0, screenX, screenY));
     vue.zoom(1);
 
+    window.clear();
     window.setView(vue);
-    window.close();
+    //window.close();
+}
 
+bool Game::setRunning(bool test)
+{
+    isRunning = test;
+    return isRunning;
 }
 
 void Game::pollEvents(RenderWindow& window) {

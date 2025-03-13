@@ -22,6 +22,7 @@ public:
 	bool inGame;
 	Game(RenderWindow& window);
 	void Run(RenderWindow& window);
+	bool setRunning(bool test);
 
 public:
 	Map level;
