@@ -69,19 +69,19 @@ void Player::update(const float& deltaTime, sf::RenderWindow& window) {
 
 void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 	// Inputs left & right
-	if (Keyboard::isKeyPressed(Keyboard::D)) {
+	if (Keyboard::isKeyPressed(Keyboard::D) || Joystick::getAxisPosition(0,Joystick::X) >= 10) {
 		isGoingRight = true;
 		isGoingLeft = false;
 		isIdling = false;
 		playerSprite.move(speed * 2.f * deltaTime, 0);
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Q)) {
+	if (Keyboard::isKeyPressed(Keyboard::Q) || Joystick::getAxisPosition(0, Joystick::X) <= -10) {
 		isGoingLeft = true;
 		isGoingRight = false;
 		isIdling = false;
 		playerSprite.move(-speed * 2.f * deltaTime, 0);
 	}
-	if (Keyboard::isKeyPressed(Keyboard::S)) {
+	if (Keyboard::isKeyPressed(Keyboard::S) || Joystick::getAxisPosition(0, Joystick::Y) <= -10) {
 		if (!(playerSprite.getPosition().y >= window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f)) {
 			hasPressedS = true;
 		}
@@ -249,10 +249,12 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		hasPlatform = true;
 		isFalling = false;
 		isJumping = false;
+		canDoubleJump = true;
 		spacebarPresses = 0;
 	}
 	for (auto& platform : platforms) {
 		if (playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) && !hasPressedS) {
+			canDoubleJump = true;
 			hasPlatform = true;
 			if (isFalling) {
 				playerSprite.move(0, 0);
