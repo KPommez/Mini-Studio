@@ -57,8 +57,8 @@ void Game::pollEvents() {
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::F && inGame) {
             player.isDashing = false;
         }
-        if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space && inGame) {
-            player.isJumping = false;
+        if (event.type == Event::KeyReleased && event.key.code == Keyboard::S && inGame) {
+            player.hasPressedS = false;
         }
     }
 }

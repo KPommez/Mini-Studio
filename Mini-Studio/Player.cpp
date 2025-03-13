@@ -2,7 +2,6 @@
 
 Player::Player() {
 	// Boolean members
-	firstInputDetected       = false;
 	isIdling                 = true;
 	isIdlingAnimationStarted = true;
 	isAnimationStarted       = false;
@@ -15,6 +14,7 @@ Player::Player() {
 	canDoubleJump            = true;
 	isSpacePressed           = false;
 	isFalling                = false;
+	hasPressedS              = false;
 	// Float members
 	speed           = 400.f;
 	fallingTime     = 0.f;
@@ -24,12 +24,13 @@ Player::Player() {
 	lastYPos        = 500.f;
 	fallingSpeed    = speed;
 	spacebarPresses = 0;
+	countSide       = 0;
 	animationTime   = 0.f;
 }
 
 void Player::resize(sf::RenderWindow& window) {
 	playerSprite = playerSprites[0];
-	playerSprite.setPosition(Vector2f(100, window.getSize().y - playerSprite.getGlobalBounds().height - 40.f));
+	playerSprite.setPosition(Vector2f(100, window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f));
 }
 
 void Player::loadAssets(RenderWindow& window) {
@@ -59,16 +60,14 @@ void Player::loadAssets(RenderWindow& window) {
 }
 
 void Player::update(const float& deltaTime, sf::RenderWindow& window) {
-	inputGestion(deltaTime);
+	inputGestion(deltaTime, window);
 	animationGestion(deltaTime);
-	if (firstInputDetected) {
-		gravityGestion(deltaTime, window);
-		jumpGestion(deltaTime, window);
-		dashGestion(deltaTime, window);
-	}
+	gravityGestion(deltaTime, window);
+	jumpGestion(deltaTime, window);
+	dashGestion(deltaTime, window);
 }
 
-void Player::inputGestion(const float& deltaTime) {
+void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 	// Inputs left & right
 	if (Keyboard::isKeyPressed(Keyboard::D)) {
 		isGoingRight = true;
@@ -82,11 +81,18 @@ void Player::inputGestion(const float& deltaTime) {
 		isIdling = false;
 		playerSprite.move(-speed * 2.f * deltaTime, 0);
 	}
+	if (Keyboard::isKeyPressed(Keyboard::S)) {
+		if (!(playerSprite.getPosition().y >= window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f)) {
+			hasPressedS = true;
+		}
+		else {
+			hasPressedS = false;
+		}
+	}
 	if (!Keyboard::isKeyPressed(Keyboard::D) && !Keyboard::isKeyPressed(Keyboard::Q) && !Keyboard::isKeyPressed(Keyboard::F)) {
 		isIdling = true;
 	}
 	else {
-		firstInputDetected = true;
 		isIdling = false;
 	}
 }
@@ -94,7 +100,7 @@ void Player::inputGestion(const float& deltaTime) {
 void Player::gravityGestion(const float& deltaTime, RenderWindow& window) {
 	// Keeps falling faster until he reaches a certain limit (gravity inversible)
 	if (!invertedGravity) {
-		if ((playerSprite.getPosition().y < (window.getSize().y - playerSprite.getGlobalBounds().height)) && !hasPlatform && !isJumping) {
+		if (hasPressedS || (((playerSprite.getPosition().y < (window.getSize().y - playerSprite.getGlobalBounds().height)) && !hasPlatform && !isJumping))) {
 			isFalling = true;
 			if (fallingMovement < maxFallingForce) {
 				fallingMovement += deltaTime * gravityConst;
@@ -112,6 +118,9 @@ void Player::gravityGestion(const float& deltaTime, RenderWindow& window) {
 	else {
 		if (playerSprite.getPosition().y > 0 && !hasPlatform && !isJumping) {
 			isFalling = true;
+			if (hasPressedS) {
+				hasPressedS = false;
+			}
 			if (fallingMovement < maxFallingForce) {
 				fallingMovement += deltaTime * gravityConst;
 			}
@@ -160,28 +169,22 @@ void Player::jumpGestion(const float& deltaTime, RenderWindow& window) {
 }
 
 void Player::dashGestion(const float& deltaTime, RenderWindow& window) {
-	if (Keyboard::isKeyPressed(Keyboard::F))
-	{
+	if (Keyboard::isKeyPressed(Keyboard::F)) {
 		isDashing = true;
 	}
-	if (clockDash.getElapsedTime().asSeconds() >= 2 && !isDashing)
-	{
+	if (clockDash.getElapsedTime().asSeconds() >= 2 && !isDashing) {
 		clockDash.restart();
 		dashingTime = 0;
 	}
-	if (isDashing)
-	{
+	if (isDashing) {
 		dashingTime += deltaTime;
-		if (isGoingLeft && dashingTime < 0.25f)
-		{
+		if (isGoingLeft && dashingTime < 0.25f) {
 			playerSprite.move((float)-dashSpeed * deltaTime, 0);
 		}
-		else if (isGoingRight && dashingTime < 0.25f)
-		{
+		else if (isGoingRight && dashingTime < 0.25f) {
 			playerSprite.move((float)dashSpeed * deltaTime, 0);
 		}
-		else
-		{
+		else {
 			isDashing = false;
 		}
 	}
@@ -232,26 +235,43 @@ void Player::animationGestion(const float& deltaTime) {
 }
 
 void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms) {
+	float posY;
+	if(!invertedGravity)
+		posY = playerSprite.getPosition().y + playerSprite.getGlobalBounds().height;
+	else {
+		posY = playerSprite.getPosition().y - playerSprite.getGlobalBounds().height;
+	}
 	if (playerSprite.getPosition().x <= 0) {
-		playerSprite.move(speed * deltaTime, 0);
+		playerSprite.move(speed * 2.f * deltaTime, 0);
 	}
 	hasPlatform = false;
-	isFalling = true;
+	if (playerSprite.getPosition().y >= window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f) {
+		hasPlatform = true;
+		isFalling = false;
+		isJumping = false;
+		spacebarPresses = 0;
+	}
 	for (auto& platform : platforms) {
-		if (playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) || (playerSprite.getPosition().y - playerSprite.getGlobalBounds().height == platform.getPosition().y)) {
+		if (playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) && !hasPressedS) {
 			hasPlatform = true;
-			isFalling = false;
-			spacebarPresses = 0;
+			if (isFalling) {
+				playerSprite.move(0, 0);
+				isFalling = false;
+				isJumping = false;
+				spacebarPresses = 0;
+			}
+			if (!isFalling && !isJumping) {
+				if (!invertedGravity) {
+					playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
+				}
+				else {
+					playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y + platform.getSize().y + 0.1f);
+				}
+			}
 		}
 	}
-	if ((playerSprite.getPosition().y <= 0) || hasPlatform) {
-		playerSprite.move(0, 0);
-		isFalling = false;
-	}
-	if ((playerSprite.getPosition().y >= (window.getSize().y - playerSprite.getGlobalBounds().height)) || hasPlatform)
-	{
-		playerSprite.move(0, 0);
-		isFalling = false;
+	if (!hasPlatform) {
+		isFalling = true;
 	}
 }
 

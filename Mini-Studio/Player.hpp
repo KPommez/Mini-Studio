@@ -7,10 +7,10 @@ class Player : public Entity {
 public:
 	bool isDashing;
 	bool isJumping;
+	bool hasPressedS;
 	Sprite playerSprite;
 
 private:
-	bool firstInputDetected;
 	bool isGoingLeft;
 	bool isGoingRight;
 	bool isFalling;
@@ -22,6 +22,7 @@ private:
 	bool isIdlingAnimationStarted;
 	bool isAnimationStarted;
 	int spacebarPresses;
+	int countSide;
 	float animationTime;
 	float fallingMovement;
 	float jumpMovement;
@@ -50,7 +51,7 @@ public:
 	void loadAssets(RenderWindow& window);
 
 private:
-	void inputGestion(const float& deltaTime);
+	void inputGestion(const float& deltaTime, RenderWindow& window);
 	void jumpGestion(const float& deltaTime, RenderWindow& window);
 	void dashGestion(const float& deltaTime, RenderWindow& window);
 	void gravityGestion(const float& deltaTime, RenderWindow& window);
