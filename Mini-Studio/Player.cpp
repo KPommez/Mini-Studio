@@ -63,7 +63,7 @@ void Player::jumpGestion(const float& deltaTime, RenderWindow& window) {
 	// Impulsion force slowly going down
 	if ((isJumping && hasPlatform) || (isJumping && !hasPlatform && spacebarPresses == 1) || (isJumping && !hasPlatform && spacebarPresses == 2)) {
 		if (jumpMovement > 0) {
-			cout << jumpMovement << endl;
+			
 			jumpMovement -= deltaTime * speed;
 		}
 		else {
@@ -143,7 +143,7 @@ void Player::dashGestion(const float& deltaTime, RenderWindow& window) {
 }
 
 void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms) {
-	cout << shape.getPosition().y << endl;
+	
 	if (shape.getPosition().x <= 0) {
 		shape.move(speed * deltaTime, 0);
 	}

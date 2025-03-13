@@ -26,7 +26,7 @@ void Game::Run() {
     playerSize = { window.getSize().y / 16.f, (window.getSize().y / 8.f) };
     player.resize(window, playerSize);
 
-    shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(200, 1000), &player);
+    shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(500, 900), &player);
     m_entityManager->addEnnemy(test);
 
     vue.reset(FloatRect(0, 0, screenX, screenY));
