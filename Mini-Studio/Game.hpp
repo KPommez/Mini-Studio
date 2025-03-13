@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Lampadaire.hpp"
+#include "Pétrifeu.hpp"
 #include "EntityManager.hpp"
 #include "Map.hpp"
 #include "Menu.hpp"
