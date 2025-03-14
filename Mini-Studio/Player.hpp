@@ -29,6 +29,7 @@ private:
 	void animationGestion(const float& deltaTime);
 
 private:
+	bool hadPlatformWhenJumped;
 	bool isJumping;
 	bool isFalling;
 	bool canDoubleJump;

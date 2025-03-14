@@ -15,6 +15,7 @@ Player::Player() {
 	isSpacePressed           = false;
 	isFalling                = false;
 	hasPressedS              = false;
+	hadPlatformWhenJumped    = true;
 	// Float members
 	speed           = 400.f;
 	fallingTime     = 0.f;
@@ -99,16 +100,20 @@ void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 
 void Player::gravityGestion(const float& deltaTime, RenderWindow& window) {
 	// Keeps falling faster until he reaches a certain limit (gravity inversible)
+	float floorLevel = (window.getSize().y - playerSprite.getGlobalBounds().height - (window.getSize().y / 10.f));
 	if (!invertedGravity) {
-		if (hasPressedS || (((playerSprite.getPosition().y < (window.getSize().y - playerSprite.getGlobalBounds().height)) && !hasPlatform && !isJumping))) {
+		if (!isJumping && !hasPlatform) {
 			isFalling = true;
 			if (fallingMovement < maxFallingForce) {
 				fallingMovement += deltaTime * gravityConst;
 			}
-			if (playerSprite.getPosition().y > (window.getSize().y - playerSprite.getGlobalBounds().height))
-				playerSprite.setPosition(0, 0);
-			else
-				playerSprite.move(0, fallingMovement * deltaTime * fallingSpeed);
+			if (playerSprite.getPosition().y > floorLevel) {
+				playerSprite.setPosition(playerSprite.getPosition().x, floorLevel);
+				hasPlatform = true;
+			}
+			else {
+				playerSprite.move(0, fallingMovement * deltaTime * fallingSpeed); 
+			}
 		}
 		else {
 			fallingMovement = 0.f;
@@ -134,10 +139,28 @@ void Player::gravityGestion(const float& deltaTime, RenderWindow& window) {
 }
 
 void Player::jumpGestion(const float& deltaTime, RenderWindow& window) {
+	if (hadPlatformWhenJumped) {
+		cout << "Had platform when jumped" << endl;
+	}
+	else if (isFalling) {
+		cout << "Is falling" << endl;
+	}
 	if (Keyboard::isKeyPressed(Keyboard::Space) && canDoubleJump && !isJumping) {
 		if (spacebarPresses < 2) {
-			canDoubleJump = true;
-			isJumping = true;
+			if (spacebarPresses == 0) {
+				if (isFalling) {
+					hadPlatformWhenJumped = false;
+				}
+				canDoubleJump = true;
+				isJumping = true;
+			}
+			if (spacebarPresses == 1 && !hadPlatformWhenJumped) {
+				canDoubleJump = false;
+			}
+			else {
+				canDoubleJump = true;
+				isJumping = true;
+			}
 		}
 		else {
 			canDoubleJump = false;
@@ -149,7 +172,7 @@ void Player::jumpGestion(const float& deltaTime, RenderWindow& window) {
 		isJumping = false;
 	}
 	// Impulsion force slowly going down
-	if ((isJumping && hasPlatform) || (isJumping && !hasPlatform && spacebarPresses == 1) || (isJumping && !hasPlatform && spacebarPresses == 2)) {
+	if (canDoubleJump && isJumping) { 
 		if (jumpMovement > 0) {
 			jumpMovement -= deltaTime * speed;
 		}
@@ -157,10 +180,10 @@ void Player::jumpGestion(const float& deltaTime, RenderWindow& window) {
 			isJumping = false;
 		}
 		if (!invertedGravity) {
-			playerSprite.move(0, -jumpMovement * deltaTime * 9.f);
+			playerSprite.move(0, -jumpMovement * deltaTime * 9.81f);
 		}
 		else {
-			playerSprite.move(0, jumpMovement * deltaTime * 9.f);
+			playerSprite.move(0, jumpMovement * deltaTime * 9.81f);
 		}
 	}
 	else {
@@ -236,6 +259,7 @@ void Player::animationGestion(const float& deltaTime) {
 
 void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms) {
 	float posY;
+	float floorLevel = (window.getSize().y - playerSprite.getGlobalBounds().height - (window.getSize().y / 10.f));
 	if (!invertedGravity) {
 		posY = playerSprite.getPosition().y + playerSprite.getGlobalBounds().height;
 	}
@@ -246,8 +270,9 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		playerSprite.move(speed * 2.f * deltaTime, 0);
 	}
 	hasPlatform = false;
-	// Change to floorLevel
-	if (playerSprite.getPosition().y >= window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f) {
+	if (playerSprite.getPosition().y >= floorLevel) {
+		playerSprite.setPosition(playerSprite.getPosition().x, floorLevel);
+		hadPlatformWhenJumped = true;
 		hasPlatform = true;
 		isFalling = false;
 		isJumping = false;
@@ -255,17 +280,19 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		spacebarPresses = 0;
 	}
 	else {
+		int count = 0;
 		for (auto& platform : platforms) {
 			if (playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) && !hasPressedS) {
+				count++;
 				canDoubleJump = true;
 				hasPlatform = true;
+				spacebarPresses = 0;
+				hadPlatformWhenJumped = true;
 				if (isFalling) {
-					playerSprite.move(0, 0);
 					isFalling = false;
 					isJumping = false;
-					spacebarPresses = 0;
 				}
-				if (!isFalling && !isJumping) {
+				if (!isFalling&& !isJumping) {
 					if (!invertedGravity) {
 						playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
 					}
@@ -275,7 +302,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 				}
 			}
 		}
-		if (!hasPlatform) {
+		if (!hasPlatform && !isJumping) {
 			isFalling = true;
 		}
 	}
