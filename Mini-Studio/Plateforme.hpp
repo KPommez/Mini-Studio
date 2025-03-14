@@ -7,10 +7,6 @@ public:
     Plateforme(float a, float b, int c);
     void creation(float posX, float posY);
     void platUpdate(const float& deltaTime);
-
-    void deplacement();
-
-public:
     RectangleShape plat;
 
 private:

@@ -22,7 +22,7 @@ void Plateforme::creation(float posX,float posY) {
     else if (State == 2) {
         wayPoint1 = posX - 100;
         wayPoint2 = posX +50;
-        deplacementX = 1;
+        deplacementX = -1;
         deplacementY = 0;
      
     }
@@ -37,31 +37,46 @@ void Plateforme::creation(float posX,float posY) {
         wayPoint1 = posY - 100;
         wayPoint2 = posY +50;
         deplacementX = 0;
-        deplacementY = 1;
+        deplacementY = -1;
       
     }
 }
 
 void Plateforme::platUpdate(const float& deltatime) {
-    if (State == 1 || State == 2) {
+
+    if (State == 1) {
         if (plat.getPosition().x >= wayPoint1) {
             deplacementX = -deplacementX;
-            cout << "test dep 1";
         }
         else if (plat.getPosition().x <= wayPoint2) {
             deplacementX = -deplacementX;
-            cout << "test dep 2";
         }
         plat.move(deplacementX * deltatime * 100.0f, 0);
     }
-    else if (State == 3 || State == 4) {
+    else if (State == 2) {
+        if (plat.getPosition().x <= wayPoint1) {
+            deplacementX = -deplacementX;
+        }
+        else if (plat.getPosition().x >= wayPoint2) {
+            deplacementX = -deplacementX;
+        }
+        plat.move(deplacementX * deltatime * 100.0f, 0);
+    }
+    else if (State == 3) {
         if (plat.getPosition().y >= wayPoint1) {
             deplacementY = -deplacementY;
-            cout << "test dep 1";
         }
         else if (plat.getPosition().y <= wayPoint2) {
             deplacementY = -deplacementY;
-            cout << "test dep 2";
+        }
+        plat.move(0, deplacementY * deltatime * 100.0f);
+    }
+    else if (State == 4) {
+        if (plat.getPosition().y <= wayPoint1) {
+            deplacementY = -deplacementY;
+        }
+        else if (plat.getPosition().y >= wayPoint2) {
+            deplacementY = -deplacementY;
         }
         plat.move(0, deplacementY * deltatime * 100.0f);
     }

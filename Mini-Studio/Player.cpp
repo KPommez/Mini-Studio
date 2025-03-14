@@ -234,7 +234,7 @@ void Player::animationGestion(const float& deltaTime) {
 	}
 }
 
-void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms) {
+void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape> platforms) {
 	float posY;
 	if (!invertedGravity) {
 		posY = playerSprite.getPosition().y + playerSprite.getGlobalBounds().height;

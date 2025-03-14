@@ -46,7 +46,7 @@ void Map::loadMap(const string& filename) {
 				platforms.push_back(mur);
 			}
 			else if (line[x] == '*') {
-				plateformeTest.push_back(new Plateforme(posX,posY,3));
+				plateformeTest.push_back(new Plateforme(posX,posY,4));
 			}
 		}
 		++y;
