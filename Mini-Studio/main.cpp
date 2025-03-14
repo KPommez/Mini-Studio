@@ -2,6 +2,7 @@
 
 int main()
 {
+    
     Game MiniStudio;
     MiniStudio.Run();
 }

@@ -14,6 +14,7 @@ Game::Game() : window(VideoMode::getDesktopMode(), "Mini-Studio", Style::Fullscr
 }
 
 void Game::Run() {
+	srand(time(NULL));
     //Menu menu;
     //menu.start(window);
     inGame = true;

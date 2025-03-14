@@ -69,14 +69,16 @@ void Lampadaire::chase(Vector2f playerPos, const float& deltaTime) {
 	shape.move(direction * 250.f * deltaTime,0);
 	position = shape.getPosition();
 
-	if (shape.getGlobalBounds().intersects(player->shape.getGlobalBounds())) {
-		player->shape.setPosition(500, 500);
+	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {
+		player->playerSprite.setPosition(500, 500);
 	}
 	//lum.move(direction);
 }
 
 bool Lampadaire::detectPlayer(Vector2f playerPos) {
-	if (lum.getGlobalBounds().intersects(player->shape.getGlobalBounds())) {
+	
+	if (player->playerSprite.getGlobalBounds().intersects(lum.getGlobalBounds())) {
+		
 		return true;
 	}
 	else {
