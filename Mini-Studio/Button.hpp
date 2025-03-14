@@ -24,9 +24,9 @@ public:
         return rect;
     }
 
-    bool contains(Vector2i& mouse) {
-        float mouseX = mouse.x;
-        float mouseY = mouse.y;
+    bool contains(Vector2i& mouse) const {
+        float mouseX = (float)mouse.x;
+        float mouseY = (float)mouse.y;
         if ((mouseX >= posX && mouseX <= posX + tailleX) && (mouseY > posY && mouseY < posY + tailleY))
             return true;
         return false;

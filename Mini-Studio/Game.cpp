@@ -14,6 +14,7 @@ Game::Game(RenderWindow& window) {
 
 void Game::Run(RenderWindow& window) {
     inGame = true;
+    srand(time(NULL));
 
     // Chargement des assets
     // Chargement de la map
@@ -77,8 +78,8 @@ void Game::update(const float& deltaTime, RenderWindow& window) {
 }
 
 void Game::view(RenderWindow& window) {
-    vue.reset(FloatRect(0, 0, screenX, screenY));
-    Vector2f position(screenX / 2, screenY / 2);
+    vue.reset(FloatRect(0, 0, (float)screenX, (float)screenY));
+    Vector2f position(screenX / 2.f, screenY / 2.f);
     position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2.f) - (screenX / 2.f));
     position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2.f) - (screenY / 2.f));
 

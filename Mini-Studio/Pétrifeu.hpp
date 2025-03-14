@@ -10,9 +10,11 @@ public:
 
 private:
 	void patrol(const float& deltaTime);
-
+	void change();
 private:
 	Player* player;
-	RectangleShape zone;
+	Clock clock;
+	enum FeuColor { RED, GREEN };	
+	FeuColor feucolor;
 	Vector2f position;
 };
