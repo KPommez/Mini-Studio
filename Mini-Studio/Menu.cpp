@@ -2,11 +2,13 @@
 
 
 Menu::Menu(RenderWindow& window) : game(window) {
-	if (!font.loadFromFile("assets/font/Minecraft.ttf") || 
-		!playButton.loadFromFile("assets/backMenu/texte.png") ||
-		!settingsButton.loadFromFile("assets/backMenu/texte1.png") ||
-		!quitButton.loadFromFile("assets/backMenu/texte2.png"));
-	{}
+	if (!font.loadFromFile          ("Assets/font/Minecraft.ttf")  ||
+		!playButton.loadFromFile    ("Assets/backMenu/texte.png")  ||
+		!settingsButton.loadFromFile("Assets/backMenu/texte1.png") ||
+		!quitButton.loadFromFile    ("Assets/backMenu/texte2.png"))
+	{
+		cerr << "Assets du menu non totalement charges" << endl;
+	}
 	menuState = MENU;
 
 	spritePlay.setTexture(playButton);
@@ -21,7 +23,7 @@ Menu::Menu(RenderWindow& window) : game(window) {
 	spriteSettings.setPosition(770, 650);
 	spriteQuit.setPosition(675, 450);
 
-
+	posButon = 0;
 }
 
 void Menu::setTexture(const string& PNGfile, RenderWindow& window)
@@ -95,7 +97,8 @@ void Menu::menu(RenderWindow& window) {
 
 		window.display();
 
-		Vector2i mouse = Mouse::getPosition(window);
+		Vector2i n_mouse = Mouse::getPosition(window);
+		Vector2f mouse = { (float)n_mouse.x, (float)n_mouse.y };
 		Event gameEvent;
 		while (window.pollEvent(gameEvent)) {
 			if (gameEvent.type == Event::Closed)
