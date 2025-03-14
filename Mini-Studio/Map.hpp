@@ -15,7 +15,6 @@ public:
 	void loadMap(const string& filename);
 	void drawMap(RenderWindow& window);
 
-public:
 	vector<RectangleShape> platforms;
 	vector <Plateforme*> plateformeTest;
 	vector<string> allLevelsTypePath{ "Assets/Map/" };

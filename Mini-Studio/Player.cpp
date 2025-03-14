@@ -69,28 +69,32 @@ void Player::update(const float& deltaTime, RenderWindow& window) {
 }
 
 void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
+	bool hasInput = false;
 	// Inputs left & right
 	if (Keyboard::isKeyPressed(Keyboard::D) || Joystick::getAxisPosition(0,Joystick::X) >= 10) {
 		isGoingRight = true;
 		isGoingLeft = false;
 		isIdling = false;
 		playerSprite.move(speed * 2.f * deltaTime, 0);
+		hasInput = true;
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Q) || Joystick::getAxisPosition(0, Joystick::X) <= -10) {
 		isGoingLeft = true;
 		isGoingRight = false;
 		isIdling = false;
 		playerSprite.move(-speed * 2.f * deltaTime, 0);
+		hasInput = true;
 	}
-	if (Keyboard::isKeyPressed(Keyboard::S) || Joystick::getAxisPosition(0, Joystick::Y) <= -10) {
+	if (Keyboard::isKeyPressed(Keyboard::S) || Joystick::getAxisPosition(0, Joystick::Y) >= 10) {
 		if (!(playerSprite.getPosition().y >= window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f)) {
 			hasPressedS = true;
 		}
 		else {
 			hasPressedS = false;
 		}
+		hasInput = true;
 	}
-	if (!Keyboard::isKeyPressed(Keyboard::D) && !Keyboard::isKeyPressed(Keyboard::Q) && !Keyboard::isKeyPressed(Keyboard::F)) {
+	if (!hasInput) {
 		isIdling = true;
 	}
 	else {
@@ -139,13 +143,7 @@ void Player::gravityGestion(const float& deltaTime, RenderWindow& window) {
 }
 
 void Player::jumpGestion(const float& deltaTime, RenderWindow& window) {
-	if (hadPlatformWhenJumped) {
-		cout << "Had platform when jumped" << endl;
-	}
-	else if (isFalling) {
-		cout << "Is falling" << endl;
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Space) && canDoubleJump && !isJumping) {
+	if ((Keyboard::isKeyPressed(Keyboard::Space) || Joystick::isButtonPressed(0, 1)) && canDoubleJump && !isJumping) {
 		if (spacebarPresses < 2) {
 			if (spacebarPresses == 0) {
 				if (isFalling) {
@@ -192,7 +190,7 @@ void Player::jumpGestion(const float& deltaTime, RenderWindow& window) {
 }
 
 void Player::dashGestion(const float& deltaTime, RenderWindow& window) {
-	if (Keyboard::isKeyPressed(Keyboard::F)) {
+	if (Keyboard::isKeyPressed(Keyboard::F) || Joystick::isButtonPressed(0,5)) {
 		isDashing = true;
 	}
 	if (clockDash.getElapsedTime().asSeconds() >= 2 && !isDashing) {
@@ -257,7 +255,7 @@ void Player::animationGestion(const float& deltaTime) {
 	}
 }
 
-void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms) {
+void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape> platforms) {
 	float posY;
 	float floorLevel = (window.getSize().y - playerSprite.getGlobalBounds().height - (window.getSize().y / 10.f));
 	if (!invertedGravity) {

@@ -2,14 +2,15 @@
 
 #include "Lampadaire.hpp"
 #include "Pétrifeu.hpp"
+#include "Eolienne.hpp"
 #include "EntityManager.hpp"
 #include "Map.hpp"
-#include "Menu.hpp"
 
 class Game {
 public:
-	Game();
-	void Run();
+	Game(RenderWindow& window);
+	void Run(RenderWindow& window);
+	bool setRunning(bool test);
 
 public:
 	bool inGame;
@@ -17,10 +18,10 @@ public:
 	Player player;
 
 private:
-	void update(const float& deltaTime);
-	void pollEvents();
-	void draw();
-	void view();
+	void update(const float& deltaTime, RenderWindow& window);
+	void pollEvents(RenderWindow& window);
+	void draw(RenderWindow& window);
+	void view(RenderWindow& window);
 
 private:
 	bool isRunning;
@@ -30,7 +31,6 @@ private:
 	int spaceReleases;
 	float deltaTime;
 	shared_ptr<EntityManager>  m_entityManager;
-	RenderWindow window;
 	Event event;
 	Clock Clock;
 	View vue;
