@@ -1,5 +1,5 @@
 #include "Game.hpp"
-    
+
 Game::Game(RenderWindow& window) {
     m_entityManager = make_shared<EntityManager>();
     deltaTime = 0.f;
@@ -79,8 +79,8 @@ void Game::update(const float& deltaTime, RenderWindow& window) {
 void Game::view(RenderWindow& window) {
     vue.reset(FloatRect(0, 0, screenX, screenY));
     Vector2f position(screenX / 2, screenY / 2);
-    position.x = (player.playerSprite.getPosition().x + (128 / 2) - (screenX / 2.f));
-    position.y = (player.playerSprite.getPosition().y + (128 / 2) - (screenY / 2.f));
+    position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2.f) - (screenX / 2.f));
+    position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2.f) - (screenY / 2.f));
 
     // permet de fixer une limite donc a voir avec les carré noir de Kiliann
 
