@@ -70,7 +70,7 @@ void Game::update(const float& deltaTime) {
     player.Colision(window, deltaTime, level.platforms);
     player.update(deltaTime, window);
     for (auto& Plateforme : level.plateformeTest) {
-        Plateforme->platUpdate();
+        Plateforme->platUpdate(deltaTime);
     }
 }
 

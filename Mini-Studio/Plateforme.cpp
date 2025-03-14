@@ -12,37 +12,74 @@ void Plateforme::creation(float posX,float posY) {
     plat.setPosition(posX, posY);
     plat.setFillColor(Color::Red);
 
-    if (State = 1) {
+    if (State == 1) {
         wayPoint1 = posX + 100;
-        point.push_back(wayPoint1);
-        wayPoint2 = posX;
-        point.push_back(wayPoint2);
+        wayPoint2 = posX - 50;
+        deplacementX = 1;
+        deplacementY = 0;
+
     }
-    else if (State = 2) {
+    else if (State == 2) {
         wayPoint1 = posX - 100;
-        point.push_back(wayPoint1);
-        wayPoint2 = posX;
-        point.push_back(wayPoint2);
+        wayPoint2 = posX +50;
+        deplacementX = -1;
+        deplacementY = 0;
+     
     }
-    else if (State = 3) {
+    else if (State == 3) {
         wayPoint1 = posY + 100;
-        point.push_back(wayPoint1);
-        wayPoint2 = posX;
-        point.push_back(wayPoint2);
+        wayPoint2 = posY -50;
+        deplacementX = 0;
+        deplacementY = 1;
+       
     }
-    else if (State = 4) {
+    else if (State == 4) {
         wayPoint1 = posY - 100;
-        point.push_back(wayPoint1);
-        wayPoint2 = posX;
-        point.push_back(wayPoint2);
+        wayPoint2 = posY +50;
+        deplacementX = 0;
+        deplacementY = -1;
+      
     }
 }
 
-void Plateforme::platUpdate() {
-    if (plat.getPosition().x <= point.at(i)) {
-        plat.move(1, 0);
+void Plateforme::platUpdate(const float& deltatime) {
+
+    if (State == 1) {
+        if (plat.getPosition().x >= wayPoint1) {
+            deplacementX = -deplacementX;
+        }
+        else if (plat.getPosition().x <= wayPoint2) {
+            deplacementX = -deplacementX;
+        }
+        plat.move(deplacementX * deltatime * 100.0f, 0);
     }
-    else {
-        plat.move(-1, 0);  
+    else if (State == 2) {
+        if (plat.getPosition().x <= wayPoint1) {
+            deplacementX = -deplacementX;
+        }
+        else if (plat.getPosition().x >= wayPoint2) {
+            deplacementX = -deplacementX;
+        }
+        plat.move(deplacementX * deltatime * 100.0f, 0);
     }
+    else if (State == 3) {
+        if (plat.getPosition().y >= wayPoint1) {
+            deplacementY = -deplacementY;
+        }
+        else if (plat.getPosition().y <= wayPoint2) {
+            deplacementY = -deplacementY;
+        }
+        plat.move(0, deplacementY * deltatime * 100.0f);
+    }
+    else if (State == 4) {
+        if (plat.getPosition().y <= wayPoint1) {
+            deplacementY = -deplacementY;
+        }
+        else if (plat.getPosition().y >= wayPoint2) {
+            deplacementY = -deplacementY;
+        }
+        plat.move(0, deplacementY * deltatime * 100.0f);
+    }
+
 }
+
