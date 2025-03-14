@@ -5,13 +5,19 @@
 #include "Game.hpp"
 
 enum MenuState {
-    MENU, OPTION, START, WIN, LOOSE
+    MENU, OPTION, START, WIN, LOOSE, PAUSE
 };
 
 class Menu {
 public:
-    Menu();
+    Menu(RenderWindow& window);
     void start(RenderWindow& window);
+
+public:
+    Sprite sprite;
+    Texture texture;
+    int posButon;
+    bool hasStarted = false;
 
 private:
     void setTexture(const string& PNGfile, RenderWindow& window);
@@ -22,9 +28,13 @@ private:
     void option(RenderWindow& window);
 
 private:
-    Sprite sprite;
-    Texture texture;
+    vector <Rectangle*> hitbox;
+    vector <Texte*> listeText;
+    vector <Sprite> spriteMenu;
+    Texture playButton, settingsButton, quitButton;
+    Sprite spritePlay, spriteSettings, spriteQuit;
     Font font;
+    Game game;
     vector<Texte> listeTexte;
     vector<Rectangle> listeRectangle;
     MenuState menuState;

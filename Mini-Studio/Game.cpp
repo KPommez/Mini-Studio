@@ -1,8 +1,7 @@
 #include "Game.hpp"
     
-Game::Game() : window(VideoMode::getDesktopMode(), "Mini-Studio", Style::Fullscreen) {
+Game::Game(RenderWindow& window) {
     m_entityManager = make_shared<EntityManager>();
-    window.setVerticalSyncEnabled(true);
     deltaTime = 0.f;
     event = {};
     isRunning = true;
@@ -13,11 +12,9 @@ Game::Game() : window(VideoMode::getDesktopMode(), "Mini-Studio", Style::Fullscr
     index = 0;
 }
 
-void Game::Run() {
-    //Menu menu;
-    //menu.start(window);
+void Game::Run(RenderWindow& window) {
     inGame = true;
-    
+
     // Chargement des assets
     // Chargement de la map
     level.loadMap(level.allLevels.at(index)); //level.allLevels.at(index)"Assets/map/test_map1.txt"
@@ -35,23 +32,28 @@ void Game::Run() {
     m_entityManager->addEnnemy(test2);
     m_entityManager->addEnnemy(testEolienne);
 
-    view();
+    view(window);
 
     while (isRunning) {
         deltaTime = Clock.restart().asSeconds();
 
-        pollEvents();
-        update(deltaTime);
-        draw();
-        view();
+        pollEvents(window);
+        update(deltaTime, window);
+        draw(window);
+        view(window);
 
     }
-    
-    window.close();
 
+    window.close();
 }
 
-void Game::pollEvents() {
+bool Game::setRunning(bool test)
+{
+    inGame = test;
+    return inGame;
+}
+
+void Game::pollEvents(RenderWindow& window) {
     while (window.pollEvent(event)) {
         if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::J)) {
             isRunning = false;
@@ -62,23 +64,23 @@ void Game::pollEvents() {
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::S && inGame) {
             player.hasPressedS = false;
         }
+        if (event.type == Event::KeyReleased && event.key.code == Keyboard::P) {
+            inGame = !inGame;
+        }
     }
 }
 
-void Game::update(const float& deltaTime) {
+void Game::update(const float& deltaTime, RenderWindow& window) {
     m_entityManager->updateEntities(window, deltaTime);
     player.Colision(window, deltaTime, level.platforms);
     player.update(deltaTime, window);
-    for (auto& Plateforme : level.plateformeTest) {
-        Plateforme->platUpdate(deltaTime);
-    }
 }
 
-void Game::view() {
-    vue.reset(FloatRect(0, 0, (float)screenX, (float)screenY));
-    Vector2f position(screenX / 2.f, screenY / 2.f);
-    position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2.f) - (screenX / 2.f));
-    position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2.f) - (screenY / 2.f));
+void Game::view(RenderWindow& window) {
+    vue.reset(FloatRect(0, 0, screenX, screenY));
+    Vector2f position(screenX / 2, screenY / 2);
+    position.x = (player.playerSprite.getPosition().x + (128 / 2) - (screenX / 2.f));
+    position.y = (player.playerSprite.getPosition().y + (128 / 2) - (screenY / 2.f));
 
     // permet de fixer une limite donc a voir avec les carré noir de Kiliann
 
@@ -97,7 +99,7 @@ void Game::view() {
     window.setView(vue);
 }
 
-void Game::draw() {
+void Game::draw(RenderWindow& window) {
     window.clear();
     level.drawMap(window);
     player.draw(window);
