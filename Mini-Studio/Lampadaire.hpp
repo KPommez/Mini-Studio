@@ -2,26 +2,23 @@
 
 #include "Player.hpp"
 
-class Lampadaire : public Entity
-{
+class Lampadaire : public Entity {
 public:
 	Lampadaire(Vector2f pos, Player* players);
+	void update(const float& deltaTime, RenderWindow& window) override;
+	void draw(RenderWindow& window) override;
+
+private:
+	void chase(Vector2f playerPos, const float& deltaTime);
+	bool detectPlayer(Vector2f playerPos);
+	void patrol(const float& deltaTime);
+
+private:
 	Player* player;
-	void update(const float& deltaTime, sf::RenderWindow& window) override;
-	void draw(sf::RenderWindow& window) override;
-	void chase(sf::Vector2f playerPos);
 	Vector2f position;
-	
-	
-	bool detectPlayer(sf::Vector2f playerPos);
-	void patrol();
 	ConvexShape lum;
 	enum State { PATROL, CHASE, SEARCH };
+	enum  MOVEMENTSIDE { LEFT, RIGHT };
 	State currentState;
-	enum  MOVEMENTSIDE
-	{
-		LEFT,
-		RIGHT
-	};
 	MOVEMENTSIDE moveSide;
 };

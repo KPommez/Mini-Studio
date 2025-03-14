@@ -3,9 +3,9 @@
 int main()
 {
     RenderWindow window;
-    window.create(VideoMode(1920, 1080), "Steal The Project", Style::Fullscreen);
+    window.create(VideoMode::getDesktopMode(), "Steal The Project", Style::Fullscreen);
     window.setVerticalSyncEnabled(true);
-    Menu MiniStudio (window);
+    Menu MiniStudio(window);
     while (window.isOpen()) {
         MiniStudio.start(window);
     }

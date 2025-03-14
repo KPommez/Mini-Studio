@@ -5,43 +5,55 @@
 
 class Player : public Entity {
 public:
-	bool isGoingLeft;
-	bool isGoingRight;
-	bool isDashing;
-	bool isJumping;
-	bool isFalling;
-	bool canDoubleJump;
-	bool isTuching;
-	bool hasPlatform;
-	bool invertedGravity;
-	bool isSpacePressed;
-	int spacebarPresses;
-	float fallingMovement;
-	float jumpMovement;
-	float velocity;
-	float speed;
-	float lastYPos;
-	float fallingTime;
-	float floorLevel;
-	const int maxFallingForce = 30; // About twice as much as gravity force
-	const int maxJumpingSpeed = 10;
-	const int dashSpeed       = 700;
-	const float gravityConst  = 9.81f;
-	const float jumpForce     = 10.f;
-	float dashingTime         = 0.5f;
-	Clock clockDash;
-
-public:
 	Player();
 
 public:
-	void update(const float& deltaTime, sf::RenderWindow& window) override;
-	void draw(sf::RenderWindow& window) override;
-	void Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape>& platforms);
-	void resize(sf::RenderWindow& window);
+	void update(const float& deltaTime, RenderWindow& window) override;
+	void draw(RenderWindow& window) override;
+	void Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape> platforms);
+	void resize(RenderWindow& window);
+	void loadAssets(RenderWindow& window);
+
+public:
+	bool isDashing;
+	bool isGoingLeft;
+	bool isGoingRight;
+	bool hasPressedS;
+	Sprite playerSprite;
 
 private:
-	void jumpGestion(const float& deltaTime, RenderWindow& window, const float& jumpDuration);
+	void inputGestion(const float& deltaTime, RenderWindow& window);
+	void jumpGestion(const float& deltaTime, RenderWindow& window);
 	void dashGestion(const float& deltaTime, RenderWindow& window);
 	void gravityGestion(const float& deltaTime, RenderWindow& window);
+	void animationGestion(const float& deltaTime);
+
+private:
+	bool isJumping;
+	bool isFalling;
+	bool canDoubleJump;
+	bool hasPlatform;
+	bool invertedGravity;
+	bool isSpacePressed;
+	bool isIdling;
+	bool isIdlingAnimationStarted;
+	bool isAnimationStarted;
+	int spacebarPresses;
+	int countSide;
+	float animationTime;
+	float fallingMovement;
+	float jumpMovement;
+	float speed;
+	float lastYPos;
+	float fallingTime;
+	float fallingSpeed;
+	const float maxFallingForce = 9.81f;
+	const int dashSpeed         = 700;
+	const float gravityConst    = 9.81f;
+	float dashingTime           = 0.5f;
+	Texture playerTexture;
+	Texture playerIdleTexture, playerWalk1, playerWalk2, playerWalk3;
+	vector<Sprite>  playerSprites;
+	Sprite playerIdleSprite, playerWalk1Sprite, playerWalk2Sprite, playerWalk3Sprite;
+	Clock clockDash;
 };

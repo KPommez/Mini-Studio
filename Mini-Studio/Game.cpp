@@ -1,7 +1,6 @@
 #include "Game.hpp"
     
-Game::Game(RenderWindow& window)
-{
+Game::Game(RenderWindow& window) {
     m_entityManager = make_shared<EntityManager>();
     deltaTime = 0.f;
     event = {};
@@ -10,21 +9,30 @@ Game::Game(RenderWindow& window)
     screenX = window.getSize().x;
     screenY = window.getSize().y;
     spaceReleases = 0;
+    index = 0;
 }
 
 void Game::Run(RenderWindow& window) {
     inGame = true;
 
-    shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(200, 1000), &player);
-    m_entityManager->addEnnemy(test);
-    
     // Chargement des assets
     // Chargement de la map
-    level.loadMap("Assets/map/test_map1.txt");
+    level.loadMap(level.allLevels.at(index)); //level.allLevels.at(index)"Assets/map/test_map1.txt"
     // Ajout des menus
     // Appel du dessin du menu
 
+    playerSize = { (int)((float)window.getSize().y / 16.f), (int)((float)window.getSize().y / 8.f) };
+    player.loadAssets(window);
     player.resize(window);
+
+    shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(500, 900), &player);
+    shared_ptr<Petrifeu> test2 = make_shared<Petrifeu>(Vector2f(500, 900), &player);
+    shared_ptr<Eolienne> testEolienne = make_shared<Eolienne>(Vector2(300.0f, 800.0f));
+    m_entityManager->addEnnemy(test);
+    m_entityManager->addEnnemy(test2);
+    m_entityManager->addEnnemy(testEolienne);
+
+    view(window);
 
     while (isRunning) {
         deltaTime = Clock.restart().asSeconds();
@@ -34,24 +42,15 @@ void Game::Run(RenderWindow& window) {
         draw(window);
         view(window);
 
-        if (Keyboard::isKeyPressed(Keyboard::P) && inGame == true)
-        {
-            inGame = false;
-            isRunning = false;
-        }
     }
-    vue.reset(FloatRect(0, 0, screenX, screenY));
-    vue.zoom(1);
 
-    window.clear();
-    window.setView(vue);
-    //window.close();
+    window.close();
 }
 
 bool Game::setRunning(bool test)
 {
-    isRunning = test;
-    return isRunning;
+    inGame = test;
+    return inGame;
 }
 
 void Game::pollEvents(RenderWindow& window) {
@@ -62,19 +61,42 @@ void Game::pollEvents(RenderWindow& window) {
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::F && inGame) {
             player.isDashing = false;
         }
-        if (event.type == Event::KeyReleased && event.key.code == Keyboard::Space && inGame) {
-            player.isJumping = false;
+        if (event.type == Event::KeyReleased && event.key.code == Keyboard::S && inGame) {
+            player.hasPressedS = false;
+        }
+        if (event.type == Event::KeyReleased && event.key.code == Keyboard::P) {
+            inGame = !inGame;
         }
     }
 }
 
 void Game::update(const float& deltaTime, RenderWindow& window) {
     m_entityManager->updateEntities(window, deltaTime);
-    player.update(deltaTime, window);
-    if (Keyboard::isKeyPressed(Keyboard::J)) {
-        isRunning = false;
-    }
     player.Colision(window, deltaTime, level.platforms);
+    player.update(deltaTime, window);
+}
+
+void Game::view(RenderWindow& window) {
+    vue.reset(FloatRect(0, 0, screenX, screenY));
+    Vector2f position(screenX / 2, screenY / 2);
+    position.x = (player.playerSprite.getPosition().x + (128 / 2) - (screenX / 2.f));
+    position.y = (player.playerSprite.getPosition().y + (128 / 2) - (screenY / 2.f));
+
+    // permet de fixer une limite donc a voir avec les carré noir de Kiliann
+
+    if (position.x < 0) {
+        position.x = 0;
+    }
+    if (position.x > window.getSize().x * 3.f) {
+        position.x = window.getSize().x * 3.f;
+    }
+    if (position.y > window.getSize().y / 2.f) {
+        position.y = window.getSize().y / 2.f;
+    }
+
+    vue.reset(FloatRect(position.x, position.y, (float)screenX, (float)screenY));
+    vue.zoom(1);
+    window.setView(vue);
 }
 
 void Game::draw(RenderWindow& window) {
@@ -83,31 +105,4 @@ void Game::draw(RenderWindow& window) {
     player.draw(window);
     m_entityManager->drawEntities(window);
     window.display();
-}
-
-void Game::view(RenderWindow& window) {
-    vue.reset(FloatRect(0, 0, screenX, screenY));
-    Vector2f position(screenX / 2, screenY / 2);
-    position.x = (player.shape.getPosition().x + (128 / 2) - (screenX / 2));
-    position.y = (player.shape.getPosition().y + (128 / 2) - (screenY / 2));
-
-    // permet de fixer une limite donc a voir avec les carré noir de Kiliann
-
-    if (position.x < -480) {
-        position.x = -480;
-    }
-    if (position.y < -270) {
-        position.y = -270;
-    }
-
-    if (position.x > 2000) {
-        position.x = 1920;
-    }
-    if (position.y > 270) {
-        position.y = 270;
-    }
-
-    vue.reset(FloatRect(position.x, position.y, screenX, screenY));
-    vue.zoom(1);
-    window.setView(vue);
 }

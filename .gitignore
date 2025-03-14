@@ -5,6 +5,7 @@
 
 # User-specific files
 *.rsuser
+*.tlog
 *.suo
 *.user
 *.userosscache
@@ -351,3 +352,21 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Mini-Studio/Debug/Mini-Studio.tlog/CL.command.1.tlog
+/Mini-Studio/Debug/Mini-Studio.tlog/Mini-Studio.lastbuildstate
+/Mini-Studio/Debug/Mini-Studio.tlog/Cl.items.tlog
+/Mini-Studio/Debug/Mini-Studio.tlog/CL.read.1.tlog
+/Mini-Studio/Debug/Mini-Studio.tlog/CL.write.1.tlog
+/Mini-Studio/Debug/Mini-Studio.tlog/link.command.1.tlog
+/Mini-Studio/Debug/Mini-Studio.tlog/link.read.1.tlog
+/Mini-Studio/Debug/Mini-Studio.tlog/link.write.1.tlog
+/Mini-Studio/Debug/Mini-Studio.tlog/link.secondary.1.tlog
+/Mini-Studio/Release/Mini-Studio.tlog/CL.command.1.tlog
+/Mini-Studio/Release/Mini-Studio.tlog/Cl.items.tlog
+/Mini-Studio/Release/Mini-Studio.tlog/CL.read.1.tlog
+/Mini-Studio/Release/Mini-Studio.tlog/CL.write.1.tlog
+/Mini-Studio/Release/Mini-Studio.tlog/link.command.1.tlog
+/Mini-Studio/Release/Mini-Studio.tlog/link.read.1.tlog
+/Mini-Studio/Release/Mini-Studio.tlog/link.secondary.1.tlog
+/Mini-Studio/Release/Mini-Studio.tlog/link.write.1.tlog
+/Mini-Studio/Release/Mini-Studio.tlog/Mini-Studio.lastbuildstate

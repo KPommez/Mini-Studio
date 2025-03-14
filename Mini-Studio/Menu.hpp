@@ -9,36 +9,33 @@ enum MenuState {
 };
 
 class Menu {
-private:
-    vector <Rectangle*> hitbox;
-    vector <Texte*> listeText;
-
-    vector <Sprite> spriteMenu;
-
-    Texture playButton, settingsButton, quitButton;
-    Sprite spritePlay, spriteSettings, spriteQuit;
+public:
+    Menu(RenderWindow& window);
+    void start(RenderWindow& window);
 
 public:
     Sprite sprite;
     Texture texture;
-    Menu(RenderWindow& window);
-
     int posButon;
     bool hasStarted = false;
 
-    void setTexture(const string& PNGfile);
+private:
+    void setTexture(const string& PNGfile, RenderWindow& window);
     void drawback(RenderWindow& window);
-    void start(RenderWindow& window);
     void menu(RenderWindow& window);
     void win(RenderWindow& window);
     void loose(RenderWindow& window);
     void option(RenderWindow& window);
 
+private:
+    vector <Rectangle*> hitbox;
+    vector <Texte*> listeText;
+    vector <Sprite> spriteMenu;
+    Texture playButton, settingsButton, quitButton;
+    Sprite spritePlay, spriteSettings, spriteQuit;
     Font font;
     Game game;
-
     vector<Texte> listeTexte;
     vector<Rectangle> listeRectangle;
-
     MenuState menuState;
 };

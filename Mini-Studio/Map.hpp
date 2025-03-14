@@ -1,6 +1,7 @@
 #pragma once
 
 #include "includeAll.hpp"
+#include "plateforme.hpp"
 
 class Map {
 private:
@@ -10,7 +11,12 @@ private:
 
 public:
 	Map();
-	vector<RectangleShape> platforms;
+	void loadAllMaps();
 	void loadMap(const string& filename);
 	void drawMap(RenderWindow& window);
+
+	vector<RectangleShape> platforms;
+	vector <Plateforme*> plateformeTest;
+	vector<string> allLevelsTypePath{ "Assets/Map/" };
+	vector<string> allLevels;
 };
