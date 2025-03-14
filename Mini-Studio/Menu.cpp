@@ -2,8 +2,26 @@
 
 
 Menu::Menu(RenderWindow& window) : game(window) {
-	if (!font.loadFromFile("assets/font/Minecraft.ttf")) {}
+	if (!font.loadFromFile("assets/font/Minecraft.ttf") || 
+		!playButton.loadFromFile("assets/backMenu/texte.png") ||
+		!settingsButton.loadFromFile("assets/backMenu/texte1.png") ||
+		!quitButton.loadFromFile("assets/backMenu/texte2.png"));
+	{}
 	menuState = MENU;
+
+	spritePlay.setTexture(playButton);
+	spriteSettings.setTexture(settingsButton);
+	spriteQuit.setTexture(quitButton);
+
+	spritePlay.setScale(0.5f, 0.5f);
+	spriteSettings.setScale(0.5f, 0.5f);
+	spriteQuit.setScale(0.5f, 0.5f);
+
+	spritePlay.setPosition(770, 250);
+	spriteSettings.setPosition(770, 650);
+	spriteQuit.setPosition(675, 450);
+
+
 }
 
 
@@ -54,10 +72,15 @@ void Menu::menu(RenderWindow& window) {
 
 	bool hasStarted = false;
 
+	spriteMenu.push_back(spritePlay);
+	spriteMenu.push_back(spriteSettings);
+	spriteMenu.push_back(spriteQuit);
+
+
+
 	hitbox.push_back(new Rectangle(120, 70, 870, 400, 255, 255, 255));
 	hitbox.push_back(new Rectangle(190, 70, 870, 540, 255, 255, 255));
 	hitbox.push_back(new Rectangle(130, 70, 870, 680, 255, 255, 255));
-
 
 	listeText.push_back(new Texte(font, "try game", 80, 255, 0, 0, 550, 150));
 	listeText.push_back(new Texte(font, "Start", 40, 0, 0, 0, 880, 410));
@@ -71,8 +94,8 @@ void Menu::menu(RenderWindow& window) {
 		setTexture("assets/backMenu/menutel.png");
 		drawback(window);
 
-		for (auto& Rectangle : hitbox) {
-			window.draw(Rectangle->creation());
+		for (auto& button : spriteMenu) {
+			window.draw(button);
 		}
 
 		for (auto& Texte : listeText) {
@@ -92,19 +115,19 @@ void Menu::menu(RenderWindow& window) {
 				window.close();
 
 			if (Mouse::isButtonPressed(Mouse::Left)) {
-				if (hitbox[0]->contains(mouse)) {
+				if (spriteMenu[0].getGlobalBounds().contains(mouse.x,mouse.y)) {
 					listeTexte.clear();
 					listeRectangle.clear();
 					menuState = START;
 					hasStarted = true;
 					game.setRunning(true);
 				}
-				if (hitbox[1]->contains(mouse)) {
+				if (spriteMenu[1].getGlobalBounds().contains(mouse.x, mouse.y)) {
 					listeTexte.clear();
 					listeRectangle.clear();
 					menuState = OPTION;
 				}
-				if (hitbox[2]->contains(mouse)) {
+				if (spriteMenu[2].getGlobalBounds().contains(mouse.x, mouse.y)) {
 					window.close();
 				}
 			}

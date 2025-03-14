@@ -13,15 +13,18 @@ private:
     vector <Rectangle*> hitbox;
     vector <Texte*> listeText;
 
+    vector <Sprite> spriteMenu;
+
+    Texture playButton, settingsButton, quitButton;
+    Sprite spritePlay, spriteSettings, spriteQuit;
+
 public:
-    //RectangleShape test;
     Sprite sprite;
     Texture texture;
     Menu(RenderWindow& window);
 
     int posButon;
     bool hasStarted = false;
-
 
     void setTexture(const string& PNGfile);
     void drawback(RenderWindow& window);
