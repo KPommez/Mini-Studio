@@ -2,6 +2,7 @@
 
 #include "Lampadaire.hpp"
 #include "Pétrifeu.hpp"
+#include "Eolienne.hpp"
 #include "EntityManager.hpp"
 #include "Map.hpp"
 #include "Menu.hpp"

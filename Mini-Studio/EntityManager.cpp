@@ -98,7 +98,7 @@ void EntityManager::deleteAllEnnemy()
 void EntityManager::drawEntities(RenderWindow& window) {
 	for (auto& entity : m_entities)
 	{
-		entity->draw( window);
+		entity->draw(window);
 	}
 	for (auto& enemy : m_ennemies)
 	{
