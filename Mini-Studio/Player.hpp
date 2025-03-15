@@ -16,6 +16,7 @@ public:
 
 public:
 	bool isDashing;
+	bool isIdling;
 	bool isGoingLeft;
 	bool isGoingRight;
 	bool hasPressedS;
@@ -36,7 +37,6 @@ private:
 	bool hasPlatform;
 	bool invertedGravity;
 	bool isSpacePressed;
-	bool isIdling;
 	bool isIdlingAnimationStarted;
 	bool isAnimationStarted;
 	int spacebarPresses;

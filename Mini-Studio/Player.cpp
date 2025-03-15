@@ -31,7 +31,7 @@ Player::Player() {
 
 void Player::resize(RenderWindow& window) {
 	playerSprite = playerSprites[0];
-	playerSprite.setPosition(Vector2f(100, window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f));
+	playerSprite.setPosition(Vector2f(window.getSize().x / 2.f - playerSprite.getGlobalBounds().width / 2.f, window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f));
 }
 
 void Player::loadAssets(RenderWindow& window) {
@@ -71,14 +71,14 @@ void Player::update(const float& deltaTime, RenderWindow& window) {
 void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 	bool hasInput = false;
 	// Inputs left & right
-	if (Keyboard::isKeyPressed(Keyboard::D) || Joystick::getAxisPosition(0,Joystick::X) >= 10) {
+	if (playerSprite.getPosition().x < 4.f * window.getSize().x - playerSprite.getGlobalBounds().width && (Keyboard::isKeyPressed(Keyboard::D) || Joystick::getAxisPosition(0,Joystick::X) >= 10)) {
 		isGoingRight = true;
 		isGoingLeft = false;
 		isIdling = false;
 		playerSprite.move(speed * 2.f * deltaTime, 0);
 		hasInput = true;
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Q) || Joystick::getAxisPosition(0, Joystick::X) <= -10) {
+	if (playerSprite.getPosition().x >= playerSprite.getGlobalBounds().width && (Keyboard::isKeyPressed(Keyboard::Q) || Joystick::getAxisPosition(0, Joystick::X) <= -10)) {
 		isGoingLeft = true;
 		isGoingRight = false;
 		isIdling = false;
@@ -92,7 +92,6 @@ void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 		else {
 			hasPressedS = false;
 		}
-		hasInput = true;
 	}
 	if (!hasInput) {
 		isIdling = true;
@@ -104,7 +103,7 @@ void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 
 void Player::gravityGestion(const float& deltaTime, RenderWindow& window) {
 	// Keeps falling faster until he reaches a certain limit (gravity inversible)
-	float floorLevel = (window.getSize().y - playerSprite.getGlobalBounds().height - (window.getSize().y / 10.f));
+	float floorLevel = window.getSize().y - window.getSize().y / 10.f - playerSprite.getGlobalBounds().height;
 	if (!invertedGravity) {
 		if (!isJumping && !hasPlatform) {
 			isFalling = true;
@@ -257,7 +256,7 @@ void Player::animationGestion(const float& deltaTime) {
 
 void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape> platforms) {
 	float posY;
-	float floorLevel = (window.getSize().y - playerSprite.getGlobalBounds().height - (window.getSize().y / 10.f));
+	float floorLevel = window.getSize().y - window.getSize().y / 10.f - playerSprite.getGlobalBounds().height;
 	if (!invertedGravity) {
 		posY = playerSprite.getPosition().y + playerSprite.getGlobalBounds().height;
 	}
