@@ -10,6 +10,8 @@ Game::Game(RenderWindow& window) {
     screenY = window.getSize().y;
     spaceReleases = 0;
     index = 0;
+    firstParralaxOn = true;
+    secondParralaxOn = false;
 }
 
 void Game::Run(RenderWindow& window) {
@@ -17,6 +19,7 @@ void Game::Run(RenderWindow& window) {
     srand(time(NULL));
 
     // Chargement des assets
+    parralaxLevelOne.instanciateLayers(window, "levelOne", 7); // Level 1 has 7 layers in his background
     // Chargement de la map
     level.loadMap(level.allLevels.at(index)); //level.allLevels.at(index)"Assets/map/test_map1.txt"
     // Ajout des menus
@@ -88,13 +91,17 @@ void Game::view(RenderWindow& window) {
     if (position.x < 0) {
         position.x = 0;
     }
-    if (position.x > window.getSize().x * 3.f) {
+    else if (position.x > window.getSize().x * 3.f) {
         position.x = window.getSize().x * 3.f;
     }
+    else {
+        parralaxLevelOne.moveLayers(deltaTime, window, player);
+    }
+
     if (position.y > window.getSize().y / 2.f) {
         position.y = window.getSize().y / 2.f;
     }
-
+  
     vue.reset(FloatRect(position.x, position.y, (float)screenX, (float)screenY));
     vue.zoom(1);
     window.setView(vue);
@@ -102,6 +109,7 @@ void Game::view(RenderWindow& window) {
 
 void Game::draw(RenderWindow& window) {
     window.clear();
+    parralaxLevelOne.draw(window);
     level.drawMap(window);
     player.draw(window);
     m_entityManager->drawEntities(window);

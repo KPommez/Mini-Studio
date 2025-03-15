@@ -5,6 +5,7 @@
 #include "Eolienne.hpp"
 #include "EntityManager.hpp"
 #include "Map.hpp"
+#include "ParralaxBackground.hpp"
 
 class Game {
 public:
@@ -25,6 +26,7 @@ private:
 
 private:
 	bool isRunning;
+	bool firstParralaxOn, secondParralaxOn;
 	int index;
 	int screenX;
 	int screenY;
@@ -35,4 +37,5 @@ private:
 	Clock Clock;
 	View vue;
 	Vector2i playerSize;
+	ParralaxBackground parralaxLevelOne;
 };
