@@ -76,8 +76,7 @@ void ParralaxBackground::moveLayers(const float& deltaTime, RenderWindow& window
 		layers[13].move(350.f * deltaTime, 0);
 	}
 	// Checking borders
-	if(!player.isIdling)
-		checkBorders(player, window);
+	checkBorders(player, window);
 }
 
 void ParralaxBackground::checkBorders(const Player& player, RenderWindow& window) {
@@ -87,7 +86,7 @@ void ParralaxBackground::checkBorders(const Player& player, RenderWindow& window
 		if (diff >= window.getSize().x * 1.5f && player.isGoingRight) {
 			layers[i].move(2.f * window.getSize().x, 0);
 		}
-		else if(abs(diff) >= window.getSize().x * 0.5f  && diff < 0 && player.isGoingLeft) {
+		else if(abs(diff) >= window.getSize().x * 0.5f && diff < 0 && player.isGoingLeft) {
 			layers[i].move(-2.f * window.getSize().x, 0);
 		}
 	}
