@@ -2,28 +2,82 @@
 
 
 Menu::Menu(RenderWindow& window) : game(window) {
-	if (!font.loadFromFile          ("Assets/font/Minecraft.ttf")  ||
-		!playButton.loadFromFile    ("Assets/backMenu/texte.png")  ||
-		!settingsButton.loadFromFile("Assets/backMenu/texte1.png") ||
-		!quitButton.loadFromFile    ("Assets/backMenu/texte2.png"))
+	if (!font.loadFromFile("Assets/font/Minecraft.ttf") ||
+		!bulle1.loadFromFile("Assets/backMenu/texte.png") ||
+		!bulle2.loadFromFile("Assets/backMenu/texte1.png") ||
+		!bulle3.loadFromFile("Assets/backMenu/texte2.png") ||
+		!choix1.loadFromFile("Assets/backMenu/bouton_play.png") ||
+		!choix2.loadFromFile("Assets/backMenu/bouton_options.png") ||
+		!choix3.loadFromFile("Assets/backMenu/bouton_quitter.png") ||
+		!selectPlay.loadFromFile("Assets/backMenu/selection_bouton.png") ||
+		!selectSettings.loadFromFile("Assets/backMenu/selection_bouton.png") ||
+		!selectQuit.loadFromFile("Assets/backMenu/selection_bouton.png"))
 	{
 		cerr << "Assets du menu non totalement charges" << endl;
 	}
 	menuState = MENU;
 
-	spritePlay.setTexture(playButton);
-	spriteSettings.setTexture(settingsButton);
-	spriteQuit.setTexture(quitButton);
+	///////////Selection//////////////
+	selectPlaySprite.setTexture(selectPlay);
+	selectSettingsSprite.setTexture(selectSettings);
+	selectQuitSprite.setTexture(selectQuit);
 
-	spritePlay.setScale(0.5f, 0.5f);
-	spriteSettings.setScale(0.5f, 0.5f);
-	spriteQuit.setScale(0.5f, 0.5f);
+	selectPlaySprite.setScale(0.5f, 0.5f);
+	selectSettingsSprite.setScale(0.5f, 0.5f);
+	selectQuitSprite.setScale(0.5f, 0.5f);
 
-	spritePlay.setPosition(770, 250);
-	spriteSettings.setPosition(770, 650);
-	spriteQuit.setPosition(675, 450);
+	selectPlaySprite.setPosition(820, 275);
+	selectSettingsSprite.setPosition(750, 475);
+	selectQuitSprite.setPosition(840, 700);
+
+	selectPlaySprite.setColor(Color(255, 255, 255, 0));
+	selectSettingsSprite.setColor(Color(255, 255, 255, 0));
+	selectQuitSprite.setColor(Color(255, 255, 255, 0));
+
+	//////////Bulle/////////////////
+	spriteBulle1.setTexture(bulle1);
+	spriteBulle2.setTexture(bulle2);
+	spriteBulle3.setTexture(bulle3);
+
+	spriteBulle1.setScale(0.5f, 0.5f);
+	spriteBulle2.setScale(0.5f, 0.5f);
+	spriteBulle3.setScale(0.5f, 0.5f);
+
+	spriteBulle1.setPosition(770, 250);
+	spriteBulle2.setPosition(770, 650);
+	spriteBulle3.setPosition(675, 450);
+
+	///////////Choix Play/Settings/Quit ////////
+	spriteChoix1.setTexture(choix1);
+	spriteChoix2.setTexture(choix2);
+	spriteChoix3.setTexture(choix3);
+
+	spriteChoix1.setScale(0.5f, 0.5f);
+	spriteChoix2.setScale(0.5f, 0.5f);
+	spriteChoix3.setScale(0.5f, 0.5f);
+
+	spriteChoix1.setPosition(900, 275);
+	spriteChoix2.setPosition(800, 475);
+	spriteChoix3.setPosition(890, 700);
 
 	posButon = 0;
+
+
+	///Bulle arrière
+	spriteMenu.push_back(spriteBulle1);
+	spriteMenu.push_back(spriteBulle3);
+	spriteMenu.push_back(spriteBulle2);
+
+	///Selection
+	selectSprite.push_back(selectPlaySprite);
+	selectSprite.push_back(selectSettingsSprite);
+	selectSprite.push_back(selectQuitSprite);
+
+	///Texte
+	spriteTexte.push_back(spriteChoix1);
+	spriteTexte.push_back(spriteChoix2);
+	spriteTexte.push_back(spriteChoix3);
+
 }
 
 void Menu::setTexture(const string& PNGfile, RenderWindow& window)
@@ -62,40 +116,26 @@ void Menu::start(RenderWindow& window) {
 }
 
 void Menu::menu(RenderWindow& window) {
-
+	cout << "hello" << endl;
 	bool hasStarted = false;
-
-	spriteMenu.push_back(spritePlay);
-	spriteMenu.push_back(spriteSettings);
-	spriteMenu.push_back(spriteQuit);
-
-
-
-	hitbox.push_back(new Rectangle(120, 70, 870, 400, 255, 255, 255));
-	hitbox.push_back(new Rectangle(190, 70, 870, 540, 255, 255, 255));
-	hitbox.push_back(new Rectangle(130, 70, 870, 680, 255, 255, 255));
-
-	listeText.push_back(new Texte(font, "try game", 80, 255, 0, 0, 550, 150));
-	listeText.push_back(new Texte(font, "Start", 40, 0, 0, 0, 880, 410));
-	listeText.push_back(new Texte(font, "Touches", 40, 0, 0, 0, 880, 550));
-	listeText.push_back(new Texte(font, "Partir", 40, 0, 0, 0, 880, 690));
-
 
 
 		window.clear(Color::Black);
-	
-		setTexture("assets/backMenu/menutel.png", window);
+
 		drawback(window);
 
-		for (auto& button : spriteMenu) {
+		for (auto& bulle : spriteMenu) {
+			window.draw(bulle);
+		}
+		for (auto& button : selectSprite) {
 			window.draw(button);
 		}
-
-		for (auto& Texte : listeText) {
-			window.draw(Texte->creation());
+		for (auto& text : spriteTexte) {
+			window.draw(text);
 		}
+	
+		setTexture("assets/backMenu/menutel.png", window);
 
-		window.display();
 
 		Vector2i n_mouse = Mouse::getPosition(window);
 		Vector2f mouse = { (float)n_mouse.x, (float)n_mouse.y };
@@ -106,6 +146,26 @@ void Menu::menu(RenderWindow& window) {
 
 			if (Keyboard::isKeyPressed(Keyboard::K))
 				window.close();
+
+			if (spriteMenu[0].getGlobalBounds().contains(mouse.x, mouse.y)) { //Play
+				selectSprite[0].setColor(Color(255, 255, 255, 255));
+				selectSprite[1].setColor(Color(255, 255, 255, 0));
+				selectSprite[2].setColor(Color(255, 255, 255, 0));
+				cout << "test";
+			}
+			else if (spriteMenu[1].getGlobalBounds().contains(mouse.x, mouse.y)) { //Settings
+				selectSprite[0].setColor(Color(255, 255, 255, 0));
+				selectSprite[1].setColor(Color(255, 255, 255, 255));
+				selectSprite[2].setColor(Color(255, 255, 255, 0));
+
+			}
+			else if (spriteMenu[2].getGlobalBounds().contains(mouse.x, mouse.y)) { //Quit
+				selectSprite[0].setColor(Color(255, 255, 255, 0));
+				selectSprite[1].setColor(Color(255, 255, 255, 0));
+				selectSprite[2].setColor(Color(255, 255, 255, 255));
+			}
+			
+
 
 			if (Mouse::isButtonPressed(Mouse::Left)) {
 				if (spriteMenu[0].getGlobalBounds().contains(mouse.x,mouse.y)) {
@@ -131,15 +191,16 @@ void Menu::menu(RenderWindow& window) {
 				posButon--;
 			}
 		}
-		hitbox.clear();
-		listeText.clear();
 
+
+		hitbox.clear();
 		for (auto& Rectangle : hitbox) {
 			delete Rectangle;
 		}
-		for (auto& Texte : listeText) {
-			delete Texte;
-		}
+
+
+
+		window.display();
 
 	}
 
