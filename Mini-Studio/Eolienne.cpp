@@ -1,22 +1,21 @@
 #include "Eolienne.hpp"
 
-Eolienne::Eolienne(Vector2f pos, Player* players) {
+Eolienne::Eolienne(Vector2f pos, Player* players, RenderWindow& window) {
 	player = players;
 	position = pos;
 	shape.setPosition(pos);
-	shape.setFillColor(Color::Cyan);
+	shape.setFillColor(Color::Transparent);
 	shape.setSize(Vector2f(50.0f, 50.0f));
 	
 	currentState = PATROL;
 	moveSide = LEFT;
-	zone.setFillColor(Color::White);
-	zone.setSize({ 1920, 50 });
+	zone.setFillColor(Color::Transparent);
+	zone.setSize({ 5.f * window.getSize().x, 2.f * window.getSize().y});
 }
 
 void Eolienne::update(const float& deltaTime, RenderWindow& window) {
 	switch (currentState) {
 	case PATROL:
-		
 		if (clock.getElapsedTime().asSeconds() < 10) {
 		
 			patrol(deltaTime);
@@ -31,7 +30,7 @@ void Eolienne::update(const float& deltaTime, RenderWindow& window) {
 	case PUSH:
 		if (clock.getElapsedTime().asSeconds() < 1.5) {
 			cout << "pushing" << endl;
-			push(window);
+			push(window, deltaTime);
 		}
 		else {
 			clock.restart();
@@ -45,10 +44,10 @@ void Eolienne::update(const float& deltaTime, RenderWindow& window) {
 	switch (moveSide)
 	{
 	case LEFT:
-		zone.setPosition(shape.getPosition().x - 1920, shape.getPosition().y);
+		zone.setPosition(shape.getPosition().x - zone.getSize().x, shape.getPosition().y);
 		break;
 	case RIGHT:
-		zone.setPosition(shape.getPosition().x + 50, shape.getPosition().y);
+		zone.setPosition(shape.getPosition().x + zone.getSize().y, shape.getPosition().y);
 		break;
 	default:
 		break;
@@ -60,16 +59,21 @@ void Eolienne::draw(RenderWindow& window) {
 	window.draw(shape);
 	window.draw(zone);
 }
-void Eolienne::push(RenderWindow& window) {
-	shape.setPosition(player->playerSprite.getPosition());
+void Eolienne::push(RenderWindow& window, const float& deltaTime) {
+	shape.setPosition(player->playerSprite.getPosition() + Vector2f{ player->playerSprite.getGlobalBounds().width, 0.f });
 	if (player->playerSprite.getGlobalBounds().intersects(zone.getGlobalBounds())) {
-		player->playerSprite.move(-2.f, 0.0f);
+		player->playerSprite.move(-800.f * deltaTime, 0.0f);
 	}
 }
 void Eolienne::patrol(const float& deltaTime) {
 	
 	static int currentWaypoint = 0;
-	static sf::Vector2f waypoints[3] = { sf::Vector2f(shape.getPosition().x + 100, 300), sf::Vector2f(shape.getPosition().x, 900), sf::Vector2f(shape.getPosition().x + 50, 600)};
+	static sf::Vector2f waypoints[3] = { 
+		sf::Vector2f(shape.getPosition().x + 100, 300), 
+		sf::Vector2f(shape.getPosition().x, 900), 
+		sf::Vector2f(shape.getPosition().x + 50, 600)
+	};
+
 	sf::Vector2f target = waypoints[currentWaypoint];
 	sf::Vector2f direction = target - position;
 	float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);

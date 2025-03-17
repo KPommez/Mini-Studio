@@ -21,7 +21,7 @@ void Game::Run(RenderWindow& window) {
     // Chargement des assets
     parralaxLevelOne.instanciateLayers(window, "levelOne", 7); // Level 1 has 7 layers in his background
     // Chargement de la map
-    level.loadMap(level.allLevels.at(index)); //level.allLevels.at(index)"Assets/map/test_map1.txt"
+    level.loadMap(level.allLevels.at(index));
     // Ajout des menus
     // Appel du dessin du menu
 
@@ -29,12 +29,12 @@ void Game::Run(RenderWindow& window) {
     player.loadAssets(window);
     player.resize(window);
 
-    shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(500, 900), &player);
-    /*shared_ptr<Petrifeu> test2 = make_shared<Petrifeu>(Vector2f(500, 900), &player);*/
-    shared_ptr<Eolienne> testEolienne = make_shared<Eolienne>(Vector2(300.0f, 900.0f), &player);
-    m_entityManager->addEnnemy(test);
-   /* m_entityManager->addEnnemy(test2);*/
-    m_entityManager->addEnnemy(testEolienne);
+    shared_ptr<Lampadaire> lampadaire = make_shared<Lampadaire>(Vector2f(500,  900), &player);
+    shared_ptr<Petrifeu> petrifeu     = make_shared<Petrifeu>  (Vector2f(500,  900), &player);
+    shared_ptr<Eolienne> eolienne     = make_shared<Eolienne>  (Vector2f(1000, 900), &player, window);
+    m_entityManager->addEnnemy(lampadaire);
+    m_entityManager->addEnnemy(petrifeu);
+    m_entityManager->addEnnemy(eolienne);
 
     view(window);
 

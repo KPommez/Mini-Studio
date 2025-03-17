@@ -4,13 +4,13 @@
 #include "vector"
 class Eolienne : public Entity {
 public:
-	Eolienne(Vector2f pos, Player* players);
+	Eolienne(Vector2f pos, Player* players, RenderWindow& window);
 	void update(const float& deltaTime, RenderWindow& window) override;
 	void draw(RenderWindow& window) override;
 	
 	
 	void patrol(const float& deltaTime);
-	void push(RenderWindow& window);
+	void push(RenderWindow& window, const float& deltaTime);
 private:
 	Player* player;
 	Vector2f position;
