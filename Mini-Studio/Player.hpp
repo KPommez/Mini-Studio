@@ -10,7 +10,7 @@ public:
 public:
 	void update(const float& deltaTime, RenderWindow& window) override;
 	void draw(RenderWindow& window) override;
-	void Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape> platforms);
+	void Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape> platforms, vector<Plateforme*> platformsMobile);
 	void resize(RenderWindow& window);
 	void loadAssets(RenderWindow& window);
 

@@ -76,7 +76,7 @@ void Game::pollEvents(RenderWindow& window) {
 
 void Game::update(const float& deltaTime, RenderWindow& window) {
     m_entityManager->updateEntities(window, deltaTime);
-    player.Colision(window, deltaTime, level.platforms);
+    player.Colision(window, deltaTime, level.platforms, level.plateformeTest);
     player.update(deltaTime, window);
     for (auto& Plateforme : level.plateformeTest) {
         Plateforme->platUpdate(deltaTime);

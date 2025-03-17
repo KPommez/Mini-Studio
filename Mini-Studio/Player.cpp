@@ -254,7 +254,7 @@ void Player::animationGestion(const float& deltaTime) {
 	}
 }
 
-void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape> platforms) {
+void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape> platforms, vector<Plateforme*> platformsMobile) {
 	float posY;
 	float floorLevel = window.getSize().y - window.getSize().y / 10.f - playerSprite.getGlobalBounds().height;
 	if (!invertedGravity) {
@@ -295,6 +295,27 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 					}
 					else {
 						playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y + platform.getSize().y + 0.1f);
+					}
+				}
+			}
+		}
+		for (auto& Plateforme : platformsMobile) {
+			if (playerSprite.getGlobalBounds().intersects(Plateforme->plat.getGlobalBounds()) && !hasPressedS) {
+				count++;
+				canDoubleJump = true;
+				hasPlatform = true;
+				spacebarPresses = 0;
+				hadPlatformWhenJumped = true;
+				if (isFalling) {
+					isFalling = false;
+					isJumping = false;
+				}
+				if (!isFalling && !isJumping) {
+					if (!invertedGravity) {
+						playerSprite.setPosition(playerSprite.getPosition().x, Plateforme->plat.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
+					}
+					else {
+						playerSprite.setPosition(playerSprite.getPosition().x, Plateforme->plat.getPosition().y + Plateforme->plat.getSize().y + 0.1f);
 					}
 				}
 			}
