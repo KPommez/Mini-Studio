@@ -185,19 +185,20 @@ void Menu::menu(RenderWindow& window) {
 				selectSprite[2].setColor(Color(255, 255, 255, 0));
 			}
 
-			if (posButon == 2 && (spriteMenu[0].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0,1))) {
+			if (spriteMenu[0].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0,1) && posButon == 2) {
+				cout << "test";
 				listeTexte.clear();
 				listeRectangle.clear();
 				menuState = START;
 				hasStarted = true;
 				game.setRunning(true);
 			}
-			if (posButon == 1 && (spriteMenu[1].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1))) {
+			if (spriteMenu[1].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 1) {
 				listeTexte.clear();
 				listeRectangle.clear();
 				menuState = OPTION;
 			}
-			if (posButon == 0 && (spriteMenu[2].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1))) {
+			if (spriteMenu[2].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 0) {
 				window.close();
 			}
 		}
