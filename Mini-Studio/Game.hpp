@@ -6,6 +6,7 @@
 #include "EntityManager.hpp"
 #include "Map.hpp"
 #include "ParralaxBackground.hpp"
+#include "LuminousBeam.hpp"
 
 class Game {
 public:
@@ -38,4 +39,5 @@ private:
 	View vue;
 	Vector2i playerSize;
 	ParralaxBackground parralaxLevelOne;
+	LuminousBeam levelTwoBeam;
 };

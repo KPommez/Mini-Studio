@@ -20,6 +20,7 @@ void Game::Run(RenderWindow& window) {
 
     // Chargement des assets
     parralaxLevelOne.instanciateLayers(window, "levelOne", 7); // Level 1 has 7 layers in his background
+    levelTwoBeam.create({0.f, 0.f}, 50.f, Color::Yellow);
     // Chargement de la map
     level.loadMap(level.allLevels.at(index));
     // Ajout des menus
@@ -28,6 +29,7 @@ void Game::Run(RenderWindow& window) {
     playerSize = { (int)((float)window.getSize().y / 16.f), (int)((float)window.getSize().y / 8.f) };
     player.loadAssets(window);
     player.resize(window);
+    cout << player.playerSprite.getPosition().x << ", " << player.playerSprite.getPosition().y << endl;
 
     shared_ptr<Lampadaire> lampadaire = make_shared<Lampadaire>(Vector2f(500,  900), &player);
     shared_ptr<Petrifeu> petrifeu     = make_shared<Petrifeu>  (Vector2f(500,  900), &player);
@@ -114,6 +116,7 @@ void Game::draw(RenderWindow& window) {
     window.clear();
     parralaxLevelOne.draw(window);
     level.drawMap(window);
+    levelTwoBeam.draw(window);
     player.draw(window);
     m_entityManager->drawEntities(window);
     window.display();
