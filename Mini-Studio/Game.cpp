@@ -94,7 +94,7 @@ void Game::view(RenderWindow& window) {
     if (position.x < 0) {
         position.x = 0;
     }
-    else if (position.x > window.getSize().x * 50.f) {
+    else if (position.x > window.getSize().x * 50.f) { //bloquer joueur vue
         position.x = window.getSize().x * 50.f;
     }
     else {
