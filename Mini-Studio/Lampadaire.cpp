@@ -17,14 +17,14 @@ void Lampadaire::update(const float& deltaTime, RenderWindow& window) {
 	switch (currentState) {
 	case PATROL:
 		patrol(deltaTime);
-		if (detectPlayer(player->shape.getPosition())) { 
+		if (detectPlayer(player->sprite.getPosition())) { 
 			currentState = CHASE; 
 		}
 		break;
 
 	case CHASE:
-		chase(player->shape.getPosition(), deltaTime);
-		if (!detectPlayer(player->shape.getPosition())) {
+		chase(player->sprite.getPosition(), deltaTime);
+		if (!detectPlayer(player->sprite.getPosition())) {
 			currentState = PATROL;
 		}
 		break;
@@ -41,16 +41,16 @@ void Lampadaire::update(const float& deltaTime, RenderWindow& window) {
 		lum.setPointCount(4);
 		lum.setPoint(0, { position.x,position.y  });
 		lum.setPoint(1, { position.x ,position.y + 50 });
-		lum.setPoint(2, { position.x - 150,position.y + 175 });
-		lum.setPoint(3, { position.x - 150,position.y - 125 }); 
+		lum.setPoint(2, { position.x - 350,position.y + 125 });
+		lum.setPoint(3, { position.x - 350,position.y - 75 }); 
 		break;
 
 	case MOVEMENTSIDE::RIGHT:
 		lum.setPointCount(4);
 		lum.setPoint(0, { position.x + 50,position.y });
 		lum.setPoint(1, { position.x + 50,position.y + 50 });
-		lum.setPoint(2, { position.x + 200,position.y + 175 });
-		lum.setPoint(3, { position.x + 200,position.y - 125 });
+		lum.setPoint(2, { position.x + 400,position.y + 125 });
+		lum.setPoint(3, { position.x + 400,position.y - 75 });
 		break;
 
 	default:
@@ -66,7 +66,14 @@ void Lampadaire::chase(Vector2f playerPos, const float& deltaTime) {
 		direction /= distance;
 		position.x += direction * 2.0f;
 	}
-	shape.move(direction * 250.f * deltaTime,0);
+	switch (moveSide) {
+	case MOVEMENTSIDE::LEFT:
+		shape.move(direction * 250.f * deltaTime, 0);
+		break;
+	case MOVEMENTSIDE::RIGHT:
+		shape.move(-direction * 250.f * deltaTime, 0);
+		break;
+	};
 	position = shape.getPosition();
 
 	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {

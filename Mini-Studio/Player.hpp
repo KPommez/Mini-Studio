@@ -16,6 +16,7 @@ public:
 
 public:
 	bool isDashing;
+	bool canMove;
 	bool isIdling;
 	bool isGoingLeft;
 	bool isGoingRight;
