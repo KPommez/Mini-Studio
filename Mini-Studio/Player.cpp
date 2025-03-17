@@ -301,6 +301,21 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 				count++;
 			}
 		}
+		for (auto& platform : platformsMobile) {
+			if (playerSprite.getGlobalBounds().intersects(platform->plat.getGlobalBounds()) && !hasPressedS) {
+				if (isFalling) {
+					cout << "Collision" << endl;
+					isJumping = false;
+					isFalling = false;
+					canDoubleJump = true;
+					hadPlatformWhenJumped = true;
+					spacebarPresses = 0;
+					playerSprite.move(0, 0);
+				}
+				hasPlatform = true;
+				count++;
+			}
+		}
 		if (!count) {
 			isFalling   = true;
 			hasPlatform = false;
@@ -309,6 +324,11 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 	for (auto& platform : platforms) {
 		if (playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) && !hasPressedS && posY > platform.getPosition().y && !isJumping) {
 			playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
+		}
+	}
+	for (auto& platform : platformsMobile) {
+		if (playerSprite.getGlobalBounds().intersects(platform->plat.getGlobalBounds()) && !hasPressedS && posY > platform->plat.getPosition().y && !isJumping) {
+			playerSprite.setPosition(playerSprite.getPosition().x, platform->plat.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
 		}
 	}
 }
