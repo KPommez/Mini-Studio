@@ -14,6 +14,9 @@ void Petrifeu::update(const float& deltaTime, RenderWindow& window) {
 	change();
 	
 }
+void Petrifeu::patrol(const float& deltaTime)
+{
+}
 void Petrifeu::change() {
 	int random;
 	switch (feucolor) {

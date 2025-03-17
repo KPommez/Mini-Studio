@@ -30,11 +30,11 @@ void Game::Run(RenderWindow& window) {
     player.resize(window);
 
     shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(500, 900), &player);
-    /*shared_ptr<Petrifeu> test2 = make_shared<Petrifeu>(Vector2f(500, 900), &player);
-    shared_ptr<Eolienne> testEolienne = make_shared<Eolienne>(Vector2(300.0f, 800.0f));*/
+    shared_ptr<Petrifeu> test2 = make_shared<Petrifeu>(Vector2f(500, 900), &player);
+    shared_ptr<Eolienne> testEolienne = make_shared<Eolienne>(Vector2(300.0f, 800.0f));
     m_entityManager->addEnnemy(test);
-    /*m_entityManager->addEnnemy(test2);
-    m_entityManager->addEnnemy(testEolienne);*/
+    m_entityManager->addEnnemy(test2);
+    m_entityManager->addEnnemy(testEolienne);
 
     view(window);
 
@@ -94,8 +94,8 @@ void Game::view(RenderWindow& window) {
     if (position.x < 0) {
         position.x = 0;
     }
-    else if (position.x > window.getSize().x * 3.f) {
-        position.x = window.getSize().x * 3.f;
+    else if (position.x > window.getSize().x * 50.f) {
+        position.x = window.getSize().x * 50.f;
     }
     else {
         parralaxLevelOne.moveLayers(deltaTime, window, player);

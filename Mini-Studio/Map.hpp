@@ -3,6 +3,7 @@
 #include "includeAll.hpp"
 #include "plateforme.hpp"
 
+
 class Map {
 private:
 	RectangleShape mur;

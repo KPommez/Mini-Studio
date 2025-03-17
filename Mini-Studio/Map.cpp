@@ -51,6 +51,9 @@ void Map::loadMap(const string& filename) {
 			else if (line[x] == '-') {
 				plateformeTest.push_back(new Plateforme(posX, posY, 2));
 			}
+			else if (line[x] == '1') {
+				plateformeTest.push_back(new Plateforme(posX, posY, 3));
+			}
 		}
 		++y;
 	}

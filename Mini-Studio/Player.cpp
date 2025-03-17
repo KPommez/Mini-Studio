@@ -71,7 +71,7 @@ void Player::update(const float& deltaTime, RenderWindow& window) {
 void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 	bool hasInput = false;
 	// Inputs left & right
-	if (playerSprite.getPosition().x < 4.f * window.getSize().x - playerSprite.getGlobalBounds().width && (Keyboard::isKeyPressed(Keyboard::D) || Joystick::getAxisPosition(0,Joystick::X) >= 10)) {
+	if (playerSprite.getPosition().x < 50.f * window.getSize().x - playerSprite.getGlobalBounds().width && (Keyboard::isKeyPressed(Keyboard::D) || Joystick::getAxisPosition(0,Joystick::X) >= 10)) {
 		isGoingRight = true;
 		isGoingLeft = false;
 		isIdling = false;
