@@ -225,14 +225,14 @@ void Player::animationGestion(const float& deltaTime) {
 			animationTime = 0.f;
 		}
 		// Restart the animation loop after 0.5 seconds
-		if (animationTime > 1.f) {
+		if (animationTime > 0.75f) {
 			animationTime = 0.f;
 		}
-		else if (animationTime < .33f) {
+		else if (animationTime < .25f) {
 			playerSprites[1].setPosition(playerSprite.getPosition());
 			playerSprite = playerSprites[1];
 		}
-		else if (animationTime < .66f) {
+		else if (animationTime < .5f) {
 			playerSprites[2].setPosition(playerSprite.getPosition());
 			playerSprite = playerSprites[2];
 		}
