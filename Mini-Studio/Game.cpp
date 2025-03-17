@@ -78,6 +78,9 @@ void Game::update(const float& deltaTime, RenderWindow& window) {
     m_entityManager->updateEntities(window, deltaTime);
     player.Colision(window, deltaTime, level.platforms);
     player.update(deltaTime, window);
+    for (auto& Plateforme : level.plateformeTest) {
+        Plateforme->platUpdate(deltaTime);
+    }
 }
 
 void Game::view(RenderWindow& window) {
