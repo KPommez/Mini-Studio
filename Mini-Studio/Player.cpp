@@ -72,7 +72,7 @@ void Player::update(const float& deltaTime, RenderWindow& window) {
 void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 	bool hasInput = false;
 	// Inputs left & right
-	if (canMove && (playerSprite.getPosition().x < 4.f * window.getSize().x - playerSprite.getGlobalBounds().width && (Keyboard::isKeyPressed(Keyboard::D) || Joystick::getAxisPosition(0,Joystick::X) >= 10))) {
+	if (canMove && (playerSprite.getPosition().x < 50.f * window.getSize().x - playerSprite.getGlobalBounds().width && (Keyboard::isKeyPressed(Keyboard::D) || Joystick::getAxisPosition(0,Joystick::X) >= 10))) {
 		isGoingRight = true;
 		isGoingLeft = false;
 		isIdling = false;
@@ -260,7 +260,7 @@ void Player::animationGestion(const float& deltaTime) {
 	}
 }
 
-void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape> platforms) {
+void Player::Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape> platforms, vector<Plateforme*> platformsMobile) {
 	float posY;
 	float floorLevel = window.getSize().y - window.getSize().y / 10.f - playerSprite.getGlobalBounds().height;
 	if (!invertedGravity) {
@@ -301,6 +301,21 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 				count++;
 			}
 		}
+		for (auto& platform : platformsMobile) {
+			if (playerSprite.getGlobalBounds().intersects(platform->plat.getGlobalBounds()) && !hasPressedS) {
+				if (isFalling) {
+					cout << "Collision" << endl;
+					isJumping = false;
+					isFalling = false;
+					canDoubleJump = true;
+					hadPlatformWhenJumped = true;
+					spacebarPresses = 0;
+					playerSprite.move(0, 0);
+				}
+				hasPlatform = true;
+				count++;
+			}
+		}
 		if (!count) {
 			isFalling   = true;
 			hasPlatform = false;
@@ -309,6 +324,11 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 	for (auto& platform : platforms) {
 		if (playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) && !hasPressedS && posY > platform.getPosition().y && !isJumping) {
 			playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
+		}
+	}
+	for (auto& platform : platformsMobile) {
+		if (playerSprite.getGlobalBounds().intersects(platform->plat.getGlobalBounds()) && !hasPressedS && posY > platform->plat.getPosition().y && !isJumping) {
+			playerSprite.setPosition(playerSprite.getPosition().x, platform->plat.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
 		}
 	}
 }

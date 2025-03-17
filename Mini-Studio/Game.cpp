@@ -76,8 +76,11 @@ void Game::pollEvents(RenderWindow& window) {
 
 void Game::update(const float& deltaTime, RenderWindow& window) {
     m_entityManager->updateEntities(window, deltaTime);
-    player.Colision(window, deltaTime, level.platforms);
+    player.Colision(window, deltaTime, level.platforms, level.plateformeTest);
     player.update(deltaTime, window);
+    for (auto& Plateforme : level.plateformeTest) {
+        Plateforme->platUpdate(deltaTime);
+    }
 }
 
 void Game::view(RenderWindow& window) {
@@ -91,15 +94,15 @@ void Game::view(RenderWindow& window) {
     if (position.x < 0) {
         position.x = 0;
     }
-    else if (position.x > window.getSize().x * 3.f) {
-        position.x = window.getSize().x * 3.f;
+    else if (position.x > window.getSize().x * 50.f) { //bloquer joueur vue
+        position.x = window.getSize().x * 50.f;
     }
     else {
         parralaxLevelOne.moveLayers(deltaTime, window, player);
     }
 
-    if (position.y > window.getSize().y / 2.f) {
-        position.y = window.getSize().y / 2.f;
+    if (position.y > 0) {
+        position.y = 0;
     }
   
     vue.reset(FloatRect(position.x, position.y, (float)screenX, (float)screenY));
