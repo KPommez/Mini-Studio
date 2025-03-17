@@ -44,35 +44,35 @@ void ParralaxBackground::instanciateLayers(RenderWindow& window, string level, i
 void ParralaxBackground::moveLayers(const float& deltaTime, RenderWindow& window, const Player& player) {
 	// Movement
 	if (player.isGoingRight && !player.isIdling) {
-		layers[0].move(-50.f * deltaTime, 0);
-		layers[7].move(-50.f * deltaTime, 0);
-		layers[1].move(-100.f * deltaTime, 0);
-		layers[8].move(-100 * deltaTime, 0);
-		layers[2].move(-150.f * deltaTime, 0);
-		layers[9].move(-150.f * deltaTime, 0);
-		layers[3].move(-200.f * deltaTime, 0);
+		layers[0].move (-50.f  * deltaTime, 0);
+		layers[7].move (-50.f  * deltaTime, 0);
+		layers[1].move (-100.f * deltaTime, 0);
+		layers[8].move (-100.f * deltaTime, 0);
+		layers[2].move (-150.f * deltaTime, 0);
+		layers[9].move (-150.f * deltaTime, 0);
+		layers[3].move (-200.f * deltaTime, 0);
 		layers[10].move(-200.f * deltaTime, 0);
-		layers[4].move(-250.f * deltaTime, 0);
+		layers[4].move (-250.f * deltaTime, 0);
 		layers[11].move(-250.f * deltaTime, 0);
-		layers[5].move(-300.f * deltaTime, 0);
+		layers[5].move (-300.f * deltaTime, 0);
 		layers[12].move(-300.f * deltaTime, 0);
-		layers[6].move(-350.f * deltaTime, 0);
+		layers[6].move (-350.f * deltaTime, 0);
 		layers[13].move(-350.f * deltaTime, 0);
 	}
 	else if (player.isGoingLeft && !player.isIdling) {
-		layers[0].move(50.f * deltaTime, 0);
-		layers[7].move(50.f * deltaTime, 0);
-		layers[1].move(100.f * deltaTime, 0);
-		layers[8].move(100 * deltaTime, 0);
-		layers[2].move(150.f * deltaTime, 0);
-		layers[9].move(150.f * deltaTime, 0);
-		layers[3].move(200.f * deltaTime, 0);
+		layers[0].move (50.f  * deltaTime, 0);
+		layers[7].move (50.f  * deltaTime, 0);
+		layers[1].move (100.f * deltaTime, 0);
+		layers[8].move (100.f * deltaTime, 0);
+		layers[2].move (150.f * deltaTime, 0);
+		layers[9].move (150.f * deltaTime, 0);
+		layers[3].move (200.f * deltaTime, 0);
 		layers[10].move(200.f * deltaTime, 0);
-		layers[4].move(250.f * deltaTime, 0);
+		layers[4].move (250.f * deltaTime, 0);
 		layers[11].move(250.f * deltaTime, 0);
-		layers[5].move(300.f * deltaTime, 0);
+		layers[5].move (300.f * deltaTime, 0);
 		layers[12].move(300.f * deltaTime, 0);
-		layers[6].move(350.f * deltaTime, 0);
+		layers[6].move (350.f * deltaTime, 0);
 		layers[13].move(350.f * deltaTime, 0);
 	}
 	// Checking borders

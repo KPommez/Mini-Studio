@@ -56,7 +56,7 @@ void Player::loadAssets(RenderWindow& window) {
 	// Applying a new scale to all the loaded sprites
 	float ratio = playerTexture.getSize().y / (float)window.getSize().y;
 	for (auto& _sprite : playerSprites) {
-		_sprite.scale(ratio / 6.5f, ratio / 6.5f);
+		_sprite.scale(ratio / 4.f, ratio / 4.f);
 	}
 }
 
@@ -115,7 +115,12 @@ void Player::gravityGestion(const float& deltaTime, RenderWindow& window) {
 				hasPlatform = true;
 			}
 			else {
-				playerSprite.move(0, fallingMovement * deltaTime * fallingSpeed); 
+				if (hasPlatform) {
+					playerSprite.move(0, 0);
+				}
+				else {
+					playerSprite.move(0, fallingMovement * deltaTime * fallingSpeed);
+				}
 			}
 		}
 		else {
@@ -220,14 +225,14 @@ void Player::animationGestion(const float& deltaTime) {
 			animationTime = 0.f;
 		}
 		// Restart the animation loop after 0.5 seconds
-		if (animationTime > .5f) {
+		if (animationTime > 0.75f) {
 			animationTime = 0.f;
 		}
-		else if (animationTime < (.5f / 3.f)) {
+		else if (animationTime < .25f) {
 			playerSprites[1].setPosition(playerSprite.getPosition());
 			playerSprite = playerSprites[1];
 		}
-		else if (animationTime < (.5f / 2.f)) {
+		else if (animationTime < .5f) {
 			playerSprites[2].setPosition(playerSprite.getPosition());
 			playerSprite = playerSprites[2];
 		}
@@ -265,42 +270,44 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 	}
 	if (playerSprite.getPosition().x <= 0) {
 		playerSprite.move(speed * 2.f * deltaTime, 0);
+		isIdling = true;
+		isIdlingAnimationStarted = true;
 	}
 	hasPlatform = false;
 	if (playerSprite.getPosition().y >= floorLevel) {
-		playerSprite.setPosition(playerSprite.getPosition().x, floorLevel);
-		hadPlatformWhenJumped = true;
-		hasPlatform = true;
 		isFalling = false;
 		isJumping = false;
+		hasPlatform = true;
 		canDoubleJump = true;
+		hadPlatformWhenJumped = true;
+		playerSprite.setPosition(playerSprite.getPosition().x, floorLevel);
 		spacebarPresses = 0;
 	}
 	else {
 		int count = 0;
 		for (auto& platform : platforms) {
 			if (playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) && !hasPressedS) {
-				count++;
-				canDoubleJump = true;
-				hasPlatform = true;
-				spacebarPresses = 0;
-				hadPlatformWhenJumped = true;
 				if (isFalling) {
-					isFalling = false;
+					cout << "Collision" << endl;
 					isJumping = false;
+					isFalling = false;
+					canDoubleJump = true;
+					hadPlatformWhenJumped = true;
+					spacebarPresses = 0;
+					playerSprite.move(0, 0);
 				}
-				if (!isFalling&& !isJumping) {
-					if (!invertedGravity) {
-						playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
-					}
-					else {
-						playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y + platform.getSize().y + 0.1f);
-					}
-				}
+				hasPlatform = true;
+				count++;
 			}
 		}
-		if (!hasPlatform && !isJumping) {
-			isFalling = true;
+		if (!count) {
+			isFalling   = true;
+			hasPlatform = false;
+		}
+	}
+	for (auto& platform : platforms) {
+		if (playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) && !hasPressedS && posY > platform.getPosition().y && !isJumping) {
+			playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
 		}
 	}
 }
