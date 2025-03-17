@@ -60,7 +60,7 @@ Menu::Menu(RenderWindow& window) : game(window) {
 	spriteChoix2.setPosition(800, 475);
 	spriteChoix3.setPosition(890, 700);
 
-	posButon = 0;
+	posButon = 3;
 
 
 	///Bulle arrière
@@ -93,6 +93,22 @@ void Menu::setTexture(const string& PNGfile, RenderWindow& window)
 }
 
 void Menu::start(RenderWindow& window) {
+	// gestion du int des boutons 
+	if (Joystick::getAxisPosition(0, Joystick::PovY) >= 80 && menuNavigationClock.getElapsedTime().asSeconds() > 0.2) {
+		menuNavigationClock.restart();
+		posButon++;
+	}
+	else if (Joystick::getAxisPosition(0, Joystick::PovY) <= -80 && menuNavigationClock.getElapsedTime().asSeconds() > 0.2) {
+		menuNavigationClock.restart();
+		posButon--;
+	}
+	if (posButon >= 4) {
+		posButon = 0;
+	}
+	else if (posButon <= -1) {
+		posButon = 0;
+	}
+
 	switch (menuState) {
 	case MENU:
 		menu(window);
@@ -116,7 +132,6 @@ void Menu::start(RenderWindow& window) {
 }
 
 void Menu::menu(RenderWindow& window) {
-	cout << "hello" << endl;
 	bool hasStarted = false;
 
 
@@ -141,67 +156,56 @@ void Menu::menu(RenderWindow& window) {
 		Vector2f mouse = { (float)n_mouse.x, (float)n_mouse.y };
 		Event gameEvent;
 		while (window.pollEvent(gameEvent)) {
+			cout << posButon << endl;
+
 			if (gameEvent.type == Event::Closed)
 				window.close();
 
 			if (Keyboard::isKeyPressed(Keyboard::K))
 				window.close();
 
-			if (spriteMenu[0].getGlobalBounds().contains(mouse.x, mouse.y)) { //Play
+			if (spriteMenu[0].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 2) { //Play
 				selectSprite[0].setColor(Color(255, 255, 255, 255));
 				selectSprite[1].setColor(Color(255, 255, 255, 0));
 				selectSprite[2].setColor(Color(255, 255, 255, 0));
-				cout << "test";
 			}
-			else if (spriteMenu[1].getGlobalBounds().contains(mouse.x, mouse.y)) { //Settings
+			else if (spriteMenu[1].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 1) { //Settings
 				selectSprite[0].setColor(Color(255, 255, 255, 0));
 				selectSprite[1].setColor(Color(255, 255, 255, 255));
 				selectSprite[2].setColor(Color(255, 255, 255, 0));
-
 			}
-			else if (spriteMenu[2].getGlobalBounds().contains(mouse.x, mouse.y)) { //Quit
+			else if (spriteMenu[2].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 0) { //Quit
 				selectSprite[0].setColor(Color(255, 255, 255, 0));
 				selectSprite[1].setColor(Color(255, 255, 255, 0));
 				selectSprite[2].setColor(Color(255, 255, 255, 255));
 			}
-			
-
-
-			if (Mouse::isButtonPressed(Mouse::Left)) {
-				if (spriteMenu[0].getGlobalBounds().contains(mouse.x,mouse.y)) {
-					listeTexte.clear();
-					listeRectangle.clear();
-					menuState = START;
-					hasStarted = true;
-					game.setRunning(true);
-				}
-				if (spriteMenu[1].getGlobalBounds().contains(mouse.x, mouse.y)) {
-					listeTexte.clear();
-					listeRectangle.clear();
-					menuState = OPTION;
-				}
-				if (spriteMenu[2].getGlobalBounds().contains(mouse.x, mouse.y)) {
-					window.close();
-				}
+			else if (posButon == 3) {
+				selectSprite[0].setColor(Color(255, 255, 255, 0));
+				selectSprite[1].setColor(Color(255, 255, 255, 0));
+				selectSprite[2].setColor(Color(255, 255, 255, 0));
 			}
-			if (Joystick::getAxisPosition(0, Joystick::PovY) >= 10) {
-				posButon++;
+
+			if (posButon == 2 && (spriteMenu[0].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0,1))) {
+				listeTexte.clear();
+				listeRectangle.clear();
+				menuState = START;
+				hasStarted = true;
+				game.setRunning(true);
 			}
-			else if (Joystick::getAxisPosition(0, Joystick::PovY) <= -10) {
-				posButon--;
+			if (posButon == 1 && (spriteMenu[1].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1))) {
+				listeTexte.clear();
+				listeRectangle.clear();
+				menuState = OPTION;
+			}
+			if (posButon == 0 && (spriteMenu[2].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1))) {
+				window.close();
 			}
 		}
-
-
 		hitbox.clear();
 		for (auto& Rectangle : hitbox) {
 			delete Rectangle;
 		}
-
-
-
 		window.display();
-
 	}
 
 
