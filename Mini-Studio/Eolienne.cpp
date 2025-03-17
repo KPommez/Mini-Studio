@@ -28,8 +28,9 @@ void Eolienne::update(const float& deltaTime, RenderWindow& window) {
 		break;
 
 	case PUSH:
+		player->isGoingLeft = true;
+		player->isIdling = false;
 		if (clock.getElapsedTime().asSeconds() < 1.5) {
-			cout << "pushing" << endl;
 			push(window, deltaTime);
 		}
 		else {
