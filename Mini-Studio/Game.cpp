@@ -21,7 +21,7 @@ void Game::Run(RenderWindow& window) {
     // Chargement des assets
     parralaxLevelOne.instanciateLayers(window, "levelOne", 7); // Level 1 has 7 layers in his background
     // Chargement de la map
-    level.loadMap(level.allLevels.at(index)); //level.allLevels.at(index)"Assets/map/test_map1.txt"
+    level.loadMap(level.allLevels.at(index));
     // Ajout des menus
     // Appel du dessin du menu
 
