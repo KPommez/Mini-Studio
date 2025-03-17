@@ -30,10 +30,10 @@ void Game::Run(RenderWindow& window) {
     player.resize(window);
 
     shared_ptr<Lampadaire> test = make_shared<Lampadaire>(Vector2f(500, 900), &player);
-    shared_ptr<Petrifeu> test2 = make_shared<Petrifeu>(Vector2f(500, 900), &player);
-    shared_ptr<Eolienne> testEolienne = make_shared<Eolienne>(Vector2(300.0f, 800.0f));
+    /*shared_ptr<Petrifeu> test2 = make_shared<Petrifeu>(Vector2f(500, 900), &player);*/
+    shared_ptr<Eolienne> testEolienne = make_shared<Eolienne>(Vector2(300.0f, 900.0f), &player);
     m_entityManager->addEnnemy(test);
-    m_entityManager->addEnnemy(test2);
+   /* m_entityManager->addEnnemy(test2);*/
     m_entityManager->addEnnemy(testEolienne);
 
     view(window);

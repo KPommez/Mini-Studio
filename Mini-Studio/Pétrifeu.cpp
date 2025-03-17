@@ -18,6 +18,7 @@ void Petrifeu::change() {
 	int random;
 	switch (feucolor) {
 	case GREEN:
+		player->canMove = true;
 		shape.setFillColor(Color::Green);
 		random = rand() % 3 + 1;
 
@@ -56,10 +57,12 @@ void Petrifeu::change() {
 		
 	case RED:
 		shape.setFillColor(Color::Red);
+		player->canMove = false;
 		if (clock.getElapsedTime().asSeconds() > 2) {
 			shape.setFillColor(Color::Green);
 			feucolor = GREEN;
 			clock.restart();
+			
 		}
 		break;
 	}
