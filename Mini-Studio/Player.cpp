@@ -303,7 +303,6 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		for (auto& platform : platformsMobile) {
 			if (playerSprite.getGlobalBounds().intersects(platform->plat.getGlobalBounds()) && !hasPressedS) {
 				if (isFalling) {
-					cout << "Collision" << endl;
 					isJumping = false;
 					isFalling = false;
 					canDoubleJump = true;
