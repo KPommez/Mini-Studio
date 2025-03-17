@@ -28,7 +28,7 @@ Menu::Menu(RenderWindow& window) : game(window) {
 
 	selectPlaySprite.setPosition(820, 275);
 	selectSettingsSprite.setPosition(750, 475);
-	selectQuitSprite.setPosition(840, 700);
+	selectQuitSprite.setPosition(840, 705);
 
 	selectPlaySprite.setColor(Color(255, 255, 255, 0));
 	selectSettingsSprite.setColor(Color(255, 255, 255, 0));
