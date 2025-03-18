@@ -24,7 +24,11 @@ void Menu::start(RenderWindow& window) {
 	else if (posButon <= -1) {
 		posButon = 0;
 	}
-
+	cout << game.getRunning();
+	if (game.lose == true)
+	{
+		menuState = LOOSE;
+	}
 	switch (menuState) {
 	case MENU:
 		menu(window);
@@ -33,6 +37,7 @@ void Menu::start(RenderWindow& window) {
 		option(window);
 		break;
 	case START:
+		game.player.hitcount = 0;
 		game.Run(window);
 		menuState = MENU;
 		break;
@@ -50,10 +55,13 @@ void Menu::start(RenderWindow& window) {
 void Menu::menu(RenderWindow& window) {
 	bool hasStarted = false;
 
+
 		window.clear(Color::Black);
+
 		drawback(window);
 		spriteMenu.drawVector(window);
 		spriteMenu.setTexture("assets/backMenu/menutel.png", window);
+
 
 		Vector2i n_mouse = Mouse::getPosition(window);
 		Vector2f mouse = { (float)n_mouse.x, (float)n_mouse.y };
@@ -244,12 +252,11 @@ void Menu::loose(RenderWindow& window) {
 			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
 				listeTexte.clear();
 				listeRectangle.clear();
-				menuState = START;
+				menuState = MENU;
+				game.lose = false;
 			}
 			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
-				listeTexte.clear();
-				listeRectangle.clear();
-				menuState = MENU;
+				window.close();
 			}
 		}
 	}

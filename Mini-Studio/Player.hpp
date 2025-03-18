@@ -22,6 +22,7 @@ public:
 	bool isGoingRight;
 	bool hasPressedS;
 	Sprite playerSprite;
+	int hitcount;
 
 private:
 	void inputGestion(const float& deltaTime, RenderWindow& window);

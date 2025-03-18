@@ -3,7 +3,7 @@
 #include "Texte.hpp"
 #include "Button.hpp"
 #include "Game.hpp"
-#include "SpriteMenu.h"
+#include "SpriteMenu.hpp"
 
 
 enum MenuState {

@@ -1,4 +1,4 @@
-#include "SpriteMenu.h"
+#include "SpriteMenu.hpp"
 
 void SpriteMenu::initAllSpriteMenu()
 {

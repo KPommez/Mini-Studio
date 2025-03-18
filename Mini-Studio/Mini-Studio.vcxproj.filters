@@ -98,7 +98,7 @@
     <ClInclude Include="ParralaxBackground.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteMenu.h">
+    <ClInclude Include="SpriteMenu.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

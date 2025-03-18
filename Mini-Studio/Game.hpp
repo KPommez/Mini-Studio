@@ -14,9 +14,11 @@ public:
 	bool setRunning(bool test);
 
 public:
+	bool lose = false;
 	bool inGame;
 	Map level;
 	Player player;
+	bool getRunning();
 
 private:
 	void update(const float& deltaTime, RenderWindow& window);
@@ -24,7 +26,9 @@ private:
 	void draw(RenderWindow& window);
 	void view(RenderWindow& window);
 
+
 private:
+
 	bool isRunning;
 	bool firstParralaxOn, secondParralaxOn;
 	int index;

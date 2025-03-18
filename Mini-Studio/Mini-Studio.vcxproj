@@ -171,7 +171,7 @@
     <ClInclude Include="Plateforme.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Pétrifeu.hpp" />
-    <ClInclude Include="SpriteMenu.h" />
+    <ClInclude Include="SpriteMenu.hpp" />
     <ClInclude Include="Texte.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

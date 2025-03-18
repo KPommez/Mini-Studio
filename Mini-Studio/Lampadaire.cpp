@@ -78,6 +78,7 @@ void Lampadaire::chase(Vector2f playerPos, const float& deltaTime) {
 
 	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {
 		player->playerSprite.setPosition(500, 500);
+		player->hitcount = player->hitcount + 1 ;
 	}
 	//lum.move(direction);
 }
