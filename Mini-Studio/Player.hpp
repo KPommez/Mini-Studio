@@ -36,6 +36,7 @@ private:
 	bool isFalling;
 	bool canDoubleJump;
 	bool hasPlatform;
+	bool hasMovingPlatform;
 	bool invertedGravity;
 	bool isSpacePressed;
 	bool isIdlingAnimationStarted;
