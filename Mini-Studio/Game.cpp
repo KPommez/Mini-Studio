@@ -29,13 +29,8 @@ void Game::Run(RenderWindow& window) {
     player.loadAssets(window);
     player.resize(window);
 
-    loadLevel(index, &player, window);
-    /*shared_ptr<Lampadaire> lampadaire = make_shared<Lampadaire>(Vector2f(500, 900), &player);
-    shared_ptr<Petrifeu> petrifeu     = make_shared<Petrifeu>  (Vector2f(500,  900), &player);
-    shared_ptr<Eolienne> eolienne     = make_shared<Eolienne>  (Vector2f(1000, 900), &player, window);
-    m_entityManager->addEnnemy(lampadaire);
-    m_entityManager->addEnnemy(petrifeu);
-    m_entityManager->addEnnemy(eolienne);*/
+
+    level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
 
     view(window);
 
@@ -79,8 +74,17 @@ void Game::update(const float& deltaTime, RenderWindow& window) {
     level.m_entityManager->updateEntities(window, deltaTime);
     player.Colision(window, deltaTime, level.platforms, level.plateformeTest);
     player.update(deltaTime, window);
+    parralaxLevelOne.moveLayers(deltaTime, window, player);
     for (auto& Plateforme : level.plateformeTest) {
         Plateforme->platUpdate(deltaTime);
+    }
+    if (player.playerSprite.getGlobalBounds().intersects(level.end.getGlobalBounds())) {
+        index += 1;
+        level.plateformeTest.clear();
+        level.platforms.clear();
+        level.m_entityManager->deleteAllEnnemy();
+        player.playerSprite.setPosition(500, 500);
+        level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
     }
 }
 
@@ -99,7 +103,7 @@ void Game::view(RenderWindow& window) {
         position.x = window.getSize().x * 50.f;
     }
     else {
-        parralaxLevelOne.moveLayers(deltaTime, window, player);
+        
     }
 
     if (position.y > 0) {
@@ -113,14 +117,13 @@ void Game::view(RenderWindow& window) {
 
 void Game::draw(RenderWindow& window) {
     window.clear();
-    parralaxLevelOne.draw(window);
+    if (index == 0) {
+        parralaxLevelOne.draw(window);
+    }
+    if (index == 1) {
+        //parralaxLevelTwo.draw(window);
+    }
     level.drawMap(window);
     player.draw(window);
     window.display();
-}
-
-void Game::loadLevel(int index, Player* players, RenderWindow& window) {
-    level.loadMap(level.allLevels.at(index), players,window);
-
-    
 }

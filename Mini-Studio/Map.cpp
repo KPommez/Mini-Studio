@@ -29,7 +29,7 @@ void Map::loadAllMaps() {
 	}
 }
 
-void Map::loadMap(const string& filename, Player* players, RenderWindow& window) {
+void Map::loadMap(const string& filename, Player* players, RenderWindow& window, ParralaxBackground* currentLevel) {
 	plateformeTest.clear();
 	platforms.clear();
 	ifstream file(filename);
@@ -55,19 +55,18 @@ void Map::loadMap(const string& filename, Player* players, RenderWindow& window)
 			else if (line[x] == '1') {
 				plateformeTest.push_back(new Plateforme(posX, posY, 3));
 			}
-			else if (line[x] == 'F') {
-				mur.setSize({ 40.f,40.f });
-				mur.setFillColor(Color::Green);
-				mur.setPosition(posX, posY);
-				end.push_back(mur);
+			else if (line[x] == 'E') {
+				end.setSize({ 40.f,40.f });
+				end.setFillColor(Color::Green);
+				end.setPosition(posX, posY);
 			}
 			else if (line[x] == 'L') {
-				m_entityManager->addEnnemy(make_shared<Lampadaire>(Vector2f(posX, posY), players));
+				m_entityManager->addEnnemy(make_shared<Lampadaire>(Vector2f(posX, posY), players, currentLevel));
 			}
 			else if (line[x] == 'P') {
 				m_entityManager->addEnnemy(make_shared<Petrifeu>(Vector2f(posX, posY), players));
 			}
-			else if (line[x] == 'E') {
+			else if (line[x] == 'V') {
 				m_entityManager->addEnnemy(make_shared<Eolienne>(Vector2f(posX, posY), players, window));
 			}
 			
@@ -84,4 +83,5 @@ void Map::drawMap(RenderWindow& window) {
 		window.draw(Plateforme->plat);
 	}
 	m_entityManager->drawEntities(window);
+	window.draw(end);
 }
