@@ -18,6 +18,7 @@ public:
 
     int posButon;
     bool hasStarted = false;
+    int testgit;
 
 
 private:
