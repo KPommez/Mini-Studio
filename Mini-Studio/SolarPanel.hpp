@@ -8,5 +8,5 @@ public:
 	void draw(RenderWindow& window) override;
 	int faisceau;
 	Player* player;
-	Vector2f position;
+	Vector2f position; // Position of the solar panel
 };

@@ -5,11 +5,14 @@
 #include "Lampadaire.hpp"
 #include "Pétrifeu.hpp"
 #include "Eolienne.hpp"
+
+class ParralaxBackground;
 class EntityManager;
 
 class Map {
 private:
 	RectangleShape mur;
+	
 	
 	float posX;
 	float posY;
@@ -18,11 +21,13 @@ private:
 public:
 	Map();
 	void loadAllMaps();
-	void loadMap(const string& filename, Player* players, RenderWindow& window);
+	void loadMap(const string& filename, Player* players, RenderWindow& window, ParralaxBackground* currentLevel);
 	void drawMap(RenderWindow& window);
 
+	RectangleShape end;
+
 	vector<RectangleShape> platforms;
-	vector<RectangleShape> end;
+	
 	vector <Plateforme*> plateformeTest;
 	vector<string> allLevelsTypePath{ "Assets/Map/" };
 	vector<string> allLevels;

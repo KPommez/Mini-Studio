@@ -11,8 +11,8 @@ SolarPanel::SolarPanel(Vector2f pos, Player* players, RenderWindow& window) {
 }
 
 void SolarPanel::draw(RenderWindow& window) {
-	window.draw(shape);
+	window.draw(shape); // Draw the shape
 }
 void SolarPanel::update(const float& deltaTime, RenderWindow& window) {
-	
+
 }

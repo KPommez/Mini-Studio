@@ -17,10 +17,9 @@ public:
 	Player player;
 
 private:
-	void update(const float& deltaTime, RenderWindow& window);
 	void pollEvents(RenderWindow& window);
+	void update(const float& deltaTime, RenderWindow& window);
 	void draw(RenderWindow& window);
-	void loadLevel(int index, Player* players, RenderWindow& window);
 	void view(RenderWindow& window);
 
 private:
