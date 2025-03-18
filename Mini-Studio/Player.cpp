@@ -7,6 +7,7 @@ Player::Player() {
 	isAnimationStarted       = false;
 	invertedGravity          = false;
 	hasPlatform              = true;
+	hasMovingPlatform        = false;
 	isGoingLeft              = false;
 	isGoingRight             = true;
 	isJumping                = false;
@@ -36,29 +37,38 @@ void Player::resize(RenderWindow& window) {
 }
 
 void Player::loadAssets(RenderWindow& window) {
-	// Loading the assets
-	playerIdleTexture.loadFromFile("Assets/Player/idle.png");
-	playerWalk1.loadFromFile("Assets/Player/walk1.png");
-	playerWalk2.loadFromFile("Assets/Player/walk2.png");
-	playerWalk3.loadFromFile("Assets/Player/walk3.png");
-	// Setting the default player's texture
-	playerTexture = playerIdleTexture;
-	// Applying textures
-	playerIdleSprite.setTexture(playerIdleTexture);
-	playerWalk1Sprite.setTexture(playerWalk1);
-	playerWalk2Sprite.setTexture(playerWalk2);
-	playerWalk3Sprite.setTexture(playerWalk3);
-	// Adding them to the vector of sprites
-	playerSprites.reserve(4);
-	playerSprites.emplace_back(playerIdleSprite);
-	playerSprites.emplace_back(playerWalk1Sprite);
-	playerSprites.emplace_back(playerWalk2Sprite);
-	playerSprites.emplace_back(playerWalk3Sprite);
-	// Applying a new scale to all the loaded sprites
-	float ratio = playerTexture.getSize().y / (float)window.getSize().y;
-	for (auto& _sprite : playerSprites) {
-		_sprite.scale(ratio / 4.f, ratio / 4.f);
+	if (!loaded) {
+		// Loading the assets
+		playerIdleTexture.loadFromFile("Assets/Player/idle.png");
+		playerWalk1.loadFromFile("Assets/Player/walk1.png");
+		playerWalk2.loadFromFile("Assets/Player/walk2.png");
+		playerWalk3.loadFromFile("Assets/Player/walk3.png");
+		// Setting the default player's texture
+		playerTexture = playerIdleTexture;
+		// Applying textures
+		playerIdleSprite.setTexture(playerIdleTexture);
+		playerWalk1Sprite.setTexture(playerWalk1);
+		playerWalk2Sprite.setTexture(playerWalk2);
+		playerWalk3Sprite.setTexture(playerWalk3);
+		// Adding them to the vector of sprites
+		playerSprites.reserve(4);
+		playerSprites.emplace_back(playerIdleSprite);
+		playerSprites.emplace_back(playerWalk1Sprite);
+		playerSprites.emplace_back(playerWalk2Sprite);
+		playerSprites.emplace_back(playerWalk3Sprite);
+		// Applying a new scale to all the loaded sprites
+		float ratio = playerTexture.getSize().y / (float)window.getSize().y;
+		for (auto& _sprite : playerSprites) {
+			_sprite.scale(ratio / 4.f, ratio / 4.f);
+		}
+		loaded = true;
 	}
+
+}
+
+Texture& Player::getTexture()
+{
+	return playerTexture;
 }
 
 void Player::update(const float& deltaTime, RenderWindow& window) {
@@ -275,6 +285,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		isIdlingAnimationStarted = true;
 	}
 	hasPlatform = false;
+	hasMovingPlatform = false;
 	if (playerSprite.getPosition().y >= floorLevel) {
 		isFalling = false;
 		isJumping = false;
@@ -304,6 +315,8 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		for (auto& platform : platformsMobile) {
 			if (playerSprite.getGlobalBounds().intersects(platform->plat.getGlobalBounds()) && !hasPressedS) {
 				if (isFalling) {
+					playerSprite.setPosition(playerSprite.getPosition().x, platform->plat.getPosition().y);
+					hasMovingPlatform = true;
 					isJumping = false;
 					isFalling = false;
 					canDoubleJump = true;

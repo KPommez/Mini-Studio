@@ -86,9 +86,8 @@ void Plateforme::platUpdate(const float& deltatime) {
             plat.setPosition(plat.getPosition().x, wayPoint2);
             deplacementY *= -1;
         }
-        plat.move(0, deplacementY * deltatime * 200.0f);
-        
+        plat.move(0, deplacementY * deltatime * 100.0f);
+
     }
 
 }
-

@@ -13,6 +13,8 @@ public:
 	void Colision(RenderWindow& window, const float& deltaTime, vector<RectangleShape> platforms, vector<Plateforme*> platformsMobile);
 	void resize(RenderWindow& window);
 	void loadAssets(RenderWindow& window);
+	Texture& getTexture();
+	vector<Sprite>  playerSprites;
 
 public:
 	bool isDashing;
@@ -22,6 +24,7 @@ public:
 	bool isGoingRight;
 	bool hasPressedS;
 	Sprite playerSprite;
+	int hitcount;
 
 private:
 	void inputGestion(const float& deltaTime, RenderWindow& window);
@@ -31,11 +34,13 @@ private:
 	void animationGestion(const float& deltaTime);
 
 private:
+	bool loaded = false;
 	bool hadPlatformWhenJumped;
 	bool isJumping;
 	bool isFalling;
 	bool canDoubleJump;
 	bool hasPlatform;
+	bool hasMovingPlatform;
 	bool invertedGravity;
 	bool isSpacePressed;
 	bool isIdlingAnimationStarted;
@@ -55,7 +60,7 @@ private:
 	float dashingTime           = 0.5f;
 	Texture playerTexture;
 	Texture playerIdleTexture, playerWalk1, playerWalk2, playerWalk3;
-	vector<Sprite>  playerSprites;
+
 	Sprite playerIdleSprite, playerWalk1Sprite, playerWalk2Sprite, playerWalk3Sprite;
 	Clock clockDash;
 };

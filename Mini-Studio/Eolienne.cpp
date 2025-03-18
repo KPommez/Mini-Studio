@@ -4,7 +4,7 @@ Eolienne::Eolienne(Vector2f pos, Player* players, RenderWindow& window) {
 	player = players;
 	position = pos;
 	shape.setPosition(pos);
-	shape.setFillColor(Color::Transparent);
+	shape.setFillColor(Color::Cyan);
 	shape.setSize(Vector2f(50.0f, 50.0f));
 	
 	currentState = PATROL;
@@ -16,6 +16,7 @@ Eolienne::Eolienne(Vector2f pos, Player* players, RenderWindow& window) {
 void Eolienne::update(const float& deltaTime, RenderWindow& window) {
 	switch (currentState) {
 	case PATROL:
+		shape.setPosition({ window.getView().getCenter().x + 750,window.getView().getCenter().y - 300 });
 		if (clock.getElapsedTime().asSeconds() < 10) {
 		
 			patrol(deltaTime);
@@ -41,7 +42,7 @@ void Eolienne::update(const float& deltaTime, RenderWindow& window) {
 
 	}
 	
-	//shape.setPosition({ window.getView().getCenter().x + 750,window.getView().getCenter().y  });
+	
 	switch (moveSide)
 	{
 	case LEFT:
@@ -61,7 +62,7 @@ void Eolienne::draw(RenderWindow& window) {
 	window.draw(zone);
 }
 void Eolienne::push(RenderWindow& window, const float& deltaTime) {
-	shape.setPosition(player->playerSprite.getPosition() + Vector2f{ player->playerSprite.getGlobalBounds().width, 0.f });
+	shape.setPosition(player->playerSprite.getPosition().x +300,player->playerSprite.getPosition().y);
 	if (player->playerSprite.getGlobalBounds().intersects(zone.getGlobalBounds())) {
 		player->playerSprite.move(-800.f * deltaTime, 0.0f);
 	}

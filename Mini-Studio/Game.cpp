@@ -1,10 +1,10 @@
 #include "Game.hpp"
 
 Game::Game(RenderWindow& window) {
-    m_entityManager = make_shared<EntityManager>();
+	m_entityManager = make_shared<EntityManager>();
     deltaTime = 0.f;
     event = {};
-    isRunning = true;
+    isRunning = false;
     inGame = false;
     screenX = window.getSize().x;
     screenY = window.getSize().y;
@@ -15,26 +15,25 @@ Game::Game(RenderWindow& window) {
 }
 
 void Game::Run(RenderWindow& window) {
+    isRunning = true;
     inGame = true;
     srand(time(NULL));
 
     // Chargement des assets
     parralaxLevelOne.instanciateLayers(window, "levelOne", 7); // Level 1 has 7 layers in his background
     // Chargement de la map
-    level.loadMap(level.allLevels.at(index));
+    
     // Ajout des menus
     // Appel du dessin du menu
 
     playerSize = { (int)((float)window.getSize().y / 16.f), (int)((float)window.getSize().y / 8.f) };
     player.loadAssets(window);
-    player.resize(window);
+    //player.resize(window);
 
-    shared_ptr<Lampadaire> lampadaire = make_shared<Lampadaire>(Vector2f(500,  900), &player);
-    shared_ptr<Petrifeu> petrifeu     = make_shared<Petrifeu>  (Vector2f(500,  900), &player);
-    shared_ptr<Eolienne> eolienne     = make_shared<Eolienne>  (Vector2f(1000, 900), &player, window);
-    m_entityManager->addEnnemy(lampadaire);
-    m_entityManager->addEnnemy(petrifeu);
-    m_entityManager->addEnnemy(eolienne);
+    m_entityManager->deleteAllEnnemy();
+
+
+    level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
 
     view(window);
 
@@ -45,10 +44,12 @@ void Game::Run(RenderWindow& window) {
         update(deltaTime, window);
         draw(window);
         view(window);
-
+        if (player.hitcount >= 5)
+        {
+            isRunning = 0;
+            lose = true;
+        }
     }
-
-    window.close();
 }
 
 bool Game::setRunning(bool test)
@@ -74,12 +75,26 @@ void Game::pollEvents(RenderWindow& window) {
     }
 }
 
+bool Game::getRunning()
+{
+    return isRunning;
+}
+
 void Game::update(const float& deltaTime, RenderWindow& window) {
-    m_entityManager->updateEntities(window, deltaTime);
+    level.m_entityManager->updateEntities(window, deltaTime);
     player.Colision(window, deltaTime, level.platforms, level.plateformeTest);
     player.update(deltaTime, window);
+    parralaxLevelOne.moveLayers(deltaTime, window, player);
     for (auto& Plateforme : level.plateformeTest) {
         Plateforme->platUpdate(deltaTime);
+    }
+    if (player.playerSprite.getGlobalBounds().intersects(level.end.getGlobalBounds())) {
+        index += 1;
+        level.plateformeTest.clear();
+        level.platforms.clear();
+        level.m_entityManager->deleteAllEnnemy();
+        player.playerSprite.setPosition(500, 500);
+        level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
     }
 }
 
@@ -98,7 +113,7 @@ void Game::view(RenderWindow& window) {
         position.x = window.getSize().x * 50.f;
     }
     else {
-        parralaxLevelOne.moveLayers(deltaTime, window, player);
+        
     }
 
     if (position.y > 0) {
@@ -112,9 +127,13 @@ void Game::view(RenderWindow& window) {
 
 void Game::draw(RenderWindow& window) {
     window.clear();
-    parralaxLevelOne.draw(window);
+    if (index == 0) {
+        parralaxLevelOne.draw(window);
+    }
+    if (index == 1) {
+        //parralaxLevelTwo.draw(window);
+    }
     level.drawMap(window);
     player.draw(window);
-    m_entityManager->drawEntities(window);
     window.display();
 }
