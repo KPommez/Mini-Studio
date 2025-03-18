@@ -189,7 +189,6 @@ void Menu::win(RenderWindow& window) {
 	for (auto& Texte : listeTexte) {
 		window.draw(Texte.creation());
 	}
-
 	window.display();
 
 	Event gameEvent;
@@ -202,6 +201,7 @@ void Menu::win(RenderWindow& window) {
 				listeTexte.clear();
 				listeRectangle.clear();
 				menuState = START;
+
 			}
 			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
 				listeTexte.clear();
