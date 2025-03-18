@@ -252,11 +252,6 @@ void Menu::option(RenderWindow& window) {
 			}
 
 		}
-		else if (Joystick::isButtonPressed(0,2)) {
-			listeTexte.clear();
-			listeRectangle.clear();
-			menuState = MENU;
-		}
 	}
 }
 

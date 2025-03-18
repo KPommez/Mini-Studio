@@ -62,7 +62,7 @@ void Game::pollEvents(RenderWindow& window) {
         if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::J)) {
             isRunning = false;
         }
-        if ((event.type == Event::KeyReleased && event.key.code == Keyboard::F && inGame)) {
+        if ((event.type == Event::KeyReleased && event.key.code == Keyboard::LShift && inGame)) {
             player.isDashing = false;
         }
         if ((event.type == Event::KeyReleased && event.key.code == Keyboard::S && inGame) || (Joystick::getAxisPosition(0, Joystick::Y) < 50)) {
