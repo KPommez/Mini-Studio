@@ -12,15 +12,18 @@ public:
 	bool setRunning(bool test);
 
 public:
+	bool lose = false;
 	bool inGame;
 	Map level;
 	Player player;
+	bool getRunning();
 
 private:
 	void pollEvents(RenderWindow& window);
 	void update(const float& deltaTime, RenderWindow& window);
 	void draw(RenderWindow& window);
 	void view(RenderWindow& window);
+
 
 private:
 	bool isRunning;
@@ -36,4 +39,5 @@ private:
 	View vue;
 	Vector2i playerSize;
 	ParralaxBackground parralaxLevelOne;
+	shared_ptr<EntityManager> m_entityManager;
 };

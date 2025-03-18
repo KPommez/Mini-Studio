@@ -156,6 +156,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Pétrifeu.cpp" />
     <ClCompile Include="SolarPanel.cpp" />
+    <ClCompile Include="SpriteMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.hpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Plateforme.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Pétrifeu.hpp" />
+    <ClInclude Include="SpriteMenu.hpp" />
     <ClInclude Include="SolarPanel.hpp" />
     <ClInclude Include="Texte.hpp" />
   </ItemGroup>

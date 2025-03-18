@@ -1,10 +1,10 @@
 #include "Game.hpp"
 
 Game::Game(RenderWindow& window) {
-    
+	m_entityManager = make_shared<EntityManager>();
     deltaTime = 0.f;
     event = {};
-    isRunning = true;
+    isRunning = false;
     inGame = false;
     screenX = window.getSize().x;
     screenY = window.getSize().y;
@@ -15,6 +15,7 @@ Game::Game(RenderWindow& window) {
 }
 
 void Game::Run(RenderWindow& window) {
+    isRunning = true;
     inGame = true;
     srand(time(NULL));
 
@@ -27,7 +28,9 @@ void Game::Run(RenderWindow& window) {
 
     playerSize = { (int)((float)window.getSize().y / 16.f), (int)((float)window.getSize().y / 8.f) };
     player.loadAssets(window);
-    player.resize(window);
+    //player.resize(window);
+
+    m_entityManager->deleteAllEnnemy();
 
 
     level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
@@ -41,10 +44,12 @@ void Game::Run(RenderWindow& window) {
         update(deltaTime, window);
         draw(window);
         view(window);
-
+        if (player.hitcount >= 5)
+        {
+            isRunning = 0;
+            lose = true;
+        }
     }
-
-    window.close();
 }
 
 bool Game::setRunning(bool test)
@@ -58,7 +63,7 @@ void Game::pollEvents(RenderWindow& window) {
         if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::J)) {
             isRunning = false;
         }
-        if (event.type == Event::KeyReleased && event.key.code == Keyboard::F && inGame) {
+        if (event.type == Event::KeyReleased && event.key.code == Keyboard::LShift && inGame) {
             player.isDashing = false;
         }
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::S && inGame) {
@@ -68,6 +73,11 @@ void Game::pollEvents(RenderWindow& window) {
             inGame = !inGame;
         }
     }
+}
+
+bool Game::getRunning()
+{
+    return isRunning;
 }
 
 void Game::update(const float& deltaTime, RenderWindow& window) {

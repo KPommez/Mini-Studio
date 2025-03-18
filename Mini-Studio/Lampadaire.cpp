@@ -88,7 +88,7 @@ void Lampadaire::chase(Vector2f playerPos, const float& deltaTime, RenderWindow&
 	position = shape.getPosition();
 
 	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {
-		player->playerSprite.setPosition(1500, 500);
+		player->playerSprite.setPosition(500, 500);
 		if (player->isGoingRight) {
 			player->isGoingLeft = true;
 			player->isGoingRight = false;
@@ -96,6 +96,7 @@ void Lampadaire::chase(Vector2f playerPos, const float& deltaTime, RenderWindow&
 		currentLevel->moveLayers(deltaTime, window, *player);
 		player->isGoingLeft = false;
 		player->isGoingRight = true;
+		player->hitcount = player->hitcount + 1 ;
 	}
 	//lum.move(direction);
 }
