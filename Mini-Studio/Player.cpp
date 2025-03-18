@@ -7,6 +7,7 @@ Player::Player() {
 	isAnimationStarted       = false;
 	invertedGravity          = false;
 	hasPlatform              = true;
+	hasMovingPlatform        = false;
 	isGoingLeft              = false;
 	isGoingRight             = true;
 	isJumping                = false;
@@ -284,6 +285,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		isIdlingAnimationStarted = true;
 	}
 	hasPlatform = false;
+	hasMovingPlatform = false;
 	if (playerSprite.getPosition().y >= floorLevel) {
 		isFalling = false;
 		isJumping = false;
@@ -312,6 +314,8 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		for (auto& platform : platformsMobile) {
 			if (playerSprite.getGlobalBounds().intersects(platform->plat.getGlobalBounds()) && !hasPressedS) {
 				if (isFalling) {
+					playerSprite.setPosition(playerSprite.getPosition().x, platform->plat.getPosition().y);
+					hasMovingPlatform = true;
 					isJumping = false;
 					isFalling = false;
 					canDoubleJump = true;

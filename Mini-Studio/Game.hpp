@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Lampadaire.hpp"
-#include "Pétrifeu.hpp"
-#include "Eolienne.hpp"
+
 #include "EntityManager.hpp"
 #include "Map.hpp"
 #include "ParralaxBackground.hpp"
@@ -21,14 +19,13 @@ public:
 	bool getRunning();
 
 private:
-	void update(const float& deltaTime, RenderWindow& window);
 	void pollEvents(RenderWindow& window);
+	void update(const float& deltaTime, RenderWindow& window);
 	void draw(RenderWindow& window);
 	void view(RenderWindow& window);
 
 
 private:
-
 	bool isRunning;
 	bool firstParralaxOn, secondParralaxOn;
 	int index;
@@ -36,10 +33,11 @@ private:
 	int screenY;
 	int spaceReleases;
 	float deltaTime;
-	shared_ptr<EntityManager>  m_entityManager;
+	
 	Event event;
 	Clock Clock;
 	View vue;
 	Vector2i playerSize;
 	ParralaxBackground parralaxLevelOne;
+	shared_ptr<EntityManager> m_entityManager;
 };

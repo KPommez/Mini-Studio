@@ -21,4 +21,6 @@ private:
 	State currentState;
 	MOVEMENTSIDE moveSide;
 	Vector2f Position;
+	int currentWaypoint;
+	sf::Vector2f waypoints[3];
 };
