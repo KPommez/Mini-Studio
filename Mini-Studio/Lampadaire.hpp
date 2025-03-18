@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Player.hpp"
+#include "Entity.hpp"
 
+
+class Player;
 class Lampadaire : public Entity {
 public:
 	Lampadaire(Vector2f pos, Player* players);
@@ -21,4 +23,5 @@ private:
 	enum  MOVEMENTSIDE { LEFT, RIGHT };
 	State currentState;
 	MOVEMENTSIDE moveSide;
+	int currentWaypoint;
 };

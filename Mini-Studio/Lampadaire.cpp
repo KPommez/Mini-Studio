@@ -1,4 +1,5 @@
 #include "Lampadaire.hpp"
+#include "Player.hpp"
 
 Lampadaire::Lampadaire(Vector2f pos, Player* players) {
 	player = players;
@@ -7,7 +8,8 @@ Lampadaire::Lampadaire(Vector2f pos, Player* players) {
 	shape.setFillColor(Color::Red);
 	shape.setSize({ 50, 50 });
 	currentState = PATROL;
-	moveSide = RIGHT;
+	moveSide = LEFT; 
+	currentWaypoint = 0;
 	
 	//lum.setPosition(shape.getPosition());
 	lum.setFillColor(Color::Yellow);
@@ -93,8 +95,8 @@ bool Lampadaire::detectPlayer(Vector2f playerPos) {
 	}
 }
 void Lampadaire::patrol(const float& deltaTime) {
-	static int currentWaypoint   = 0;
-	static Vector2f waypoints[2] = { Vector2f(position.x+100, position.y), Vector2f(position.x-400, position.y) };
+	
+	Vector2f waypoints[2] = { Vector2f(position.x + 100, position.y), Vector2f(position.x - 400, position.y)};
 	Vector2f target              = waypoints[currentWaypoint];
 	Vector2f direction           = target - position;
 	float distance               = sqrt(direction.x * direction.x + direction.y * direction.y);
