@@ -122,7 +122,5 @@ void Game::draw(RenderWindow& window) {
 void Game::loadLevel(int index, Player* players, RenderWindow& window) {
     level.loadMap(level.allLevels.at(index), players,window);
 
-    if (player.shape.getGlobalBounds().intersects(level.end)) {
-
-    }
+    
 }
