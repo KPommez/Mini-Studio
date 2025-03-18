@@ -1,14 +1,17 @@
 #include "Lampadaire.hpp"
+#include "Player.hpp"
+#include "ParralaxBackground.hpp"
 
-Lampadaire::Lampadaire(Vector2f pos, Player* players) {
+Lampadaire::Lampadaire(Vector2f pos, Player* players, ParralaxBackground* _currentLevel) {
 	player = players;
 	position = pos;
 	shape.setPosition(pos);
 	shape.setFillColor(Color::Red);
 	shape.setSize({ 50, 50 });
 	currentState = PATROL;
-	moveSide = RIGHT;
-	
+	moveSide = LEFT; 
+	currentWaypoint = 0;
+	currentLevel = _currentLevel;
 	//lum.setPosition(shape.getPosition());
 	lum.setFillColor(Color::Yellow);
 }
@@ -23,7 +26,7 @@ void Lampadaire::update(const float& deltaTime, RenderWindow& window) {
 		break;
 
 	case CHASE:
-		chase(player->sprite.getPosition(), deltaTime);
+		chase(player->sprite.getPosition(), deltaTime, window);
 		if (!detectPlayer(player->sprite.getPosition())) {
 			currentState = PATROL;
 		}
@@ -58,7 +61,7 @@ void Lampadaire::update(const float& deltaTime, RenderWindow& window) {
 	}
 
 }
-void Lampadaire::chase(Vector2f playerPos, const float& deltaTime) {
+void Lampadaire::chase(Vector2f playerPos, const float& deltaTime, RenderWindow& window) {
 	float direction = playerPos.x - position.x;
 	float distance = sqrt(direction * direction);
 
@@ -77,7 +80,14 @@ void Lampadaire::chase(Vector2f playerPos, const float& deltaTime) {
 	position = shape.getPosition();
 
 	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {
-		player->playerSprite.setPosition(500, 500);
+		player->playerSprite.setPosition(1500, 500);
+		if (player->isGoingRight) {
+			player->isGoingLeft = true;
+			player->isGoingRight = false;
+		}
+		currentLevel->moveLayers(deltaTime, window, *player);
+		player->isGoingLeft = false;
+		player->isGoingRight = true;
 	}
 	//lum.move(direction);
 }
@@ -93,8 +103,8 @@ bool Lampadaire::detectPlayer(Vector2f playerPos) {
 	}
 }
 void Lampadaire::patrol(const float& deltaTime) {
-	static int currentWaypoint   = 0;
-	static Vector2f waypoints[2] = { Vector2f(position.x+100, position.y), Vector2f(position.x-400, position.y) };
+	
+	Vector2f waypoints[2] = { Vector2f(position.x + 100, position.y), Vector2f(position.x - 400, position.y)};
 	Vector2f target              = waypoints[currentWaypoint];
 	Vector2f direction           = target - position;
 	float distance               = sqrt(direction.x * direction.x + direction.y * direction.y);
