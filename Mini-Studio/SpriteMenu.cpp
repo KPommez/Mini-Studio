@@ -11,7 +11,11 @@ void SpriteMenu::initAllSpriteMenu()
 		!choix3.loadFromFile("Assets/backMenu/bouton_quitter.png") ||
 		!selectPlay.loadFromFile("Assets/backMenu/selection_bouton.png") ||
 		!selectSettings.loadFromFile("Assets/backMenu/selection_bouton.png") ||
-		!selectQuit.loadFromFile("Assets/backMenu/selection_bouton.png"))
+		!selectQuit.loadFromFile("Assets/backMenu/selection_bouton.png") ||
+		!textureTouche.loadFromFile("Assets/backMenu/touche.png") ||
+		!textureTouche1.loadFromFile("Assets/backMenu/touche.png") ||
+		!textureTouche2.loadFromFile("Assets/backMenu/touche.png") ||
+		!textureTouche3.loadFromFile("Assets/backMenu/touche.png"))
 	{
 		cerr << "Assets du menu non totalement charges" << endl;
 	}
@@ -58,6 +62,23 @@ void SpriteMenu::initAllSpriteMenu()
 	spriteChoix2.setPosition(800, 475);
 	spriteChoix3.setPosition(890, 700);
 
+	///Touche 
+	touche.setTexture(textureTouche);
+	touche.setPosition(450, 400);
+	touche.setScale(0.25f, 0.25f);
+
+	touche1.setTexture(textureTouche1);
+	touche1.setPosition(580, 400);
+	touche1.setScale(0.25f, 0.25f);
+
+	touche2.setTexture(textureTouche2);
+	touche2.setPosition(710, 400);
+	touche2.setScale(0.25f, 0.25f);
+
+	touche3.setTexture(textureTouche3);
+	touche3.setPosition(450, 530);
+	touche3.setScale(0.25f, 0.25f);
+
 	///Bulle arrière
 	spriteVBulle.push_back(spriteBulle1);
 	spriteVBulle.push_back(spriteBulle3);
@@ -72,6 +93,12 @@ void SpriteMenu::initAllSpriteMenu()
 	spriteTexte.push_back(spriteChoix1);
 	spriteTexte.push_back(spriteChoix2);
 	spriteTexte.push_back(spriteChoix3);
+
+	//Touche
+	spritTouche.push_back(touche);
+	spritTouche.push_back(touche1);
+	spritTouche.push_back(touche2);
+	spritTouche.push_back(touche3);
 }
 
 void SpriteMenu::setTexture(const string& PNGfile, RenderWindow& window)

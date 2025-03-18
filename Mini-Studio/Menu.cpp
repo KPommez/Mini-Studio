@@ -121,7 +121,6 @@ void Menu::option(RenderWindow& window) {
 	window.clear(Color::Black);
 	listeTexte.clear();
 	listeRectangle.clear();
-	spriteMenu.setTexture("assets/backMenu/menu.png", window);
 	drawback(window);
 
 	Texte retour(spriteMenu.font, "Retour", 40, 0, 0, 0, 1700, 1000);
@@ -141,6 +140,10 @@ void Menu::option(RenderWindow& window) {
 		window.draw(Texte.creation());
 	}
 
+	for (auto& Touche : spriteMenu.spritTouche) {
+		window.draw(Touche);
+	}
+
 	window.display();
 
 	Event gameEvent;
@@ -157,7 +160,11 @@ void Menu::option(RenderWindow& window) {
 				listeRectangle.clear();
 				menuState = MENU;
 			}
-
+		}
+		else if (Joystick::isButtonPressed(0, 2)) {
+			listeTexte.clear();
+			listeRectangle.clear();
+			menuState = MENU;
 		}
 	}
 }

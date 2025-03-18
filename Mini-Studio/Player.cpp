@@ -204,7 +204,7 @@ void Player::jumpGestion(const float& deltaTime, RenderWindow& window) {
 }
 
 void Player::dashGestion(const float& deltaTime, RenderWindow& window) {
-	if (Keyboard::isKeyPressed(Keyboard::F) || Joystick::isButtonPressed(0,5)) {
+	if (Keyboard::isKeyPressed(Keyboard::LShift) || Joystick::isButtonPressed(0,5)) {
 		isDashing = true;
 	}
 	if (clockDash.getElapsedTime().asSeconds() >= 2 && !isDashing) {

@@ -33,11 +33,11 @@ void Game::Run(RenderWindow& window) {
     m_entityManager->deleteAllEnnemy();
 
     shared_ptr<Lampadaire> lampadaire = make_shared<Lampadaire>(Vector2f(500,  900), &player);
-    //shared_ptr<Petrifeu> petrifeu     = make_shared<Petrifeu>  (Vector2f(500,  900), &player);
-    //shared_ptr<Eolienne> eolienne     = make_shared<Eolienne>  (Vector2f(1000, 900), &player, window);
+    shared_ptr<Petrifeu> petrifeu     = make_shared<Petrifeu>  (Vector2f(500,  900), &player);
+    shared_ptr<Eolienne> eolienne     = make_shared<Eolienne>  (Vector2f(1000, 900), &player, window);
     m_entityManager->addEnnemy(lampadaire);
-    //m_entityManager->addEnnemy(petrifeu);
-    //m_entityManager->addEnnemy(eolienne);
+    m_entityManager->addEnnemy(petrifeu);
+    m_entityManager->addEnnemy(eolienne);
 
     view(window);
 
@@ -67,7 +67,7 @@ void Game::pollEvents(RenderWindow& window) {
         if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::J)) {
             isRunning = false;
         }
-        if (event.type == Event::KeyReleased && event.key.code == Keyboard::F && inGame) {
+        if (event.type == Event::KeyReleased && event.key.code == Keyboard::LShift && inGame) {
             player.isDashing = false;
         }
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::S && inGame) {
