@@ -20,7 +20,7 @@ void Game::Run(RenderWindow& window) {
 
     // Chargement des assets
     parralaxLevelOne.instanciateLayers(window, "levelOne", 7); // Level 1 has 7 layers in his background
-    levelTwoBeam.create({0.f, 0.f}, 50.f, Color::Yellow);
+    levelTwoBeam.create({500.f, 0.f}, 50.f, Color::Yellow);
     // Chargement de la map
     level.loadMap(level.allLevels.at(index));
     // Ajout des menus

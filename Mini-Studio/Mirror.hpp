@@ -7,6 +7,7 @@ public:
 	Mirror(const Vector2f& pos, const Vector2f& size, const float& startingAngle);
 
 public:
+	Vector2f getPosition() const;
 	void rotate(const float& deltaTime);
 	void draw(RenderWindow& window);
 
