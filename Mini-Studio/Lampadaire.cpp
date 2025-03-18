@@ -19,7 +19,9 @@ Lampadaire::Lampadaire(Vector2f pos, Player* players) {
 	lum.setFillColor(Color::Yellow);
 }
 void Lampadaire::update(const float& deltaTime, RenderWindow& window) {
-	
+	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {
+		player->playerSprite.setPosition(player->playerSprite.getPosition().x, 100);
+	}
 	switch (currentState) {
 	case PATROL:
 		patrol(deltaTime);
@@ -61,6 +63,7 @@ void Lampadaire::update(const float& deltaTime, RenderWindow& window) {
 
 	default:
 		break;
+
 	}
 
 }
@@ -82,9 +85,7 @@ void Lampadaire::chase(Vector2f playerPos, const float& deltaTime) {
 	};
 	position = shape.getPosition();
 
-	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {
-		player->playerSprite.setPosition(500, 500);
-	}
+	
 	//lum.move(direction);
 }
 
