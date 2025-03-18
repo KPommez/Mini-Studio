@@ -1,7 +1,7 @@
 #include "Game.hpp"
 
 Game::Game(RenderWindow& window) {
-    m_entityManager = make_shared<EntityManager>();
+    
     deltaTime = 0.f;
     event = {};
     isRunning = true;
@@ -21,7 +21,7 @@ void Game::Run(RenderWindow& window) {
     // Chargement des assets
     parralaxLevelOne.instanciateLayers(window, "levelOne", 7); // Level 1 has 7 layers in his background
     // Chargement de la map
-    level.loadMap(level.allLevels.at(index));
+    
     // Ajout des menus
     // Appel du dessin du menu
 
@@ -29,12 +29,13 @@ void Game::Run(RenderWindow& window) {
     player.loadAssets(window);
     player.resize(window);
 
-    shared_ptr<Lampadaire> lampadaire = make_shared<Lampadaire>(Vector2f(500,  900), &player);
+    loadLevel(index, &player, window);
+    /*shared_ptr<Lampadaire> lampadaire = make_shared<Lampadaire>(Vector2f(500, 900), &player);
     shared_ptr<Petrifeu> petrifeu     = make_shared<Petrifeu>  (Vector2f(500,  900), &player);
     shared_ptr<Eolienne> eolienne     = make_shared<Eolienne>  (Vector2f(1000, 900), &player, window);
     m_entityManager->addEnnemy(lampadaire);
     m_entityManager->addEnnemy(petrifeu);
-    m_entityManager->addEnnemy(eolienne);
+    m_entityManager->addEnnemy(eolienne);*/
 
     view(window);
 
@@ -75,7 +76,7 @@ void Game::pollEvents(RenderWindow& window) {
 }
 
 void Game::update(const float& deltaTime, RenderWindow& window) {
-    m_entityManager->updateEntities(window, deltaTime);
+    level.m_entityManager->updateEntities(window, deltaTime);
     player.Colision(window, deltaTime, level.platforms, level.plateformeTest);
     player.update(deltaTime, window);
     for (auto& Plateforme : level.plateformeTest) {
@@ -115,6 +116,13 @@ void Game::draw(RenderWindow& window) {
     parralaxLevelOne.draw(window);
     level.drawMap(window);
     player.draw(window);
-    m_entityManager->drawEntities(window);
     window.display();
+}
+
+void Game::loadLevel(int index, Player* players, RenderWindow& window) {
+    level.loadMap(level.allLevels.at(index), players,window);
+
+    if (player.shape.getGlobalBounds().intersects(level.end)) {
+
+    }
 }

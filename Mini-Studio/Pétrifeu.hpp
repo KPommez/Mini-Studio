@@ -2,6 +2,7 @@
 
 #include "Player.hpp"
 
+class Player;
 class Petrifeu : public Entity {
 public:
 	Petrifeu(Vector2f pos, Player* players);
