@@ -86,7 +86,7 @@ void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 		playerSprite.move(-speed * 2.f * deltaTime, 0);
 		hasInput = true;
 	}
-	if (canMove && (Keyboard::isKeyPressed(Keyboard::S) || Joystick::getAxisPosition(0, Joystick::Y) >= 10)) {
+	if (canMove && (Keyboard::isKeyPressed(Keyboard::S) || Joystick::getAxisPosition(0, Joystick::Y) >= 50)) {
 		if (!(playerSprite.getPosition().y >= window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f)) {
 			hasPressedS = true;
 		}
@@ -297,6 +297,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 					playerSprite.move(0, 0);
 				}
 				hasPlatform = true;
+				cout << "Platform" << endl;
 				count++;
 			}
 		}
@@ -311,6 +312,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 					playerSprite.move(0, 0);
 				}
 				hasPlatform = true;
+				cout << "Platform" << endl;
 				count++;
 			}
 		}
