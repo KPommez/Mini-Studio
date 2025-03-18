@@ -24,4 +24,5 @@ private:
 	State currentState;
 	MOVEMENTSIDE moveSide;
 	int currentWaypoint;
+	Vector2f waypoints[2];
 };

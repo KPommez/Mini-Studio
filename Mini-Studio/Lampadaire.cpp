@@ -10,6 +10,10 @@ Lampadaire::Lampadaire(Vector2f pos, Player* players) {
 	currentState = PATROL;
 	moveSide = LEFT; 
 	currentWaypoint = 0;
+	waypoints[0] = Vector2f(position.x + 100, position.y);
+	waypoints[1] = Vector2f(position.x - 400, position.y);
+
+	
 	
 	//lum.setPosition(shape.getPosition());
 	lum.setFillColor(Color::Yellow);
@@ -96,11 +100,10 @@ bool Lampadaire::detectPlayer(Vector2f playerPos) {
 }
 void Lampadaire::patrol(const float& deltaTime) {
 	
-	Vector2f waypoints[2] = { Vector2f(position.x + 100, position.y), Vector2f(position.x - 400, position.y)};
 	Vector2f target              = waypoints[currentWaypoint];
 	Vector2f direction           = target - position;
 	float distance               = sqrt(direction.x * direction.x + direction.y * direction.y);
-
+	cout << currentWaypoint << "  " << target.x << " " << target.y << endl;
 	switch (currentWaypoint) {
 	case 0: 
 		moveSide = RIGHT;
