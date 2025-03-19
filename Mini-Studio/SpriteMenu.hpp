@@ -23,7 +23,7 @@ public:
     Texture textureTouche, textureTouche1, textureTouche2, textureTouche3;
     Sprite touche, touche1, touche2, touche3;
 
-    void initAllSpriteMenu();
+    void initAllSpriteMenu(RenderWindow& window);
     void setTexture(const string& PNGfile, RenderWindow& window);
     void drawVector(RenderWindow& window);
 };
