@@ -132,9 +132,5 @@ void SpriteMenu::drawVector(RenderWindow& window) {
 	}
 }
 
-void SpriteMenu::ViewMenu(RenderWindow& window)
-{
-
-}
 
 
