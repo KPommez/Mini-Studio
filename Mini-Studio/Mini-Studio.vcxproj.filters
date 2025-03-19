@@ -51,6 +51,12 @@
     <ClCompile Include="ParralaxBackground.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="SolarPanel.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteMenu.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
     <ClCompile Include="LuminousBeam.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -101,7 +107,13 @@
     <ClInclude Include="ParralaxBackground.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="LuminousBeam.hpp">
+    <ClInclude Include="SpriteMenu.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarPanel.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+        <ClInclude Include="LuminousBeam.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Mirror.hpp">

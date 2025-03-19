@@ -83,7 +83,7 @@ void EntityManager::deleteAllEnnemy()
 		enemy.reset();
 	}
 	m_ennemies.clear();
-	for (auto& enemy : m_entities) {
+	/*for (auto& enemy : m_entities) {
 		enemy.reset();
 	}
 	m_entities.clear();
@@ -91,7 +91,7 @@ void EntityManager::deleteAllEnnemy()
 	for (auto& enemy : m_npc) {
 		enemy.reset();
 	}
-	m_npc.clear();
+	m_npc.clear();*/
 
 }
 

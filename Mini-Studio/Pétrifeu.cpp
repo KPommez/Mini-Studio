@@ -1,5 +1,6 @@
 #include "Pétrifeu.hpp"
 
+
 Petrifeu::Petrifeu(Vector2f pos, Player* players) {
 	player = players;
 	position = pos;

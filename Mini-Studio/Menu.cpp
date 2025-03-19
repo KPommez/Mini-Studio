@@ -2,95 +2,11 @@
 
 
 Menu::Menu(RenderWindow& window) : game(window) {
-	if (!font.loadFromFile("Assets/font/Minecraft.ttf") ||
-		!bulle1.loadFromFile("Assets/backMenu/texte.png") ||
-		!bulle2.loadFromFile("Assets/backMenu/texte1.png") ||
-		!bulle3.loadFromFile("Assets/backMenu/texte2.png") ||
-		!choix1.loadFromFile("Assets/backMenu/bouton_play.png") ||
-		!choix2.loadFromFile("Assets/backMenu/bouton_options.png") ||
-		!choix3.loadFromFile("Assets/backMenu/bouton_quitter.png") ||
-		!selectPlay.loadFromFile("Assets/backMenu/selection_bouton.png") ||
-		!selectSettings.loadFromFile("Assets/backMenu/selection_bouton.png") ||
-		!selectQuit.loadFromFile("Assets/backMenu/selection_bouton.png"))
-	{
-		cerr << "Assets du menu non totalement charges" << endl;
-	}
 	menuState = MENU;
-
-	///////////Selection//////////////
-	selectPlaySprite.setTexture(selectPlay);
-	selectSettingsSprite.setTexture(selectSettings);
-	selectQuitSprite.setTexture(selectQuit);
-
-	selectPlaySprite.setScale(0.5f, 0.5f);
-	selectSettingsSprite.setScale(0.5f, 0.5f);
-	selectQuitSprite.setScale(0.5f, 0.5f);
-
-	selectPlaySprite.setPosition(820, 275);
-	selectSettingsSprite.setPosition(750, 475);
-	selectQuitSprite.setPosition(840, 705);
-
-	selectPlaySprite.setColor(Color(255, 255, 255, 0));
-	selectSettingsSprite.setColor(Color(255, 255, 255, 0));
-	selectQuitSprite.setColor(Color(255, 255, 255, 0));
-
-	//////////Bulle/////////////////
-	spriteBulle1.setTexture(bulle1);
-	spriteBulle2.setTexture(bulle2);
-	spriteBulle3.setTexture(bulle3);
-
-	spriteBulle1.setScale(0.5f, 0.5f);
-	spriteBulle2.setScale(0.5f, 0.5f);
-	spriteBulle3.setScale(0.5f, 0.5f);
-
-	spriteBulle1.setPosition(770, 250);
-	spriteBulle2.setPosition(770, 650);
-	spriteBulle3.setPosition(675, 450);
-
-	///////////Choix Play/Settings/Quit ////////
-	spriteChoix1.setTexture(choix1);
-	spriteChoix2.setTexture(choix2);
-	spriteChoix3.setTexture(choix3);
-
-	spriteChoix1.setScale(0.5f, 0.5f);
-	spriteChoix2.setScale(0.5f, 0.5f);
-	spriteChoix3.setScale(0.5f, 0.5f);
-
-	spriteChoix1.setPosition(900, 275);
-	spriteChoix2.setPosition(800, 475);
-	spriteChoix3.setPosition(890, 700);
-
 	posButon = 3;
-
-
-	///Bulle arrière
-	spriteMenu.push_back(spriteBulle1);
-	spriteMenu.push_back(spriteBulle3);
-	spriteMenu.push_back(spriteBulle2);
-
-	///Selection
-	selectSprite.push_back(selectPlaySprite);
-	selectSprite.push_back(selectSettingsSprite);
-	selectSprite.push_back(selectQuitSprite);
-
-	///Texte
-	spriteTexte.push_back(spriteChoix1);
-	spriteTexte.push_back(spriteChoix2);
-	spriteTexte.push_back(spriteChoix3);
-
+	spriteMenu.initAllSpriteMenu();
 }
 
-void Menu::setTexture(const string& PNGfile, RenderWindow& window)
-{
-	if (texture.loadFromFile(PNGfile))
-	{
-		sprite.setTexture(texture);
-		Vector2u textureSize = texture.getSize();
-		float scaleX = static_cast<float>(window.getSize().x) / textureSize.x;
-		float scaleY = static_cast<float>(window.getSize().y) / textureSize.y;
-		sprite.setScale(scaleX, scaleY);
-	}
-}
 
 void Menu::start(RenderWindow& window) {
 	// gestion du int des boutons 
@@ -108,7 +24,11 @@ void Menu::start(RenderWindow& window) {
 	else if (posButon <= -1) {
 		posButon = 0;
 	}
-
+	cout << game.getRunning();
+	if (game.lose == true)
+	{
+		menuState = LOOSE;
+	}
 	switch (menuState) {
 	case MENU:
 		menu(window);
@@ -117,7 +37,9 @@ void Menu::start(RenderWindow& window) {
 		option(window);
 		break;
 	case START:
+		game.player.hitcount = 0;
 		game.Run(window);
+		exit(0);
 		menuState = MENU;
 		break;
 	case WIN:
@@ -138,18 +60,8 @@ void Menu::menu(RenderWindow& window) {
 		window.clear(Color::Black);
 
 		drawback(window);
-
-		for (auto& bulle : spriteMenu) {
-			window.draw(bulle);
-		}
-		for (auto& button : selectSprite) {
-			window.draw(button);
-		}
-		for (auto& text : spriteTexte) {
-			window.draw(text);
-		}
-	
-		setTexture("assets/backMenu/menutel.png", window);
+		spriteMenu.drawVector(window);
+		spriteMenu.setTexture("assets/backMenu/menutel.png", window);
 
 
 		Vector2i n_mouse = Mouse::getPosition(window);
@@ -163,46 +75,42 @@ void Menu::menu(RenderWindow& window) {
 			if (Keyboard::isKeyPressed(Keyboard::K))
 				window.close();
 
-			if (spriteMenu[0].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 2) { //Play
-				selectSprite[0].setColor(Color(255, 255, 255, 255));
-				selectSprite[1].setColor(Color(255, 255, 255, 0));
-				selectSprite[2].setColor(Color(255, 255, 255, 0));
+			if (spriteMenu.spriteVBulle[0].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 2) { //Play
+				spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 255));
+				spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 0));
+				spriteMenu.selectSprite[2].setColor(Color(255, 255, 255, 0));
 			}
-			else if (spriteMenu[1].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 1) { //Settings
-				selectSprite[0].setColor(Color(255, 255, 255, 0));
-				selectSprite[1].setColor(Color(255, 255, 255, 255));
-				selectSprite[2].setColor(Color(255, 255, 255, 0));
+			else if (spriteMenu.spriteVBulle[1].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 1) { //Settings
+				spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 0));
+				spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 255));
+				spriteMenu.selectSprite[2].setColor(Color(255, 255, 255, 0));
 			}
-			else if (spriteMenu[2].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 0) { //Quit
-				selectSprite[0].setColor(Color(255, 255, 255, 0));
-				selectSprite[1].setColor(Color(255, 255, 255, 0));
-				selectSprite[2].setColor(Color(255, 255, 255, 255));
+			else if (spriteMenu.spriteVBulle[2].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 0) { //Quit
+				spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 0));
+				spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 0));
+				spriteMenu.selectSprite[2].setColor(Color(255, 255, 255, 255));
 			}
 			else if (posButon == 3) {
-				selectSprite[0].setColor(Color(255, 255, 255, 0));
-				selectSprite[1].setColor(Color(255, 255, 255, 0));
-				selectSprite[2].setColor(Color(255, 255, 255, 0));
+				spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 0));
+				spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 0));
+				spriteMenu.selectSprite[2].setColor(Color(255, 255, 255, 0));
 			}
 
-			if (spriteMenu[0].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0,1) && posButon == 2) {
+			if (spriteMenu.spriteVBulle[0].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0,1) && posButon == 2) {
 				listeTexte.clear();
 				listeRectangle.clear();
 				menuState = START;
 				hasStarted = true;
 				game.setRunning(true);
 			}
-			if (spriteMenu[1].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 1) {
+			if (spriteMenu.spriteVBulle[1].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 1) {
 				listeTexte.clear();
 				listeRectangle.clear();
 				menuState = OPTION;
 			}
-			if (spriteMenu[2].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 0) {
+			if (spriteMenu.spriteVBulle[2].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 0) {
 				window.close();
 			}
-		}
-		hitbox.clear();
-		for (auto& Rectangle : hitbox) {
-			delete Rectangle;
 		}
 		window.display();
 	}
@@ -212,10 +120,9 @@ void Menu::option(RenderWindow& window) {
 	window.clear(Color::Black);
 	listeTexte.clear();
 	listeRectangle.clear();
-	setTexture("assets/backMenu/menu.png", window);
 	drawback(window);
 
-	Texte retour(font, "Retour", 40, 0, 0, 0, 1700, 1000);
+	Texte retour(spriteMenu.font, "Retour", 40, 0, 0, 0, 1700, 1000);
 	listeTexte.push_back(retour);
 
 	///////////////////////////////////////////////////////////////////
@@ -230,6 +137,10 @@ void Menu::option(RenderWindow& window) {
 
 	for (auto& Texte : listeTexte) {
 		window.draw(Texte.creation());
+	}
+
+	for (auto& Touche : spriteMenu.spritTouche) {
+		window.draw(Touche);
 	}
 
 	window.display();
@@ -248,7 +159,11 @@ void Menu::option(RenderWindow& window) {
 				listeRectangle.clear();
 				menuState = MENU;
 			}
-
+		}
+		else if (Joystick::isButtonPressed(0, 2)) {
+			listeTexte.clear();
+			listeRectangle.clear();
+			menuState = MENU;
 		}
 	}
 }
@@ -258,13 +173,13 @@ void Menu::win(RenderWindow& window) {
 	listeTexte.clear();
 	listeRectangle.clear();
 
-	Texte Titre(font, "Vous avez .... gagné ??", 80, 255, 0, 0, 480, 255);
+	Texte Titre(spriteMenu.font, "Vous avez .... gagné ??", 80, 255, 0, 0, 480, 255);
 	listeTexte.push_back(Titre);
 
-	Texte start(font, "Restart", 40, 0, 0, 0, 880, 410);
+	Texte start(spriteMenu.font, "Restart", 40, 0, 0, 0, 880, 410);
 	listeTexte.push_back(start);
 
-	Texte touche(font, "Quitter", 40, 0, 0, 0, 880, 550);
+	Texte touche(spriteMenu.font, "Quitter", 40, 0, 0, 0, 880, 550);
 	listeTexte.push_back(touche);
 
 	Rectangle RecTitre(170, 70, 870, 400, 255, 255, 255);
@@ -280,7 +195,6 @@ void Menu::win(RenderWindow& window) {
 	for (auto& Texte : listeTexte) {
 		window.draw(Texte.creation());
 	}
-
 	window.display();
 
 	Event gameEvent;
@@ -293,6 +207,7 @@ void Menu::win(RenderWindow& window) {
 				listeTexte.clear();
 				listeRectangle.clear();
 				menuState = START;
+
 			}
 			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
 				listeTexte.clear();
@@ -309,13 +224,13 @@ void Menu::loose(RenderWindow& window) {
 	listeTexte.clear();
 	listeRectangle.clear();
 
-	Texte Titre(font, "Vous avez perdu, vous n'êtes pas le héros", 80, 255, 0, 0, 180, 255);
+	Texte Titre(spriteMenu.font, "Vous avez perdu, vous n'êtes pas le héros", 80, 255, 0, 0, 180, 255);
 	listeTexte.push_back(Titre);
 
-	Texte start(font, "Restart", 40, 0, 0, 0, 880, 410);
+	Texte start(spriteMenu.font, "Restart", 40, 0, 0, 0, 880, 410);
 	listeTexte.push_back(start);
 
-	Texte touche(font, "Quitter", 40, 0, 0, 0, 880, 550);
+	Texte touche(spriteMenu.font, "Quitter", 40, 0, 0, 0, 880, 550);
 	listeTexte.push_back(touche);
 
 	Rectangle RecTitre(170, 70, 870, 400, 255, 255, 255);
@@ -343,17 +258,16 @@ void Menu::loose(RenderWindow& window) {
 			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
 				listeTexte.clear();
 				listeRectangle.clear();
-				menuState = START;
+				menuState = MENU;
+				game.lose = false;
 			}
 			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
-				listeTexte.clear();
-				listeRectangle.clear();
-				menuState = MENU;
+				window.close();
 			}
 		}
 	}
 }
 
 void Menu::drawback(RenderWindow& window) {
-	window.draw(sprite);
+	window.draw(spriteMenu.sprite);
 }

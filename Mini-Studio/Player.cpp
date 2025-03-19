@@ -7,6 +7,7 @@ Player::Player() {
 	isAnimationStarted       = false;
 	invertedGravity          = false;
 	hasPlatform              = true;
+	hasMovingPlatform        = false;
 	isGoingLeft              = false;
 	isGoingRight             = true;
 	isJumping                = false;
@@ -73,6 +74,11 @@ void Player::loadAssets(RenderWindow& window) {
 	}
 }
 
+Texture& Player::getTexture()
+{
+	return playerTexture;
+}
+
 void Player::update(const float& deltaTime, RenderWindow& window) {
 	inputGestion(deltaTime, window);
 	animationGestion(deltaTime);
@@ -98,7 +104,7 @@ void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 		playerSprite.move(-speed * 2.f * deltaTime, 0);
 		hasInput = true;
 	}
-	if (canMove && (Keyboard::isKeyPressed(Keyboard::S) || Joystick::getAxisPosition(0, Joystick::Y) >= 10)) {
+	if (canMove && (Keyboard::isKeyPressed(Keyboard::S) || Joystick::getAxisPosition(0, Joystick::Y) >= 50)) {
 		if (!(playerSprite.getPosition().y >= window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f)) {
 			hasPressedS = true;
 		}
@@ -208,7 +214,7 @@ void Player::jumpGestion(const float& deltaTime, RenderWindow& window) {
 }
 
 void Player::dashGestion(const float& deltaTime, RenderWindow& window) {
-	if (Keyboard::isKeyPressed(Keyboard::F) || Joystick::isButtonPressed(0,5)) {
+	if (Keyboard::isKeyPressed(Keyboard::LShift) || Joystick::isButtonPressed(0,5)) {
 		isDashing = true;
 	}
 	if (clockDash.getElapsedTime().asSeconds() >= 2 && !isDashing) {
@@ -309,6 +315,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		isIdlingAnimationStarted = true;
 	}
 	hasPlatform = false;
+	hasMovingPlatform = false;
 	if (playerSprite.getPosition().y >= floorLevel) {
 		isFalling = false;
 		isJumping = false;
@@ -331,12 +338,15 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 					playerSprite.move(0, 0);
 				}
 				hasPlatform = true;
+				cout << "Platform" << endl;
 				count++;
 			}
 		}
 		for (auto& platform : platformsMobile) {
 			if (playerSprite.getGlobalBounds().intersects(platform->plat.getGlobalBounds()) && !hasPressedS) {
 				if (isFalling) {
+					playerSprite.setPosition(playerSprite.getPosition().x, platform->plat.getPosition().y);
+					hasMovingPlatform = true;
 					isJumping = false;
 					isFalling = false;
 					canDoubleJump = true;
@@ -345,6 +355,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 					playerSprite.move(0, 0);
 				}
 				hasPlatform = true;
+				cout << "Platform" << endl;
 				count++;
 			}
 		}

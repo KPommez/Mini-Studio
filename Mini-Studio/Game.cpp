@@ -1,10 +1,10 @@
 #include "Game.hpp"
 
 Game::Game(RenderWindow& window) {
-    m_entityManager = make_shared<EntityManager>();
     deltaTime = 0.f;
     event = {};
-    isRunning = true;
+    lose = false;
+    isRunning = false;
     inGame = false;
     screenX = window.getSize().x;
     screenY = window.getSize().y;
@@ -15,13 +15,14 @@ Game::Game(RenderWindow& window) {
 }
 
 void Game::Run(RenderWindow& window) {
+    isRunning = true;
     inGame = true;
     srand(time(NULL));
 
     // Chargement des assets
     parralaxLevelOne.instanciateLayers(window, "levelOne", 8); // Level 1 has 7 layers in his background + 1 for high sky
     // Chargement de la map
-    level.loadMap(level.allLevels.at(index));
+    
     // Ajout des menus
     // Appel du dessin du menu
 
@@ -29,12 +30,7 @@ void Game::Run(RenderWindow& window) {
     player.loadAssets(window);
     player.resize(window);
 
-    /*shared_ptr<Lampadaire> lampadaire = make_shared<Lampadaire>(Vector2f(500,  900), &player);
-    shared_ptr<Petrifeu> petrifeu     = make_shared<Petrifeu>  (Vector2f(500,  900), &player);
-    shared_ptr<Eolienne> eolienne     = make_shared<Eolienne>  (Vector2f(1000, 900), &player, window);*/
-    /*m_entityManager->addEnnemy(lampadaire);
-    m_entityManager->addEnnemy(petrifeu);
-    m_entityManager->addEnnemy(eolienne);*/
+    level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
 
     view(window);
     levelTwoBeam.create(sf::Vector2f(400, 300));
@@ -47,10 +43,12 @@ void Game::Run(RenderWindow& window) {
         update(deltaTime, window);
         draw(window);
         view(window);
-
+        if (player.hitcount >= 5)
+        {
+            isRunning = 0;
+            lose = true;
+        }
     }
-
-    window.close();
 }
 
 bool Game::setRunning(bool test)
@@ -64,10 +62,10 @@ void Game::pollEvents(RenderWindow& window) {
         if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::J)) {
             isRunning = false;
         }
-        if (event.type == Event::KeyReleased && event.key.code == Keyboard::F && inGame) {
+        if ((event.type == Event::KeyReleased && event.key.code == Keyboard::LShift && inGame)) {
             player.isDashing = false;
         }
-        if (event.type == Event::KeyReleased && event.key.code == Keyboard::S && inGame) {
+        if ((event.type == Event::KeyReleased && event.key.code == Keyboard::S && inGame) || (Joystick::getAxisPosition(0, Joystick::Y) < 50)) {
             player.hasPressedS = false;
         }
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::P) {
@@ -81,12 +79,26 @@ void Game::pollEvents(RenderWindow& window) {
     }
 }
 
+bool Game::getRunning()
+{
+    return isRunning;
+}
+
 void Game::update(const float& deltaTime, RenderWindow& window) {
-    m_entityManager->updateEntities(window, deltaTime);
+    level.m_entityManager->updateEntities(window, deltaTime);
     player.Colision(window, deltaTime, level.platforms, level.plateformeTest);
     player.update(deltaTime, window);
+    parralaxLevelOne.moveLayers(deltaTime, window, player);
     for (auto& Plateforme : level.plateformeTest) {
         Plateforme->platUpdate(deltaTime);
+    }
+    if (player.playerSprite.getGlobalBounds().intersects(level.end.getGlobalBounds())) {
+        index += 1;
+        level.plateformeTest.clear();
+        level.platforms.clear();
+        level.m_entityManager->deleteAllEnnemy();
+        player.playerSprite.setPosition(500, 500);
+        level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
     }
 }
 
@@ -105,7 +117,7 @@ void Game::view(RenderWindow& window) {
         position.x = window.getSize().x * 50.f;
     }
     else {
-        parralaxLevelOne.moveLayers(deltaTime, window, player);
+        
     }
 
     if (position.y > 0) {
@@ -119,10 +131,14 @@ void Game::view(RenderWindow& window) {
 
 void Game::draw(RenderWindow& window) {
     window.clear();
-    parralaxLevelOne.draw(window);
+    if (index == 0) {
+        parralaxLevelOne.draw(window);
+    }
+    if (index == 1) {
+        //parralaxLevelTwo.draw(window);
+    }
     level.drawMap(window);
     //levelTwoBeam.draw(window);
     player.draw(window);
-    m_entityManager->drawEntities(window);
     window.display();
 }
