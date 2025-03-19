@@ -1,7 +1,8 @@
 #include "SpriteMenu.hpp"
 
-void SpriteMenu::initAllSpriteMenu()
+void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 {
+	Vector2f WindoSize{ static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y) };
 	if (!font.loadFromFile("Assets/font/Minecraft.ttf") ||
 		!bulle1.loadFromFile("Assets/backMenu/texte.png") ||
 		!bulle2.loadFromFile("Assets/backMenu/texte1.png") ||
@@ -28,9 +29,9 @@ void SpriteMenu::initAllSpriteMenu()
 	selectSettingsSprite.setScale(0.5f, 0.5f);
 	selectQuitSprite.setScale(0.5f, 0.5f);
 
-	selectPlaySprite.setPosition(820, 275);
-	selectSettingsSprite.setPosition(750, 475);
-	selectQuitSprite.setPosition(840, 705);
+	selectPlaySprite.setPosition(WindoSize.x / 2 - (selectPlay.getSize().x / 2.5), WindoSize.y / 4.5);
+	selectSettingsSprite.setPosition(WindoSize.x / 2 - (selectSettings.getSize().x / 1.95), WindoSize.y / 2.5 - (selectSettings.getSize().y / 1.50));
+	selectQuitSprite.setPosition(WindoSize.x / 2 - (selectQuit.getSize()).x / 2.5, WindoSize.y / 1.80);
 
 	selectPlaySprite.setColor(Color(255, 255, 255, 0));
 	selectSettingsSprite.setColor(Color(255, 255, 255, 0));
@@ -45,9 +46,9 @@ void SpriteMenu::initAllSpriteMenu()
 	spriteBulle2.setScale(0.5f, 0.5f);
 	spriteBulle3.setScale(0.5f, 0.5f);
 
-	spriteBulle1.setPosition(770, 250);
-	spriteBulle2.setPosition(770, 650);
-	spriteBulle3.setPosition(675, 450);
+	spriteBulle1.setPosition(WindoSize.x / 2 - (selectPlay.getSize().x / 2), WindoSize.y / 5);
+	spriteBulle3.setPosition(WindoSize.x / 2 - (selectPlay.getSize().x / 1.5), WindoSize.y / 2.85);
+	spriteBulle2.setPosition(WindoSize.x / 2 - (selectPlay.getSize().x / 1.95), WindoSize.y / 1.95);
 
 	///////////Choix Play/Settings/Quit ////////
 	spriteChoix1.setTexture(choix1);
@@ -58,9 +59,9 @@ void SpriteMenu::initAllSpriteMenu()
 	spriteChoix2.setScale(0.5f, 0.5f);
 	spriteChoix3.setScale(0.5f, 0.5f);
 
-	spriteChoix1.setPosition(900, 275);
-	spriteChoix2.setPosition(800, 475);
-	spriteChoix3.setPosition(890, 700);
+	spriteChoix1.setPosition(WindoSize.x / 2 - (selectPlay.getSize().x / 3.5), WindoSize.y / 4.5);
+	spriteChoix2.setPosition(WindoSize.x / 2 - (selectSettings.getSize().x / 2.5), WindoSize.y / 2.5 - (selectSettings.getSize().y / 1.50));
+	spriteChoix3.setPosition(WindoSize.x / 2 - (selectPlay.getSize().x) / 3.75 - (choix1.getSize().x / 5 ), WindoSize.y / 1.81);
 
 	///Touche 
 	touche.setTexture(textureTouche);

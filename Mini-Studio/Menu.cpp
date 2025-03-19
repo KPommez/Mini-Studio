@@ -4,7 +4,7 @@
 Menu::Menu(RenderWindow& window) : game(window) {
 	menuState = MENU;
 	posButon = 3;
-	spriteMenu.initAllSpriteMenu();
+	spriteMenu.initAllSpriteMenu(window);
 }
 
 
