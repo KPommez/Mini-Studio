@@ -24,6 +24,7 @@ public:
 	void loadMap(const string& filename, Player* players, RenderWindow& window, ParralaxBackground* currentLevel);
 	void drawMap(RenderWindow& window);
 
+	RectangleShape endLevel;
 	RectangleShape end;
 
 	vector<RectangleShape> platforms;

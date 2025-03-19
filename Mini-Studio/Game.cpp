@@ -12,6 +12,7 @@ Game::Game(RenderWindow& window) {
     index = 0;
     firstParralaxOn = true;
     secondParralaxOn = false;
+    levelActif = true;
 }
 
 void Game::Run(RenderWindow& window) {
@@ -50,6 +51,12 @@ void Game::Run(RenderWindow& window) {
             lose = true;
         }
     }
+
+    window.clear();
+    levelActif = false;
+    view(window);
+    
+
 }
 
 bool Game::setRunning(bool test)
@@ -88,41 +95,55 @@ void Game::update(const float& deltaTime, RenderWindow& window) {
     for (auto& Plateforme : level.plateformeTest) {
         Plateforme->platUpdate(deltaTime);
     }
-    if (player.playerSprite.getGlobalBounds().intersects(level.end.getGlobalBounds())) {
+    if (player.playerSprite.getGlobalBounds().intersects(level.endLevel.getGlobalBounds())) {
         index += 1;
+        levelActif = false;
         level.plateformeTest.clear();
         level.platforms.clear();
         level.m_entityManager->deleteAllEnnemy();
         player.playerSprite.setPosition(500, 500);
         level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
     }
+    if (player.playerSprite.getGlobalBounds().intersects(level.end.getGlobalBounds())) {
+        isRunning = 0;
+        //mettre les transition
+    }
 }
 
 void Game::view(RenderWindow& window) {
-    vue.reset(FloatRect(0, 0, (float)screenX, (float)screenY));
-    Vector2f position(screenX / 2.f, screenY / 2.f);
-    position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2.f) - (screenX / 2.f));
-    position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2.f) - (screenY / 2.f));
+    if (levelActif) {
+        vue.reset(FloatRect(0, 0, (float)screenX, (float)screenY));
+        Vector2f position(screenX / 2.f, screenY / 2.f);
+        position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2.f) - (screenX / 2.f));
+        position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2.f) - (screenY / 2.f));
 
-    // permet de fixer une limite donc a voir avec les carré noir de Kiliann
+        // permet de fixer une limite donc a voir avec les carré noir de Kiliann
 
-    if (position.x < 0) {
-        position.x = 0;
-    }
-    else if (position.x > window.getSize().x * 50.f) { //bloquer joueur vue
-        position.x = window.getSize().x * 50.f;
+        if (position.x < 0) {
+            position.x = 0;
+        }
+        else if (position.x > window.getSize().x * 50.f) { //bloquer joueur vue
+            position.x = window.getSize().x * 50.f;
+        }
+        else {
+
+        }
+
+        if (position.y > 0) {
+            position.y = 0;
+        }
+
+        vue.reset(FloatRect(position.x, position.y, (float)screenX, (float)screenY));
+        vue.zoom(1);
+        window.setView(vue);
     }
     else {
-        
-    }
+        vue.reset(FloatRect(0, 0, (float)screenX, (float)screenY));
+        vue.zoom(1);
 
-    if (position.y > 0) {
-        position.y = 0;
+        window.setView(vue);
+        //metre pour modif le joueur
     }
-  
-    vue.reset(FloatRect(position.x, position.y, (float)screenX, (float)screenY));
-    vue.zoom(1);
-    window.setView(vue);
 }
 
 void Game::draw(RenderWindow& window) {
