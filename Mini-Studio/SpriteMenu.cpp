@@ -20,6 +20,8 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	{
 		cerr << "Assets du menu non totalement charges" << endl;
 	}
+
+	sprite.setOrigin(0, 0);
 	///////////Selection//////////////
 	selectPlaySprite.setTexture(selectPlay);
 	selectSettingsSprite.setTexture(selectSettings);
@@ -107,9 +109,13 @@ void SpriteMenu::setTexture(const string& PNGfile, RenderWindow& window)
 	if (texture.loadFromFile(PNGfile))
 	{
 		sprite.setTexture(texture);
-		Vector2u textureSize = texture.getSize();
-		float scaleX = static_cast<float>(window.getSize().x) / textureSize.x;
-		float scaleY = static_cast<float>(window.getSize().y) / textureSize.y;
+		sf::Vector2u windowSize = window.getSize();
+
+		// Calculer le facteur d'échelle pour ajuster le sprite à l'écran
+		float scaleX = static_cast<float>(windowSize.x) / sprite.getLocalBounds().width;
+		float scaleY = static_cast<float>(windowSize.y) / sprite.getLocalBounds().height;
+
+		// Appliquer l'échelle au sprite
 		sprite.setScale(scaleX, scaleY);
 	}
 }
@@ -124,6 +130,11 @@ void SpriteMenu::drawVector(RenderWindow& window) {
 	for (auto& text : spriteTexte) {
 		window.draw(text);
 	}
+}
+
+void SpriteMenu::ViewMenu(RenderWindow& window)
+{
+
 }
 
 

@@ -31,6 +31,7 @@ void Menu::start(RenderWindow& window) {
 	}
 	switch (menuState) {
 	case MENU:
+		spriteMenu.ViewMenu(window);
 		menu(window);
 		break;
 	case OPTION:

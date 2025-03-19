@@ -63,6 +63,7 @@ void Game::pollEvents(RenderWindow& window) {
     while (window.pollEvent(event)) {
         if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::J)) {
             isRunning = false;
+            inGame = false;
         }
         if ((event.type == Event::KeyReleased && event.key.code == Keyboard::LShift && inGame)) {
             player.isDashing = false;
@@ -100,29 +101,36 @@ void Game::update(const float& deltaTime, RenderWindow& window) {
 }
 
 void Game::view(RenderWindow& window) {
-    vue.reset(FloatRect(0, 0, (float)screenX, (float)screenY));
-    Vector2f position(screenX / 2.f, screenY / 2.f);
-    position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2.f) - (screenX / 2.f));
-    position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2.f) - (screenY / 2.f));
+    if (inGame) {
+        vue.reset(FloatRect(0, 0, (float)screenX, (float)screenY));
+        Vector2f position(screenX / 2.f, screenY / 2.f);
+        position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2.f) - (screenX / 2.f));
+        position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2.f) - (screenY / 2.f));
 
-    // permet de fixer une limite donc a voir avec les carré noir de Kiliann
+        // permet de fixer une limite donc a voir avec les carré noir de Kiliann
 
-    if (position.x < 0) {
-        position.x = 0;
-    }
-    else if (position.x > window.getSize().x * 50.f) { //bloquer joueur vue
-        position.x = window.getSize().x * 50.f;
-    }
-    else {
-        
+        if (position.x < 0) {
+            position.x = 0;
+        }
+        else if (position.x > window.getSize().x * 50.f) { //bloquer joueur vue
+            position.x = window.getSize().x * 50.f;
+        }
+        else {
+
+        }
+
+        if (position.y > 0) {
+            position.y = 0;
+        }
+
+        vue.reset(FloatRect(position.x, position.y, (float)screenX, (float)screenY));
+        vue.zoom(1);
     }
 
-    if (position.y > 0) {
-        position.y = 0;
+    else {       
+        vue.reset(FloatRect(0, 0, (float)screenX, (float)screenY));
+        vue.setCenter(screenX / 2.f, screenY / 2.f); 
     }
-  
-    vue.reset(FloatRect(position.x, position.y, (float)screenX, (float)screenY));
-    vue.zoom(1);
     window.setView(vue);
 }
 
