@@ -41,6 +41,10 @@ void Player::loadAssets(RenderWindow& window) {
 	playerWalk1.loadFromFile("Assets/Player/walk1.png");
 	playerWalk2.loadFromFile("Assets/Player/walk2.png");
 	playerWalk3.loadFromFile("Assets/Player/walk3.png");
+	playerJump1.loadFromFile("Assets/Player/jump1.png");
+	playerJump2.loadFromFile("Assets/Player/jump2.png");
+	playerJump3.loadFromFile("Assets/Player/jump3.png");
+	playerJump4.loadFromFile("Assets/Player/jump4.png");
 	// Setting the default player's texture
 	playerTexture = playerIdleTexture;
 	// Applying textures
@@ -48,16 +52,24 @@ void Player::loadAssets(RenderWindow& window) {
 	playerWalk1Sprite.setTexture(playerWalk1);
 	playerWalk2Sprite.setTexture(playerWalk2);
 	playerWalk3Sprite.setTexture(playerWalk3);
+	playerJump1Sprite.setTexture(playerJump1);
+	playerJump2Sprite.setTexture(playerJump2);
+	playerJump3Sprite.setTexture(playerJump3);
+	playerJump4Sprite.setTexture(playerJump4);
 	// Adding them to the vector of sprites
-	playerSprites.reserve(4);
+	playerSprites.reserve(8);
 	playerSprites.emplace_back(playerIdleSprite);
 	playerSprites.emplace_back(playerWalk1Sprite);
 	playerSprites.emplace_back(playerWalk2Sprite);
 	playerSprites.emplace_back(playerWalk3Sprite);
+	playerSprites.emplace_back(playerJump1Sprite);
+	playerSprites.emplace_back(playerJump2Sprite);
+	playerSprites.emplace_back(playerJump3Sprite);
+	playerSprites.emplace_back(playerJump4Sprite);
 	// Applying a new scale to all the loaded sprites
 	float ratio = playerTexture.getSize().y / (float)window.getSize().y;
 	for (auto& _sprite : playerSprites) {
-		_sprite.scale(ratio / 4.f, ratio / 4.f);
+		_sprite.scale(ratio / 6.5f, ratio / 6.5f);
 	}
 }
 
@@ -164,6 +176,7 @@ void Player::jumpGestion(const float& deltaTime, RenderWindow& window) {
 				canDoubleJump = true;
 				isJumping = true;
 			}
+			animationTime = 0.f;
 		}
 		else {
 			canDoubleJump = false;
@@ -219,7 +232,7 @@ void Player::dashGestion(const float& deltaTime, RenderWindow& window) {
 void Player::animationGestion(const float& deltaTime) {
 	Vector2f scale = sprite.getScale();
 	animationTime += deltaTime;
-	if (!isIdling) {
+	if (!isIdling && !isJumping && hasPlatform) {
 		if (!isAnimationStarted) {
 			isAnimationStarted = true;
 			isIdlingAnimationStarted = false;
@@ -240,6 +253,27 @@ void Player::animationGestion(const float& deltaTime) {
 		else {
 			playerSprites[3].setPosition(playerSprite.getPosition());
 			playerSprite = playerSprites[3];
+		}
+	}
+	else if (isJumping) {
+		if (animationTime > 0.5f) {
+			animationTime = 0.f;
+		}
+		else if (animationTime < .05f) {
+			playerSprites[4].setPosition(playerSprite.getPosition());
+			playerSprite = playerSprites[4];
+		}
+		else if (animationTime < .10f) {
+			playerSprites[5].setPosition(playerSprite.getPosition());
+			playerSprite = playerSprites[5];
+		}
+		else if (animationTime < .15f) {
+			playerSprites[6].setPosition(playerSprite.getPosition());
+			playerSprite = playerSprites[6];
+		}
+		else {
+			playerSprites[7].setPosition(playerSprite.getPosition());
+			playerSprite = playerSprites[7];
 		}
 	}
 	// Idle

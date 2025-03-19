@@ -1,23 +1,24 @@
 #pragma once
 
-#include "Mirror.hpp"
+#include "includeAll.hpp"
 
 class LuminousBeam {
 public:
-	LuminousBeam();
-	void create(const Vector2f& startingPoint, const int& thickness, const Color& color);
-	void update();
-	void draw(RenderWindow& window);
+    LuminousBeam();
+    void create(const sf::Vector2f& startingPoint);
+    void updateTrajectory();
+    void draw(sf::RenderWindow& window);
+    void setSurfaceRotation(size_t index, float angle);
+    float getSurfaceRotation(size_t index) const;
 
 private:
-	sf::Vector2f reflectVector(const sf::Vector2f& incident, const sf::Vector2f& normal);
+    bool checkIntersection(const sf::RectangleShape& rectangle, const sf::Vector2f& rayPos, const sf::Vector2f& rayDir, sf::Vector2f& intersection, sf::Vector2f& normal);
+    sf::Vector2f reflectVector(const sf::Vector2f& incident, const sf::Vector2f& normal);
 
 private:
-	ConvexShape surface;
-	Vector2f m_startingPoint;
-	Vector2f m_direction;
-	int m_thickness;
-	int m_length;
-	Color m_fillColor;
-	vector<Vector2f> m_path;
+    std::vector<sf::RectangleShape> surfaces;
+    sf::Vector2f initialBeamPosition;
+    sf::Vector2f beamDirection;
+    std::vector<sf::Vector2f> beamPath;
+    float lineThickness; // Épaisseur du rayon
 };

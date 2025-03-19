@@ -19,8 +19,7 @@ void Game::Run(RenderWindow& window) {
     srand(time(NULL));
 
     // Chargement des assets
-    parralaxLevelOne.instanciateLayers(window, "levelOne", 7); // Level 1 has 7 layers in his background
-    levelTwoBeam.create({500.f, 0.f}, 50.f, Color::Yellow);
+    parralaxLevelOne.instanciateLayers(window, "levelOne", 8); // Level 1 has 7 layers in his background + 1 for high sky
     // Chargement de la map
     level.loadMap(level.allLevels.at(index));
     // Ajout des menus
@@ -29,16 +28,17 @@ void Game::Run(RenderWindow& window) {
     playerSize = { (int)((float)window.getSize().y / 16.f), (int)((float)window.getSize().y / 8.f) };
     player.loadAssets(window);
     player.resize(window);
-    cout << player.playerSprite.getPosition().x << ", " << player.playerSprite.getPosition().y << endl;
 
-    shared_ptr<Lampadaire> lampadaire = make_shared<Lampadaire>(Vector2f(500,  900), &player);
+    /*shared_ptr<Lampadaire> lampadaire = make_shared<Lampadaire>(Vector2f(500,  900), &player);
     shared_ptr<Petrifeu> petrifeu     = make_shared<Petrifeu>  (Vector2f(500,  900), &player);
-    shared_ptr<Eolienne> eolienne     = make_shared<Eolienne>  (Vector2f(1000, 900), &player, window);
-    m_entityManager->addEnnemy(lampadaire);
+    shared_ptr<Eolienne> eolienne     = make_shared<Eolienne>  (Vector2f(1000, 900), &player, window);*/
+    /*m_entityManager->addEnnemy(lampadaire);
     m_entityManager->addEnnemy(petrifeu);
-    m_entityManager->addEnnemy(eolienne);
+    m_entityManager->addEnnemy(eolienne);*/
 
     view(window);
+    levelTwoBeam.create(sf::Vector2f(400, 300));
+    levelTwoBeam.updateTrajectory();
 
     while (isRunning) {
         deltaTime = Clock.restart().asSeconds();
@@ -72,6 +72,11 @@ void Game::pollEvents(RenderWindow& window) {
         }
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::P) {
             inGame = !inGame;
+        }
+        if (event.type == Event::KeyPressed && event.key.code == sf::Keyboard::R) {
+            // Exemple de modification de la rotation de la première surface
+            levelTwoBeam.setSurfaceRotation(1, levelTwoBeam.getSurfaceRotation(1) + 1);
+            levelTwoBeam.updateTrajectory();
         }
     }
 }
@@ -116,7 +121,7 @@ void Game::draw(RenderWindow& window) {
     window.clear();
     parralaxLevelOne.draw(window);
     level.drawMap(window);
-    levelTwoBeam.draw(window);
+    //levelTwoBeam.draw(window);
     player.draw(window);
     m_entityManager->drawEntities(window);
     window.display();

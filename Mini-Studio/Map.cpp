@@ -3,7 +3,17 @@
 Map::Map() {
 	posX = 0;
 	posY = 0;
+	loadMapTextures();
 	loadAllMaps();
+}
+
+void Map::loadMapTextures() {
+	leftRegularPlatform.loadFromFile  ("Assets/Map/Platforms/leftBorder.png");
+	rightRegularPlatform.loadFromFile ("Assets/Map/Platforms/rightBorder.png");
+	middleRegularPlatform.loadFromFile("Assets/Map/Platforms/centralBubble.png");
+	leftLeafPlatform.loadFromFile     ("Assets/Map/Platforms/leftLeafBlock.png");
+	rightLeafPlatform.loadFromFile    ("Assets/Map/Platforms/rightLeafBlock.png");
+	middleNoLeafPlatform.loadFromFile ("Assets/Map/Platforms/noLeafBlock.png");
 }
 
 void Map::loadAllMaps() {
@@ -41,7 +51,37 @@ void Map::loadMap(const string& filename) {
 			posY = (float)y * 40.f;
 			if (line[x] == '/') {
 				mur.setSize({ 40.f,40.f });
-				mur.setFillColor(Color::Blue);
+				mur.setTexture(&middleNoLeafPlatform);
+				mur.setPosition(posX, posY);
+				platforms.push_back(mur);
+			}
+			else if (line[x] == 'L') {
+				mur.setSize({ 40.f,40.f });
+				mur.setTexture(&leftRegularPlatform);
+				mur.setPosition(posX, posY);
+				platforms.push_back(mur);
+			}
+			else if (line[x] == 'R') {
+				mur.setSize({ 40.f,40.f });
+				mur.setTexture(&rightRegularPlatform);
+				mur.setPosition(posX, posY);
+				platforms.push_back(mur);
+			}
+			else if (line[x] == 'l') {
+				mur.setSize({ 40.f,40.f });
+				mur.setTexture(&leftLeafPlatform);
+				mur.setPosition(posX, posY);
+				platforms.push_back(mur);
+			}
+			else if (line[x] == 'r') {
+				mur.setSize({ 40.f,40.f });
+				mur.setTexture(&rightLeafPlatform);
+				mur.setPosition(posX, posY);
+				platforms.push_back(mur);
+			}
+			else if (line[x] == 'B') {
+				mur.setSize({ 40.f,40.f });
+				mur.setTexture(&middleRegularPlatform);
 				mur.setPosition(posX, posY);
 				platforms.push_back(mur);
 			}

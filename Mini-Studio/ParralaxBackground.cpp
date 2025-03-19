@@ -3,6 +3,7 @@
 ParralaxBackground::ParralaxBackground() {}
 
 void ParralaxBackground::instanciateLayers(RenderWindow& window, string level, int numberOfLayers) {
+	highSkyTexture.loadFromFile("Assets/LevelAssets/" + level + "/Parralax/moreSky.png");
 	layerTexture0.loadFromFile("Assets/LevelAssets/" + level + "/Parralax/layer0.png");
 	layerTexture1.loadFromFile("Assets/LevelAssets/" + level + "/Parralax/layer1.png");
 	layerTexture2.loadFromFile("Assets/LevelAssets/" + level + "/Parralax/layer2.png");
@@ -11,6 +12,7 @@ void ParralaxBackground::instanciateLayers(RenderWindow& window, string level, i
 	layerTexture5.loadFromFile("Assets/LevelAssets/" + level + "/Parralax/layer5.png");
 	layerTexture6.loadFromFile("Assets/LevelAssets/" + level + "/Parralax/layer6.png");
 
+	highSky.setTexture(highSkyTexture);
 	layer0.setTexture(layerTexture0);
 	layer1.setTexture(layerTexture1);
 	layer2.setTexture(layerTexture2);
@@ -19,6 +21,7 @@ void ParralaxBackground::instanciateLayers(RenderWindow& window, string level, i
 	layer5.setTexture(layerTexture5);
 	layer6.setTexture(layerTexture6);
 
+	layers.push_back(highSky);
 	layers.push_back(layer0);
 	layers.push_back(layer1);
 	layers.push_back(layer2);
@@ -35,6 +38,10 @@ void ParralaxBackground::instanciateLayers(RenderWindow& window, string level, i
 		layers[i + numberOfLayers].setPosition(0 + (float)window.getSize().x, 0);
 	}
 
+	// High sky
+	layers[0].setPosition(0.f, -1.f * window.getSize().y);
+	layers[8].setPosition(0 + (float)window.getSize().x, -1.f * window.getSize().y);
+
 	// Scaling the sprites properly to the screen's dimensions
 	for (auto& layer : layers) {
 		layer.setScale(sf::Vector2f((window.getSize().x / layer.getLocalBounds().width), (window.getSize().y / layer.getLocalBounds().height)));
@@ -45,35 +52,39 @@ void ParralaxBackground::moveLayers(const float& deltaTime, RenderWindow& window
 	// Movement
 	if (player.isGoingRight && !player.isIdling) {
 		layers[0].move (-50.f  * deltaTime, 0);
-		layers[7].move (-50.f  * deltaTime, 0);
-		layers[1].move (-100.f * deltaTime, 0);
-		layers[8].move (-100.f * deltaTime, 0);
-		layers[2].move (-150.f * deltaTime, 0);
-		layers[9].move (-150.f * deltaTime, 0);
-		layers[3].move (-200.f * deltaTime, 0);
-		layers[10].move(-200.f * deltaTime, 0);
-		layers[4].move (-250.f * deltaTime, 0);
-		layers[11].move(-250.f * deltaTime, 0);
-		layers[5].move (-300.f * deltaTime, 0);
-		layers[12].move(-300.f * deltaTime, 0);
-		layers[6].move (-350.f * deltaTime, 0);
-		layers[13].move(-350.f * deltaTime, 0);
+		layers[8].move (-50.f  * deltaTime, 0);
+		layers[1].move (-50.f  * deltaTime, 0);
+		layers[9].move (-50.f  * deltaTime, 0);
+		layers[2].move (-100.f * deltaTime, 0);
+		layers[10].move(-100.f * deltaTime, 0);
+		layers[3].move (-150.f * deltaTime, 0);
+		layers[11].move(-150.f * deltaTime, 0);
+		layers[4].move (-200.f * deltaTime, 0);
+		layers[12].move(-200.f * deltaTime, 0);
+		layers[5].move (-250.f * deltaTime, 0);
+		layers[13].move(-250.f * deltaTime, 0);
+		layers[6].move (-300.f * deltaTime, 0);
+		layers[14].move(-300.f * deltaTime, 0);
+		layers[7].move (-350.f * deltaTime, 0);
+		layers[15].move(-350.f * deltaTime, 0);
 	}
 	else if (player.isGoingLeft && !player.isIdling) {
 		layers[0].move (50.f  * deltaTime, 0);
-		layers[7].move (50.f  * deltaTime, 0);
-		layers[1].move (100.f * deltaTime, 0);
-		layers[8].move (100.f * deltaTime, 0);
-		layers[2].move (150.f * deltaTime, 0);
-		layers[9].move (150.f * deltaTime, 0);
-		layers[3].move (200.f * deltaTime, 0);
-		layers[10].move(200.f * deltaTime, 0);
-		layers[4].move (250.f * deltaTime, 0);
-		layers[11].move(250.f * deltaTime, 0);
-		layers[5].move (300.f * deltaTime, 0);
-		layers[12].move(300.f * deltaTime, 0);
-		layers[6].move (350.f * deltaTime, 0);
-		layers[13].move(350.f * deltaTime, 0);
+		layers[8].move (50.f  * deltaTime, 0);
+		layers[1].move (50.f  * deltaTime, 0);
+		layers[9].move (50.f  * deltaTime, 0);
+		layers[2].move (100.f * deltaTime, 0);
+		layers[10].move(100.f * deltaTime, 0);
+		layers[3].move (150.f * deltaTime, 0);
+		layers[11].move(150.f * deltaTime, 0);
+		layers[4].move (200.f * deltaTime, 0);
+		layers[12].move(200.f * deltaTime, 0);
+		layers[5].move (250.f * deltaTime, 0);
+		layers[13].move(250.f * deltaTime, 0);
+		layers[6].move (300.f * deltaTime, 0);
+		layers[14].move(300.f * deltaTime, 0);
+		layers[7].move (350.f * deltaTime, 0);
+		layers[15].move(350.f * deltaTime, 0);
 	}
 	// Checking borders
 	checkBorders(player, window);
@@ -94,17 +105,19 @@ void ParralaxBackground::checkBorders(const Player& player, RenderWindow& window
 
 void ParralaxBackground::draw(RenderWindow& window) {
 	window.draw(layers[0]);
-	window.draw(layers[7]);
-	window.draw(layers[1]);
 	window.draw(layers[8]);
-	window.draw(layers[2]);
+	window.draw(layers[1]);
 	window.draw(layers[9]);
-	window.draw(layers[3]);
+	window.draw(layers[2]);
 	window.draw(layers[10]);
-	window.draw(layers[4]);
+	window.draw(layers[3]);
 	window.draw(layers[11]);
-	window.draw(layers[5]);
+	window.draw(layers[4]);
 	window.draw(layers[12]);
-	window.draw(layers[6]);
+	window.draw(layers[5]);
 	window.draw(layers[13]);
+	window.draw(layers[6]);
+	window.draw(layers[14]);
+	window.draw(layers[7]);
+	window.draw(layers[15]);
 }

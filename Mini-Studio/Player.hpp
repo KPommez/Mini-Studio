@@ -53,9 +53,16 @@ private:
 	const int dashSpeed         = 700;
 	const float gravityConst    = 9.81f;
 	float dashingTime           = 0.5f;
-	Texture playerTexture;
-	Texture playerIdleTexture, playerWalk1, playerWalk2, playerWalk3;
-	vector<Sprite>  playerSprites;
-	Sprite playerIdleSprite, playerWalk1Sprite, playerWalk2Sprite, playerWalk3Sprite;
 	Clock clockDash;
+	vector<Sprite>  playerSprites;
+	Texture playerTexture;
+	Texture 
+		playerIdleTexture, 
+		playerWalk1, playerWalk2, playerWalk3, 
+		playerJump1, playerJump2, playerJump3, playerJump4;
+	
+	Sprite 
+		playerIdleSprite, 
+		playerWalk1Sprite, playerWalk2Sprite, playerWalk3Sprite, 
+		playerJump1Sprite, playerJump2Sprite, playerJump3Sprite, playerJump4Sprite;
 };

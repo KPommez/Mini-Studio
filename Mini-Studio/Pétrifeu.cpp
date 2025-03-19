@@ -29,7 +29,7 @@ void Petrifeu::change() {
 		case 1:
 			if (clock.getElapsedTime().asSeconds() > 3) {
 
-				//cout << "Partie 1" << endl;
+				cout << "Partie 1" << endl;
 
 				clock.restart();
 				feucolor = RED;

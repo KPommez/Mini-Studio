@@ -16,8 +16,17 @@ public:
 	void loadMap(const string& filename);
 	void drawMap(RenderWindow& window);
 
+public:
 	vector<RectangleShape> platforms;
 	vector <Plateforme*> plateformeTest;
-	vector<string> allLevelsTypePath{ "Assets/Map/" };
 	vector<string> allLevels;
+
+private:
+	void loadMapTextures();
+
+private:
+	vector<string> allLevelsTypePath{ "Assets/Map/" };
+	Texture
+		leftRegularPlatform, rightRegularPlatform, middleRegularPlatform,
+		leftLeafPlatform, rightLeafPlatform, middleNoLeafPlatform;
 };
