@@ -61,7 +61,7 @@ void Menu::menu(RenderWindow& window) {
 
 		drawback(window);
 		spriteMenu.drawVector(window);
-		spriteMenu.setTexture("assets/backMenu/menutel.png", window);
+		spriteMenu.setTexture("assets/backMenu/Menu_jeu_fond.png", window);
 
 
 		Vector2i n_mouse = Mouse::getPosition(window);
