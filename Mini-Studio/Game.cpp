@@ -1,9 +1,9 @@
 #include "Game.hpp"
 
 Game::Game(RenderWindow& window) {
-	m_entityManager = make_shared<EntityManager>();
     deltaTime = 0.f;
     event = {};
+    lose = false;
     isRunning = false;
     inGame = false;
     screenX = window.getSize().x;
@@ -21,7 +21,7 @@ void Game::Run(RenderWindow& window) {
     srand(time(NULL));
 
     // Chargement des assets
-    parralaxLevelOne.instanciateLayers(window, "levelOne", 7); // Level 1 has 7 layers in his background
+    parralaxLevelOne.instanciateLayers(window, "levelOne", 8); // Level 1 has 7 layers in his background + 1 for high sky
     // Chargement de la map
     
     // Ajout des menus
@@ -29,14 +29,13 @@ void Game::Run(RenderWindow& window) {
 
     playerSize = { (int)((float)window.getSize().y / 16.f), (int)((float)window.getSize().y / 8.f) };
     player.loadAssets(window);
-    //player.resize(window);
-
-    m_entityManager->deleteAllEnnemy();
-
+    player.resize(window);
 
     level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
 
     view(window);
+    levelTwoBeam.create(sf::Vector2f(400, 300));
+    levelTwoBeam.updateTrajectory();
 
     while (isRunning) {
         deltaTime = Clock.restart().asSeconds();
@@ -47,7 +46,8 @@ void Game::Run(RenderWindow& window) {
         view(window);
         if (player.hitcount >= 5)
         {
-            isRunning = 0;
+            inGame = false;
+            isRunning = false;
             lose = true;
         }
     }
@@ -69,6 +69,7 @@ void Game::pollEvents(RenderWindow& window) {
     while (window.pollEvent(event)) {
         if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::J)) {
             isRunning = false;
+            inGame = false;
         }
         if ((event.type == Event::KeyReleased && event.key.code == Keyboard::LShift && inGame)) {
             player.isDashing = false;
@@ -78,6 +79,11 @@ void Game::pollEvents(RenderWindow& window) {
         }
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::P) {
             inGame = !inGame;
+        }
+        if (event.type == Event::KeyPressed && event.key.code == sf::Keyboard::R) {
+            // Exemple de modification de la rotation de la première surface
+            levelTwoBeam.setSurfaceRotation(1, levelTwoBeam.getSurfaceRotation(1) + 1);
+            levelTwoBeam.updateTrajectory();
         }
     }
 }
@@ -155,6 +161,7 @@ void Game::draw(RenderWindow& window) {
         //parralaxLevelTwo.draw(window);
     }
     level.drawMap(window);
+    //levelTwoBeam.draw(window);
     player.draw(window);
     window.display();
 }
