@@ -1,9 +1,9 @@
 #pragma once
 
-
 #include "EntityManager.hpp"
 #include "Map.hpp"
 #include "ParralaxBackground.hpp"
+#include "LuminousBeam.hpp"
 
 class Game {
 public:
@@ -12,7 +12,7 @@ public:
 	bool setRunning(bool test);
 
 public:
-	bool lose = false;
+	bool lose;
 	bool inGame;
 	Map level;
 	Player player;
@@ -23,7 +23,6 @@ private:
 	void update(const float& deltaTime, RenderWindow& window);
 	void draw(RenderWindow& window);
 	void view(RenderWindow& window);
-
 
 private:
 	bool isRunning;
@@ -39,5 +38,5 @@ private:
 	View vue;
 	Vector2i playerSize;
 	ParralaxBackground parralaxLevelOne;
-	shared_ptr<EntityManager> m_entityManager;
+	LuminousBeam levelTwoBeam;
 };

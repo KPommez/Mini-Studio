@@ -39,6 +39,7 @@ void Menu::start(RenderWindow& window) {
 	case START:
 		game.player.hitcount = 0;
 		game.Run(window);
+		exit(0);
 		menuState = MENU;
 		break;
 	case WIN:
@@ -67,7 +68,6 @@ void Menu::menu(RenderWindow& window) {
 		Vector2f mouse = { (float)n_mouse.x, (float)n_mouse.y };
 		Event gameEvent;
 		while (window.pollEvent(gameEvent)) {
-			cout << posButon << endl;
 
 			if (gameEvent.type == Event::Closed)
 				window.close();
@@ -97,7 +97,6 @@ void Menu::menu(RenderWindow& window) {
 			}
 
 			if (spriteMenu.spriteVBulle[0].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0,1) && posButon == 2) {
-				cout << "test";
 				listeTexte.clear();
 				listeRectangle.clear();
 				menuState = START;

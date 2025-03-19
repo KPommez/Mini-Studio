@@ -10,27 +10,29 @@ class ParralaxBackground;
 class EntityManager;
 
 class Map {
-private:
-	RectangleShape mur;
-	
-	
-	float posX;
-	float posY;
-	Player* player;
-
 public:
 	Map();
 	void loadAllMaps();
 	void loadMap(const string& filename, Player* players, RenderWindow& window, ParralaxBackground* currentLevel);
 	void drawMap(RenderWindow& window);
 
+public:
 	RectangleShape end;
-
 	vector<RectangleShape> platforms;
-	
 	vector <Plateforme*> plateformeTest;
-	vector<string> allLevelsTypePath{ "Assets/Map/" };
 	vector<string> allLevels;
+	shared_ptr<EntityManager> m_entityManager;
 
-	shared_ptr<EntityManager>  m_entityManager;
+private:
+	void loadMapTextures();
+
+private:
+	RectangleShape mur;
+	float posX;
+	float posY;
+	Player* player;
+	vector<string> allLevelsTypePath{ "Assets/Map/" };
+	Texture
+		leftRegularPlatform, rightRegularPlatform, middleRegularPlatform,
+		leftLeafPlatform, rightLeafPlatform, middleNoLeafPlatform;
 };
