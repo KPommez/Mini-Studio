@@ -140,8 +140,12 @@ void Menu::option(RenderWindow& window) {
 		window.draw(Texte.creation());
 	}
 
-	for (auto& Touche : spriteMenu.spritTouche) {
+	for (auto& Touche : spriteMenu.spriteToucheClavier) {
 		window.draw(Touche);
+	}
+
+	for (auto& ToucheManette : spriteMenu.spriteToucheManette) {
+		window.draw(ToucheManette);
 	}
 
 	window.display();
