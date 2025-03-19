@@ -23,6 +23,7 @@ Lampadaire::Lampadaire(Vector2f pos, Player* players, ParralaxBackground* _curre
 void Lampadaire::update(const float& deltaTime, RenderWindow& window) {
 	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {
 		player->playerSprite.setPosition(player->playerSprite.getPosition().x, 100);
+		player->hitcount++;
 	}
 	switch (currentState) {
 	case PATROL:
@@ -89,6 +90,7 @@ void Lampadaire::chase(Vector2f playerPos, const float& deltaTime, RenderWindow&
 
 	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {
 		player->playerSprite.setPosition(500, 500);
+		player->hitcount++;
 		if (player->isGoingRight) {
 			player->isGoingLeft = true;
 			player->isGoingRight = false;
@@ -96,7 +98,7 @@ void Lampadaire::chase(Vector2f playerPos, const float& deltaTime, RenderWindow&
 		currentLevel->moveLayers(deltaTime, window, *player);
 		player->isGoingLeft = false;
 		player->isGoingRight = true;
-		player->hitcount = player->hitcount + 1 ;
+
 	}
 	//lum.move(direction);
 }
@@ -116,7 +118,7 @@ void Lampadaire::patrol(const float& deltaTime) {
 	Vector2f target              = waypoints[currentWaypoint];
 	Vector2f direction           = target - position;
 	float distance               = sqrt(direction.x * direction.x + direction.y * direction.y);
-	cout << currentWaypoint << "  " << target.x << " " << target.y << endl;
+	//cout << currentWaypoint << "  " << target.x << " " << target.y << endl;
 	switch (currentWaypoint) {
 	case 0: 
 		moveSide = RIGHT;

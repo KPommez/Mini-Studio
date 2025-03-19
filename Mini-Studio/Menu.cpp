@@ -4,7 +4,7 @@
 Menu::Menu(RenderWindow& window) : game(window) {
 	menuState = MENU;
 	posButon = 3;
-	spriteMenu.initAllSpriteMenu();
+	spriteMenu.initAllSpriteMenu(window);
 }
 
 
@@ -24,7 +24,7 @@ void Menu::start(RenderWindow& window) {
 	else if (posButon <= -1) {
 		posButon = 0;
 	}
-	cout << game.getRunning();
+	//cout << game.getRunning();
 	if (game.lose == true)
 	{
 		menuState = LOOSE;
@@ -54,66 +54,61 @@ void Menu::start(RenderWindow& window) {
 }
 
 void Menu::menu(RenderWindow& window) {
-	bool hasStarted = false;
+	window.clear(Color::Black);
 
+	drawback(window);
+	spriteMenu.drawVector(window);
+	spriteMenu.setTexture("assets/backMenu/Menu_jeu_fond.png", window);
 
-		window.clear(Color::Black);
+	Vector2i n_mouse = Mouse::getPosition(window);
+	Vector2f mouse = { (float)n_mouse.x, (float)n_mouse.y };
+	Event gameEvent;
+	while (window.pollEvent(gameEvent)) {
 
-		drawback(window);
-		spriteMenu.drawVector(window);
-		spriteMenu.setTexture("assets/backMenu/menutel.png", window);
+		if (gameEvent.type == Event::Closed)
+			window.close();
 
+		if (Keyboard::isKeyPressed(Keyboard::K))
+			window.close();
 
-		Vector2i n_mouse = Mouse::getPosition(window);
-		Vector2f mouse = { (float)n_mouse.x, (float)n_mouse.y };
-		Event gameEvent;
-		while (window.pollEvent(gameEvent)) {
-
-			if (gameEvent.type == Event::Closed)
-				window.close();
-
-			if (Keyboard::isKeyPressed(Keyboard::K))
-				window.close();
-
-			if (spriteMenu.spriteVBulle[0].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 2) { //Play
-				spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 255));
-				spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 0));
-				spriteMenu.selectSprite[2].setColor(Color(255, 255, 255, 0));
-			}
-			else if (spriteMenu.spriteVBulle[1].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 1) { //Settings
-				spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 0));
-				spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 255));
-				spriteMenu.selectSprite[2].setColor(Color(255, 255, 255, 0));
-			}
-			else if (spriteMenu.spriteVBulle[2].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 0) { //Quit
-				spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 0));
-				spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 0));
-				spriteMenu.selectSprite[2].setColor(Color(255, 255, 255, 255));
-			}
-			else if (posButon == 3) {
-				spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 0));
-				spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 0));
-				spriteMenu.selectSprite[2].setColor(Color(255, 255, 255, 0));
-			}
-
-			if (spriteMenu.spriteVBulle[0].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0,1) && posButon == 2) {
-				listeTexte.clear();
-				listeRectangle.clear();
-				menuState = START;
-				hasStarted = true;
-				game.setRunning(true);
-			}
-			if (spriteMenu.spriteVBulle[1].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 1) {
-				listeTexte.clear();
-				listeRectangle.clear();
-				menuState = OPTION;
-			}
-			if (spriteMenu.spriteVBulle[2].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 0) {
-				window.close();
-			}
+		if (spriteMenu.spriteVBulle[0].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 2) { //Play
+			spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 255));
+			spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 0));
+			spriteMenu.selectSprite[2].setColor(Color(255, 255, 255, 0));
 		}
-		window.display();
+		else if (spriteMenu.spriteVBulle[1].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 1) { //Settings
+			spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 0));
+			spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 255));
+			spriteMenu.selectSprite[2].setColor(Color(255, 255, 255, 0));
+		}
+		else if (spriteMenu.spriteVBulle[2].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 0) { //Quit
+			spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 0));
+			spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 0));
+			spriteMenu.selectSprite[2].setColor(Color(255, 255, 255, 255));
+		}
+		else if (posButon == 3) {
+			spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 0));
+			spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 0));
+			spriteMenu.selectSprite[2].setColor(Color(255, 255, 255, 0));
+		}
+
+		if (spriteMenu.spriteVBulle[0].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0,1) && posButon == 2) {
+			listeTexte.clear();
+			listeRectangle.clear();
+			menuState = START;
+			game.setRunning(true);
+		}
+		if (spriteMenu.spriteVBulle[1].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 1) {
+			listeTexte.clear();
+			listeRectangle.clear();
+			menuState = OPTION;
+		}
+		if (spriteMenu.spriteVBulle[2].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 0) {
+			window.close();
+		}
 	}
+	window.display();
+}
 
 
 void Menu::option(RenderWindow& window) {

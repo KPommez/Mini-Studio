@@ -1,24 +1,27 @@
 #include "SpriteMenu.hpp"
 
-void SpriteMenu::initAllSpriteMenu()
+void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 {
-	if (!font.loadFromFile("Assets/font/Minecraft.ttf") ||
-		!bulle1.loadFromFile("Assets/backMenu/texte.png") ||
-		!bulle2.loadFromFile("Assets/backMenu/texte1.png") ||
-		!bulle3.loadFromFile("Assets/backMenu/texte2.png") ||
-		!choix1.loadFromFile("Assets/backMenu/bouton_play.png") ||
-		!choix2.loadFromFile("Assets/backMenu/bouton_options.png") ||
-		!choix3.loadFromFile("Assets/backMenu/bouton_quitter.png") ||
-		!selectPlay.loadFromFile("Assets/backMenu/selection_bouton.png") ||
+	Vector2f WindowSize{ static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y) };
+	if (!font.loadFromFile("Assets/font/Minecraft.ttf")                      ||
+		!bulle1.loadFromFile("Assets/backMenu/texte.png")                    ||
+		!bulle2.loadFromFile("Assets/backMenu/texte1.png")                   ||
+		!bulle3.loadFromFile("Assets/backMenu/texte2.png")                   ||
+		!choix1.loadFromFile("Assets/backMenu/bouton_play.png")              ||
+		!choix2.loadFromFile("Assets/backMenu/bouton_options.png")           ||
+		!choix3.loadFromFile("Assets/backMenu/bouton_quitter.png")           ||
+		!selectPlay.loadFromFile("Assets/backMenu/selection_bouton.png")     ||
 		!selectSettings.loadFromFile("Assets/backMenu/selection_bouton.png") ||
-		!selectQuit.loadFromFile("Assets/backMenu/selection_bouton.png") ||
-		!textureTouche.loadFromFile("Assets/backMenu/touche.png") ||
-		!textureTouche1.loadFromFile("Assets/backMenu/touche.png") ||
-		!textureTouche2.loadFromFile("Assets/backMenu/touche.png") ||
+		!selectQuit.loadFromFile("Assets/backMenu/selection_bouton.png")     ||
+		!textureTouche.loadFromFile("Assets/backMenu/touche.png")            ||
+		!textureTouche1.loadFromFile("Assets/backMenu/touche.png")           ||
+		!textureTouche2.loadFromFile("Assets/backMenu/touche.png")           ||
 		!textureTouche3.loadFromFile("Assets/backMenu/touche.png"))
 	{
 		cerr << "Assets du menu non totalement charges" << endl;
 	}
+
+	sprite.setOrigin(0, 0);
 	///////////Selection//////////////
 	selectPlaySprite.setTexture(selectPlay);
 	selectSettingsSprite.setTexture(selectSettings);
@@ -28,9 +31,9 @@ void SpriteMenu::initAllSpriteMenu()
 	selectSettingsSprite.setScale(0.5f, 0.5f);
 	selectQuitSprite.setScale(0.5f, 0.5f);
 
-	selectPlaySprite.setPosition(820, 275);
-	selectSettingsSprite.setPosition(750, 475);
-	selectQuitSprite.setPosition(840, 705);
+	selectPlaySprite.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 2.5f), WindowSize.y / 4.5f);
+	selectSettingsSprite.setPosition(WindowSize.x / 2.f - (selectSettings.getSize().x / 1.95f), WindowSize.y / 2.5f - (selectSettings.getSize().y / 1.5f));
+	selectQuitSprite.setPosition(WindowSize.x / 2.f - (selectQuit.getSize()).x / 2.5f, WindowSize.y / 1.80f);
 
 	selectPlaySprite.setColor(Color(255, 255, 255, 0));
 	selectSettingsSprite.setColor(Color(255, 255, 255, 0));
@@ -45,9 +48,9 @@ void SpriteMenu::initAllSpriteMenu()
 	spriteBulle2.setScale(0.5f, 0.5f);
 	spriteBulle3.setScale(0.5f, 0.5f);
 
-	spriteBulle1.setPosition(770, 250);
-	spriteBulle2.setPosition(770, 650);
-	spriteBulle3.setPosition(675, 450);
+	spriteBulle1.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 2.f), WindowSize.y / 5.f);
+	spriteBulle3.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 1.5f), WindowSize.y / 2.85f);
+	spriteBulle2.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 1.95f), WindowSize.y / 1.95f);
 
 	///////////Choix Play/Settings/Quit ////////
 	spriteChoix1.setTexture(choix1);
@@ -58,9 +61,9 @@ void SpriteMenu::initAllSpriteMenu()
 	spriteChoix2.setScale(0.5f, 0.5f);
 	spriteChoix3.setScale(0.5f, 0.5f);
 
-	spriteChoix1.setPosition(900, 275);
-	spriteChoix2.setPosition(800, 475);
-	spriteChoix3.setPosition(890, 700);
+	spriteChoix1.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 3.5f), WindowSize.y / 4.5f);
+	spriteChoix2.setPosition(WindowSize.x / 2.f - (selectSettings.getSize().x / 2.5f), WindowSize.y / 2.5f - (selectSettings.getSize().y / 1.5f));
+	spriteChoix3.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x) / 3.75f - (choix1.getSize().x / 5.f ), WindowSize.y / 1.81f);
 
 	///Touche 
 	touche.setTexture(textureTouche);
@@ -106,9 +109,13 @@ void SpriteMenu::setTexture(const string& PNGfile, RenderWindow& window)
 	if (texture.loadFromFile(PNGfile))
 	{
 		sprite.setTexture(texture);
-		Vector2u textureSize = texture.getSize();
-		float scaleX = static_cast<float>(window.getSize().x) / textureSize.x;
-		float scaleY = static_cast<float>(window.getSize().y) / textureSize.y;
+		sf::Vector2u windowSize = window.getSize();
+
+		// Calculer le facteur d'échelle pour ajuster le sprite à l'écran
+		float scaleX = static_cast<float>(windowSize.x) / sprite.getLocalBounds().width;
+		float scaleY = static_cast<float>(windowSize.y) / sprite.getLocalBounds().height;
+
+		// Appliquer l'échelle au sprite
 		sprite.setScale(scaleX, scaleY);
 	}
 }
@@ -124,5 +131,3 @@ void SpriteMenu::drawVector(RenderWindow& window) {
 		window.draw(text);
 	}
 }
-
-
