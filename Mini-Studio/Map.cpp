@@ -5,7 +5,17 @@ Map::Map() {
 	m_entityManager = make_shared<EntityManager>();
 	posX = 0;
 	posY = 0;
+	loadMapTextures();
 	loadAllMaps();
+}
+
+void Map::loadMapTextures() {
+	leftRegularPlatform.loadFromFile  ("Assets/Map/Platforms/leftBorder.png");
+	rightRegularPlatform.loadFromFile ("Assets/Map/Platforms/rightBorder.png");
+	middleRegularPlatform.loadFromFile("Assets/Map/Platforms/centralBubble.png");
+	leftLeafPlatform.loadFromFile     ("Assets/Map/Platforms/leftLeafBlock.png");
+	rightLeafPlatform.loadFromFile    ("Assets/Map/Platforms/rightLeafBlock.png");
+	middleNoLeafPlatform.loadFromFile ("Assets/Map/Platforms/noLeafBlock.png");
 }
 
 void Map::loadAllMaps() {
@@ -42,12 +52,45 @@ void Map::loadMap(const string& filename, Player* players, RenderWindow& window,
 			posY = (float)y * 40.f;
 			if (line[x] == '/') {
 				mur.setSize({ 40.f,40.f });
-				mur.setFillColor(Color::Blue);
+				mur.setTexture(&middleNoLeafPlatform);
 				mur.setPosition(posX, posY);
 				platforms.push_back(mur);
 			}
+			/*else if (line[x] == 'L') {
+				mur.setSize({ 40.f,40.f });
+				mur.setTexture(&leftRegularPlatform);
+				mur.setPosition(posX, posY);
+				platforms.push_back(mur);
+			}
+			else if (line[x] == 'R') {
+				mur.setSize({ 40.f,40.f });
+				mur.setTexture(&rightRegularPlatform);
+				mur.setPosition(posX, posY);
+				platforms.push_back(mur);
+			}
+			else if (line[x] == 'l') {
+				mur.setSize({ 40.f,40.f });
+				mur.setTexture(&leftLeafPlatform);
+				mur.setPosition(posX, posY);
+				platforms.push_back(mur);
+			}
+			else if (line[x] == 'r') {
+				mur.setSize({ 40.f,40.f });
+				mur.setTexture(&rightLeafPlatform);
+				mur.setPosition(posX, posY);
+				platforms.push_back(mur);
+			}
+			else if (line[x] == 'B') {
+				mur.setSize({ 40.f,40.f });
+				mur.setTexture(&middleRegularPlatform);
+				mur.setPosition(posX, posY);
+				platforms.push_back(mur);
+			}*/
 			else if (line[x] == '*') {
 				plateformeTest.push_back(new Plateforme(posX,posY,4));
+			}
+			else if (line[x] == '+') {
+				plateformeTest.push_back(new Plateforme(posX, posY, 1));
 			}
 			else if (line[x] == '-') {
 				plateformeTest.push_back(new Plateforme(posX, posY, 2));
@@ -56,20 +99,24 @@ void Map::loadMap(const string& filename, Player* players, RenderWindow& window,
 				plateformeTest.push_back(new Plateforme(posX, posY, 3));
 			}
 			else if (line[x] == 'E') {
+				endLevel.setSize({ 40.f,40.f });
+				endLevel.setFillColor(Color::Green);
+				endLevel.setPosition(posX, posY);
+			}
+			else if (line[x] == 'F') {
 				end.setSize({ 40.f,40.f });
-				end.setFillColor(Color::Green);
+				end.setFillColor(Color::Yellow);
 				end.setPosition(posX, posY);
 			}
-			else if (line[x] == 'L') {
+			else if (line[x] == 'C') {
 				m_entityManager->addEnnemy(make_shared<Lampadaire>(Vector2f(posX, posY), players, currentLevel));
 			}
 			else if (line[x] == 'P') {
-				m_entityManager->addEnnemy(make_shared<Petrifeu>(Vector2f(posX, posY), players));
+				m_entityManager->addEnnemy(make_shared<Petrifeu>(Vector2f(posX, posY), players)); //coriger la vitesse
 			}
 			else if (line[x] == 'V') {
-				m_entityManager->addEnnemy(make_shared<Eolienne>(Vector2f(posX, posY), players, window));
+				m_entityManager->addEnnemy(make_shared<Eolienne>(Vector2f(posX, posY), players, window)); // corriger la poussé
 			}
-			
 		}
 		++y;
 	}
@@ -83,5 +130,6 @@ void Map::drawMap(RenderWindow& window) {
 		window.draw(Plateforme->plat);
 	}
 	m_entityManager->drawEntities(window);
+	window.draw(endLevel);
 	window.draw(end);
 }

@@ -27,7 +27,7 @@ public:
     Texture textureToucheManette, textureToucheManette1, textureToucheManette2, textureToucheManette3, textureToucheManette4, textureToucheManette5;
     Sprite toucheManette, toucheManette1, toucheManette2, toucheManette3, toucheManette4, toucheManette5;
 
-    void initAllSpriteMenu();
+    void initAllSpriteMenu(RenderWindow& window);
     void setTexture(const string& PNGfile, RenderWindow& window);
     void drawVector(RenderWindow& window);
 };
