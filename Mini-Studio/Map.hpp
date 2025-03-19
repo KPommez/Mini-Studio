@@ -17,6 +17,7 @@ public:
 	void drawMap(RenderWindow& window);
 
 public:
+	RectangleShape endLevel;
 	RectangleShape end;
 	vector<RectangleShape> platforms;
 	vector <Plateforme*> plateformeTest;

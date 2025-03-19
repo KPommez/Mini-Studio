@@ -28,6 +28,7 @@ private:
 private:
 	bool isRunning;
 	bool firstParralaxOn, secondParralaxOn;
+	bool levelActif;
 	int index;
 	int screenX;
 	int screenY;
