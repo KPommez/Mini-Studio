@@ -10,6 +10,7 @@ public:
 	Game(RenderWindow& window);
 	void Run(RenderWindow& window);
 	bool setRunning(bool test);
+	void view(RenderWindow& window);
 
 public:
 	bool lose = false;
@@ -22,7 +23,7 @@ private:
 	void pollEvents(RenderWindow& window);
 	void update(const float& deltaTime, RenderWindow& window);
 	void draw(RenderWindow& window);
-	void view(RenderWindow& window);
+
 
 
 private:

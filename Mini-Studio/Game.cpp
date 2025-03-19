@@ -44,9 +44,10 @@ void Game::Run(RenderWindow& window) {
         update(deltaTime, window);
         draw(window);
         view(window);
+        cout << "hitcount : " << player.hitcount << endl;
         if (player.hitcount >= 5)
         {
-            isRunning = 0;
+            isRunning = false;
             lose = true;
         }
     }

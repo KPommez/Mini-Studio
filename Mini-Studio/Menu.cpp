@@ -24,7 +24,7 @@ void Menu::start(RenderWindow& window) {
 	else if (posButon <= -1) {
 		posButon = 0;
 	}
-	cout << game.getRunning();
+	//cout << game.getRunning();
 	if (game.lose == true)
 	{
 		menuState = LOOSE;
