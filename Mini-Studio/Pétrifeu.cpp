@@ -28,7 +28,7 @@ void Petrifeu::change() {
 
 		switch (random) {
 		case 1:
-			if (clock.getElapsedTime().asSeconds() > 3) {
+			if (clock.getElapsedTime().asSeconds() > 8) {
 
 				cout << "Partie 1" << endl;
 
@@ -37,7 +37,7 @@ void Petrifeu::change() {
 			}
 			break;
 		case 2:
-			if (clock.getElapsedTime().asSeconds() > 5) {
+			if (clock.getElapsedTime().asSeconds() > 12) {
 
 				cout << "Partie 2" << endl;
 
@@ -47,7 +47,7 @@ void Petrifeu::change() {
 			}
 			break;
 		case 3:
-			if (clock.getElapsedTime().asSeconds() > 8) {
+			if (clock.getElapsedTime().asSeconds() > 15) {
 
 				cout << "Partie 3" << endl;
 
