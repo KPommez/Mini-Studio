@@ -338,7 +338,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 					playerSprite.move(0, 0);
 				}
 				hasPlatform = true;
-				cout << "Platform" << endl;
+				
 				count++;
 			}
 		}
@@ -356,7 +356,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 				}
 				playerSprite.move(platform->deplacementX * deltaTime *20.f, 0);    //trouver un truc, sa marche presque
 				hasPlatform = true;
-				cout << "Platform" << endl;
+				
 				count++;
 			}
 		}

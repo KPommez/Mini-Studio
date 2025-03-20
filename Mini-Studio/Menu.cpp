@@ -9,6 +9,7 @@ Menu::Menu(RenderWindow& window) : game(window) {
 
 
 void Menu::start(RenderWindow& window) {
+	game.Run(window);
 	// gestion du int des boutons 
 	if (Joystick::getAxisPosition(0, Joystick::PovY) >= 80 && menuNavigationClock.getElapsedTime().asSeconds() > 0.2) {
 		menuNavigationClock.restart();
