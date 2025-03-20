@@ -28,6 +28,7 @@ Player::Player() {
 	fallingSpeed    = speed;
 	spacebarPresses = 0;
 	countSide       = 0;
+	hitcount        = 0;
 	animationTime   = 0.f;
 }
 
@@ -356,7 +357,6 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 				}
 				playerSprite.move(platform->deplacementX * deltaTime *20.f, 0);    //trouver un truc, sa marche presque
 				hasPlatform = true;
-				
 				count++;
 			}
 		}

@@ -92,7 +92,7 @@ void ParralaxBackground::moveLayers(const float& deltaTime, RenderWindow& window
 
 void ParralaxBackground::checkBorders(const Player& player, RenderWindow& window) {
 	float diff = 0;
-	for (int i = 0; i < layers.size(); ++i) {
+	for (size_t i = 0; i < layers.size(); ++i) {
 		diff = player.playerSprite.getPosition().x - layers[i].getPosition().x;
 		if (diff >= window.getSize().x * 1.5f && player.isGoingRight) {
 			layers[i].move(2.f * window.getSize().x, 0);
