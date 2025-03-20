@@ -3,6 +3,7 @@
 #include "EntityManager.hpp"
 #include "Map.hpp"
 #include "ParralaxBackground.hpp"
+#include "LevelTwo.hpp"
 
 class Ray;
 struct Mirror;
@@ -30,7 +31,6 @@ private:
 
 private:
 	bool isRunning;
-	bool firstParralaxOn, secondParralaxOn;
 	bool isMousePressed;
 	bool isRectangleSelected;
 	bool levelActif;
@@ -39,10 +39,11 @@ private:
 	int screenY;
 	int spaceReleases;
 	float deltaTime;
-	
+
 	Event event;
 	Clock Clock;
 	View vue;
 	Vector2i playerSize;
 	ParralaxBackground parralaxLevelOne;
+	LevelTwo levelTwo;
 };

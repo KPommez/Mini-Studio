@@ -20,8 +20,6 @@ Game::Game(RenderWindow& window) {
     screenY = window.getSize().y;
     spaceReleases = 0;
     index = 0;
-    firstParralaxOn = true;
-    secondParralaxOn = false;
     levelActif = true;
     isMousePressed = false;
     isRectangleSelected = false;
@@ -35,10 +33,14 @@ void Game::Run(RenderWindow& window) {
 
     // Chargement des assets
     parralaxLevelOne.instanciateLayers(window, "levelOne", 8); // Level 1 has 7 layers in his background + 1 for high sky
+    levelTwo.scaleSprites(window);
     // Chargement de la map
     mirrors.push_back(createRectangle(sf::Vector2f(300.f, 200.f)));
     mirrors.push_back(createRectangle(sf::Vector2f(500.f, 400.f)));
     mirrors.push_back(createRectangle(sf::Vector2f(400.f, 300.f)));
+    for (auto& mirror : mirrors) {
+        mirror.shape.setTexture(levelTwo.getTexture());
+    }
     // Ajout des menus
     // Appel du dessin du menu
 
@@ -306,6 +308,7 @@ void Game::draw(RenderWindow& window) {
         parralaxLevelOne.draw(window);
     }
     else if (index == 1) {
+        levelTwo.draw(window);
         for (auto& rect : mirrors) {
             rect.draw(window);
         }
@@ -313,7 +316,7 @@ void Game::draw(RenderWindow& window) {
         for (const auto& segment : raySegments) {
             sf::VertexArray line(sf::Lines, 2);
             line[0].position = segment.first;
-            line[0].color = sf::Color::Red;
+            line[0].color = sf::Color::Yellow;
             line[1].position = segment.second;
             line[1].color = sf::Color::Yellow;
             window.draw(line);
