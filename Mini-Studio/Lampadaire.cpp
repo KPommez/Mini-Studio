@@ -3,28 +3,85 @@
 #include "ParralaxBackground.hpp"
 
 Lampadaire::Lampadaire(Vector2f pos, Player* players, ParralaxBackground* _currentLevel) {
+
 	player = players;
 	position = pos;
 	shape.setPosition(pos);
 	shape.setFillColor(Color::Transparent);
 	shape.setSize({ 375, 125 });
 	currentState = PATROL;
-	moveSide = LEFT; 
+	moveSide = RIGHT; 
 	currentWaypoint = 0;
 	waypoints[0] = Vector2f(position.x + 100, position.y);
 	waypoints[1] = Vector2f(position.x - 400, position.y);
-	spriteTexture.loadFromFile("Assets/Lampadaire/lamp_idle.png");
-	spriteChar.setTexture(spriteTexture);
+	animationTime = 0;
 	spriteChar.setPosition(pos);
 	spriteChar.setScale(0.25, 0.25);
 	changedSide = false;
+	
+	isIdlingAnimationStarted = true;
+	isAnimationStarted = false;
 	
 	
 	currentLevel = _currentLevel;
 	//lum.setPosition(shape.getPosition());
 	lum.setFillColor(Color::Yellow);
+	loadAssets();
+}
+void Lampadaire::loadAssets() {
+	idleTexture.loadFromFile("Assets/Lampadaire/lamp_idle.png");
+	walk1Texture.loadFromFile("Assets/Lampadaire/lamp_walk1.png");
+	walk2Texture.loadFromFile("Assets/Lampadaire/lamp_walk2.png");
+	
+	spriteIdle.setTexture(idleTexture);
+	spriteWalk1.setTexture(walk1Texture);
+	spriteWalk2.setTexture(walk2Texture);
+
+	spriteIdle.setScale(0.25, 0.25);
+	spriteWalk1.setScale(0.25, 0.25);
+	spriteWalk2.setScale(0.25, 0.25);
+
+	ennemySprites.reserve(3);
+	ennemySprites.emplace_back(spriteIdle);
+	ennemySprites.emplace_back(spriteWalk1);
+	ennemySprites.emplace_back(spriteWalk2);
+
+	
+}
+void Lampadaire::anim(const float& deltaTime) {
+	
+	animationTime += deltaTime;
+	Vector2f scale = sprite.getScale();
+	
+		if (!isAnimationStarted) {
+			isAnimationStarted = true;
+			isIdlingAnimationStarted = false;
+			animationTime = 0.f;
+		}
+		// Restart the animation loop after 0.5 seconds
+		if (animationTime > 0.75f) {
+			animationTime = 0.f;
+		}
+		else if (animationTime < .25f) {
+			ennemySprites[0].setPosition(spriteChar.getPosition());
+			spriteChar = ennemySprites[0];
+		}
+		else if (animationTime < .5f) {
+			ennemySprites[1].setPosition(spriteChar.getPosition());
+			spriteChar = ennemySprites[1];
+		}
+		else {
+			ennemySprites[2].setPosition(spriteChar.getPosition());
+			spriteChar = ennemySprites[2];
+		}
+	
 }
 void Lampadaire::update(const float& deltaTime, RenderWindow& window) {
+	//if (changedSide) {
+	//	cout << "sprite scaled" << endl;
+	//	spriteChar.scale(-1, 1);
+	//}
+	anim(deltaTime);
 	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {
 		player->playerSprite.setPosition(500, 500);
 		player->hitcount++;
@@ -92,6 +149,7 @@ void Lampadaire::chase(Vector2f playerPos, const float& deltaTime, RenderWindow&
 	}
 	switch (moveSide) {
 	case MOVEMENTSIDE::LEFT:
+
 		shape.move(direction * 250.f * deltaTime, 0);
 		spriteChar.move(direction * 250.f * deltaTime, 0);
 		break;
@@ -126,18 +184,22 @@ void Lampadaire::patrol(const float& deltaTime) {
 	case 0: 
 		moveSide = RIGHT;
 		if (changedSide) {
-			spriteChar.scale(-1, 1);
+			changedSide = false; 
+			for (auto& e : ennemySprites)
+				e.scale(-1, 1);
 			spriteChar.move(-spriteChar.getGlobalBounds().width, 0);
+			
 		}
-		changedSide = false;
 		break;
 	case 1:
 		moveSide = LEFT;
+
 		if (!changedSide) {
-			spriteChar.scale(-1, 1);
+			for (auto& e : ennemySprites)
+				e.scale(-1, 1);
 			spriteChar.move(spriteChar.getGlobalBounds().width, 0);
+			changedSide = true;
 		}
-		changedSide = true;
 		break;
 	default:
 		break;
@@ -158,6 +220,7 @@ void Lampadaire::patrol(const float& deltaTime) {
 }
 
 void Lampadaire::draw(RenderWindow& window) {
+
 	window.draw(shape);
 	window.draw(lum);
 	window.draw(spriteChar);
