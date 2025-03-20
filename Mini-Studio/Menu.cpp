@@ -39,7 +39,7 @@ void Menu::start(RenderWindow& window) {
 	case START:
 		game.player.hitcount = 0;
 		game.Run(window);
-		exit(0);
+		//exit(0);
 		menuState = MENU;
 		break;
 	case WIN:

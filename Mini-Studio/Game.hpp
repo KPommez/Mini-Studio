@@ -5,6 +5,7 @@
 #include "ParralaxBackground.hpp"
 #include "LuminousBeam.hpp"
 
+
 class Game {
 public:
 	Game(RenderWindow& window);

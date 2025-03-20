@@ -38,39 +38,42 @@ void Player::resize(RenderWindow& window) {
 
 void Player::loadAssets(RenderWindow& window) {
 	// Loading the assets
-	playerIdleTexture.loadFromFile("Assets/Player/idle.png");
-	playerWalk1.loadFromFile("Assets/Player/walk1.png");
-	playerWalk2.loadFromFile("Assets/Player/walk2.png");
-	playerWalk3.loadFromFile("Assets/Player/walk3.png");
-	playerJump1.loadFromFile("Assets/Player/jump1.png");
-	playerJump2.loadFromFile("Assets/Player/jump2.png");
-	playerJump3.loadFromFile("Assets/Player/jump3.png");
-	playerJump4.loadFromFile("Assets/Player/jump4.png");
-	// Setting the default player's texture
-	playerTexture = playerIdleTexture;
-	// Applying textures
-	playerIdleSprite.setTexture(playerIdleTexture);
-	playerWalk1Sprite.setTexture(playerWalk1);
-	playerWalk2Sprite.setTexture(playerWalk2);
-	playerWalk3Sprite.setTexture(playerWalk3);
-	playerJump1Sprite.setTexture(playerJump1);
-	playerJump2Sprite.setTexture(playerJump2);
-	playerJump3Sprite.setTexture(playerJump3);
-	playerJump4Sprite.setTexture(playerJump4);
-	// Adding them to the vector of sprites
-	playerSprites.reserve(8);
-	playerSprites.emplace_back(playerIdleSprite);
-	playerSprites.emplace_back(playerWalk1Sprite);
-	playerSprites.emplace_back(playerWalk2Sprite);
-	playerSprites.emplace_back(playerWalk3Sprite);
-	playerSprites.emplace_back(playerJump1Sprite);
-	playerSprites.emplace_back(playerJump2Sprite);
-	playerSprites.emplace_back(playerJump3Sprite);
-	playerSprites.emplace_back(playerJump4Sprite);
-	// Applying a new scale to all the loaded sprites
-	float ratio = playerTexture.getSize().y / (float)window.getSize().y;
-	for (auto& _sprite : playerSprites) {
-		_sprite.scale(ratio / 6.5f, ratio / 6.5f);
+	if (!loaded) {
+		playerIdleTexture.loadFromFile("Assets/Player/idle.png");
+		playerWalk1.loadFromFile("Assets/Player/walk1.png");
+		playerWalk2.loadFromFile("Assets/Player/walk2.png");
+		playerWalk3.loadFromFile("Assets/Player/walk3.png");
+		playerJump1.loadFromFile("Assets/Player/jump1.png");
+		playerJump2.loadFromFile("Assets/Player/jump2.png");
+		playerJump3.loadFromFile("Assets/Player/jump3.png");
+		playerJump4.loadFromFile("Assets/Player/jump4.png");
+		// Setting the default player's texture
+		playerTexture = playerIdleTexture;
+		// Applying textures
+		playerIdleSprite.setTexture(playerIdleTexture);
+		playerWalk1Sprite.setTexture(playerWalk1);
+		playerWalk2Sprite.setTexture(playerWalk2);
+		playerWalk3Sprite.setTexture(playerWalk3);
+		playerJump1Sprite.setTexture(playerJump1);
+		playerJump2Sprite.setTexture(playerJump2);
+		playerJump3Sprite.setTexture(playerJump3);
+		playerJump4Sprite.setTexture(playerJump4);
+		// Adding them to the vector of sprites
+		playerSprites.reserve(8);
+		playerSprites.emplace_back(playerIdleSprite);
+		playerSprites.emplace_back(playerWalk1Sprite);
+		playerSprites.emplace_back(playerWalk2Sprite);
+		playerSprites.emplace_back(playerWalk3Sprite);
+		playerSprites.emplace_back(playerJump1Sprite);
+		playerSprites.emplace_back(playerJump2Sprite);
+		playerSprites.emplace_back(playerJump3Sprite);
+		playerSprites.emplace_back(playerJump4Sprite);
+		// Applying a new scale to all the loaded sprites
+		float ratio = playerTexture.getSize().y / (float)window.getSize().y;
+		for (auto& _sprite : playerSprites) {
+			_sprite.scale(ratio / 6.5f, ratio / 6.5f);
+		}
+		loaded = true;
 	}
 }
 

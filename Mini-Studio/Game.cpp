@@ -18,6 +18,7 @@ Game::Game(RenderWindow& window) {
 void Game::Run(RenderWindow& window) {
     isRunning = true;
     inGame = true;
+    levelActif = true;
     srand(time(NULL));
 
     // Chargement des assets
@@ -67,7 +68,7 @@ bool Game::setRunning(bool test)
 
 void Game::pollEvents(RenderWindow& window) {
     while (window.pollEvent(event)) {
-        if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::J)) {
+        if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
             isRunning = false;
             inGame = false;
         }
