@@ -18,6 +18,7 @@ public:
 	Map level;
 	Player player;
 	bool getRunning();
+	int index;
 
 private:
 	void pollEvents(RenderWindow& window);
@@ -29,7 +30,7 @@ private:
 	bool isRunning;
 	bool firstParralaxOn, secondParralaxOn;
 	bool levelActif;
-	int index;
+
 	int screenX;
 	int screenY;
 	int spaceReleases;

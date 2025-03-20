@@ -8,16 +8,15 @@ public:
 	Texture texture;
 
     vector <Sprite> selectSprite;
-    Texture selectPlay, selectSettings, selectQuit;
-    Sprite selectPlaySprite, selectSettingsSprite, selectQuitSprite;
-
-    vector <Sprite> spriteVBulle;
-    Texture bulle1, bulle2, bulle3;
-    Sprite spriteBulle1, spriteBulle2, spriteBulle3;
+    Texture selectPlay, selectQuit;
+    Sprite selectPlaySprite, selectQuitSprite;
 
     vector <Sprite> spriteTexte;
-    Texture choix1, choix2, choix3;
-    Sprite spriteChoix1, spriteChoix2, spriteChoix3;
+    Texture choix1, choix3;
+    Sprite spriteChoix1, spriteChoix3;
+
+    Texture bullePlayer, option;
+    Sprite spriteBullePlayer, spriteOption;
 
     vector <Sprite> spriteToucheClavier;
     Texture textureTouche, textureTouche1, textureTouche2, textureTouche3, textureTouche4;
