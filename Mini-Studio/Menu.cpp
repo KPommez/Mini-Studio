@@ -117,20 +117,25 @@ void Menu::option(RenderWindow& window) {
 	listeRectangle.clear();
 	drawback(window);
 
-	Texte retour(spriteMenu.font, "Retour", 40, 0, 0, 0, 1700, 1000);
-	listeTexte.push_back(retour);
-
 	///////////////////////////////////////////////////////////////////
 
 
-	Rectangle RecRetour(155, 55, 1690, 1000, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-	listeRectangle.push_back(RecRetour);
+	Rectangle RectRetour(155, 55, 1690, 1000, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	Rectangle RectDashClavier(115, 55, 490, 690, 255, 255, 255);
+	Rectangle RectSautClavier(115, 55, 620, 690, 255, 255, 255);
+	Rectangle RectDashJoystick(115, 55, 940, 690, 255, 255, 255);
+	Rectangle RectSautJoystick(115, 55, 1075, 690, 255, 255, 255);
+	listeRectangle.push_back(RectRetour);
+	listeRectangle.push_back(RectDashClavier);
+	listeRectangle.push_back(RectSautClavier);
+	listeRectangle.push_back(RectDashJoystick);
+	listeRectangle.push_back(RectSautJoystick);
 
 	for (auto& Rectangle : listeRectangle) {
 		window.draw(Rectangle.creation());
 	}
 
-	for (auto& Texte : listeTexte) {
+	for (auto& Texte : spriteMenu.listeTexteOption) {
 		window.draw(Texte.creation());
 	}
 
@@ -153,7 +158,7 @@ void Menu::option(RenderWindow& window) {
 			window.close();
 
 		if (Mouse::isButtonPressed(Mouse::Left)) {
-			if (Mouse::getPosition(window).x > RecRetour.posX && Mouse::getPosition(window).y > RecRetour.posY && Mouse::getPosition(window).x < RecRetour.posX + RecRetour.tailleX && Mouse::getPosition(window).y < RecRetour.posY + RecRetour.tailleY) {
+			if (Mouse::getPosition(window).x > RectRetour.posX && Mouse::getPosition(window).y > RectRetour.posY && Mouse::getPosition(window).x < RectRetour.posX + RectRetour.tailleX && Mouse::getPosition(window).y < RectRetour.posY + RectRetour.tailleY) {
 				listeTexte.clear();
 				listeRectangle.clear();
 				menuState = MENU;

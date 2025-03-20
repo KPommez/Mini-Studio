@@ -118,6 +118,15 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	toucheManette5.setPosition(1675, 850);
 	toucheManette5.setScale(0.4f, 0.4f);
 
+	///Texte Option 
+	Texte retour(font, "Retour", 40, 0, 0, 0, 1700, 1000);
+	Texte dashClavier(font, "Dash", 40, 0, 0, 0, 500, 690);
+	Texte sautClavier(font, "Saut", 40, 0, 0, 0, 630, 690);
+	
+	///texte Option Joystick
+	Texte dashJoystick(font, "Dash", 40, 0, 0, 0, 950, 690);
+	Texte sautJoystick(font, "Saut", 40, 0, 0, 0, 1085, 690);
+	
 	///Bulle arrière
 	spriteVBulle.push_back(spriteBulle1);
 	spriteVBulle.push_back(spriteBulle3);
@@ -147,6 +156,13 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	spriteToucheManette.push_back(toucheManette3);
 	spriteToucheManette.push_back(toucheManette4);
 	spriteToucheManette.push_back(toucheManette5);
+
+	///Texte Option
+	listeTexteOption.push_back(retour);
+	listeTexteOption.push_back(dashClavier);
+	listeTexteOption.push_back(sautClavier);
+	listeTexteOption.push_back(dashJoystick);
+	listeTexteOption.push_back(sautJoystick);
 }
 
 void SpriteMenu::setTexture(const string& PNGfile, RenderWindow& window)
