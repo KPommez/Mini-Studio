@@ -132,7 +132,7 @@ void Menu::option(RenderWindow& window) {
 	///////////////////////////////////////////////////////////////////
 
 
-	Rectangle RecRetour(155, 55, 1690, 1000, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
+	Rectangle RecRetour(185, 55, 1690, 1000, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
 	listeRectangle.push_back(RecRetour);
 
 	for (auto& Rectangle : listeRectangle) {

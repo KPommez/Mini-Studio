@@ -4,12 +4,12 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 {
 	Vector2f WindowSize{ static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y) };
 	if (!font.loadFromFile("Assets/font/Minecraft.ttf")                            ||
-		!ami1.loadFromFile("Assets/backMenu/amitexte1.png")                        ||
-		!ami2.loadFromFile("Assets/backMenu/amitexte2.png")                        ||
+		!ami1.loadFromFile("Assets/backMenu/ami1.png")                             ||
+		!ami2.loadFromFile("Assets/backMenu/ami2.png")                             ||
 		!bullePlayer.loadFromFile("Assets/backMenu/bulleMenu.png")                 ||
 		!option.loadFromFile("Assets/backMenu/optionIcone.png")                    ||
-		!choix1.loadFromFile("Assets/backMenu/bouton_play.png")                    ||
-		!choix3.loadFromFile("Assets/backMenu/bouton_quitter.png")                 ||
+		!choix1.loadFromFile("Assets/backMenu/okarriveb.png")                      ||
+		!choix3.loadFromFile("Assets/backMenu/pasmtnR.png")                        ||
 		!selectPlay.loadFromFile("Assets/backMenu/selection_bouton.png")           ||
 		!selectQuit.loadFromFile("Assets/backMenu/selection_bouton.png")           ||
 		!textureTouche.loadFromFile("Assets/backMenu/toucheQ.png")                 ||
@@ -45,11 +45,11 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	selectPlaySprite.setTexture(selectPlay);
 	selectQuitSprite.setTexture(selectQuit);
 
-	selectPlaySprite.setScale(0.5f, 0.5f);
-	selectQuitSprite.setScale(0.5f, 0.5f);
+	selectPlaySprite.setScale(0.6f, 0.6f);
+	selectQuitSprite.setScale(0.60f, 0.75f);
 
 	selectPlaySprite.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 5.5f), WindowSize.y / 1.90f);
-	selectQuitSprite.setPosition(WindowSize.x / 2.f - (selectQuit.getSize()).x / 5.5f, WindowSize.y / 1.63f);
+	selectQuitSprite.setPosition(WindowSize.x / 2.f - (selectQuit.getSize()).x / 5.f, WindowSize.y / 1.63f);
 
 	selectPlaySprite.setColor(Color(255, 255, 255, 0));
 	selectQuitSprite.setColor(Color(255, 255, 255, 0));
@@ -71,10 +71,11 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	spriteChoix3.setTexture(choix3);
 
 	spriteChoix1.setScale(0.5f, 0.5f);
-	spriteChoix3.setScale(0.5f, 0.5f);
+	spriteChoix3.setScale(0.35f, 0.35f);
 
-	spriteChoix1.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 20.f), WindowSize.y / 1.90f);
-	spriteChoix3.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x) / 10.f, WindowSize.y / 1.65f);
+	//spriteChoix1.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 20.f), WindowSize.y / 1.90f);
+	spriteChoix1.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 8.f), WindowSize.y / 1.90f);
+	spriteChoix3.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x) / 5.f, WindowSize.y / 1.65f);
 
 	///Touche 
 	touche.setTexture(textureTouche);
