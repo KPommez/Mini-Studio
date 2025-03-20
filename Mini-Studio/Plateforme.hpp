@@ -9,15 +9,15 @@ public:
     void platUpdate(const float& deltaTime);
     RectangleShape plat;
     Texture tex;
+    float deplacementX;
+    float deplacementY;
 
 private:
     float deltaTime;
     float posX;
     float posY;
     float wayPoint1;
-    float wayPoint2;
-    float deplacementX;
-    float deplacementY;
+    float wayPoint2;  
     int State;
     int i;
     
