@@ -13,6 +13,9 @@ Game::Game(RenderWindow& window) {
     firstParralaxOn = true;
     secondParralaxOn = false;
     levelActif = true;
+    // Level 2 exclusive
+    selectedMirror = -1;
+    mirrorSelected = false;
 }
 
 void Game::Run(RenderWindow& window) {
@@ -23,7 +26,13 @@ void Game::Run(RenderWindow& window) {
     // Chargement des assets
     parralaxLevelOne.instanciateLayers(window, "levelOne", 8); // Level 1 has 7 layers in his background + 1 for high sky
     // Chargement de la map
-    
+    mirrors = {
+        Mirror(sf::Vector2f(300.f, 200.f), sf::Vector2f(100.f, 10.f), 45.f),
+        Mirror(sf::Vector2f(500.f, 300.f), sf::Vector2f(100.f, 10.f), -45.f),
+        Mirror(sf::Vector2f(400.f, 400.f), sf::Vector2f(100.f, 10.f), 0.f)
+    };
+    lightSource.setPosition(sf::Vector2f(400.f, 100.f)); // Mets une position correcte
+    lightSource.setDirection(sf::Vector2f(1.f, 1.f));    // Une direction diagonale
     // Ajout des menus
     // Appel du dessin du menu
 
@@ -34,8 +43,6 @@ void Game::Run(RenderWindow& window) {
     level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
 
     view(window);
-    levelTwoBeam.create(sf::Vector2f(400, 300));
-    levelTwoBeam.updateTrajectory();
 
     while (isRunning) {
         deltaTime = Clock.restart().asSeconds();
@@ -80,10 +87,53 @@ void Game::pollEvents(RenderWindow& window) {
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::P) {
             inGame = !inGame;
         }
-        if (event.type == Event::KeyPressed && event.key.code == sf::Keyboard::R) {
-            // Exemple de modification de la rotation de la première surface
-            levelTwoBeam.setSurfaceRotation(1, levelTwoBeam.getSurfaceRotation(1) + 1);
-            levelTwoBeam.updateTrajectory();
+        if (event.type == sf::Event::MouseButtonPressed) {
+            if (event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+
+                // Vérifier si un miroir est sélectionné
+                for (size_t i = 0; i < mirrors.size(); ++i) {
+                    sf::Vector2f mirrorPos = mirrors[i].getPosition();
+                    sf::Vector2f mirrorSize = mirrors[i].getSize();
+
+                    // Vérification simplifiée (on pourrait améliorer la précision)
+                    if (std::abs(mousePos.x - mirrorPos.x) < mirrorSize.x / 2 &&
+                        std::abs(mousePos.y - mirrorPos.y) < mirrorSize.y / 2) {
+                        selectedMirror = i;
+                        mirrorSelected = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (event.type == sf::Event::MouseButtonReleased) {
+            if (event.mouseButton.button == sf::Mouse::Left) {
+                mirrorSelected = false;
+            }
+        }
+
+        if (event.type == sf::Event::MouseMoved) {
+            if (mirrorSelected && selectedMirror >= 0) {
+                // Déplacer le miroir sélectionné
+                mirrors[selectedMirror] = Mirror(
+                    sf::Vector2f(event.mouseMove.x, event.mouseMove.y),
+                    mirrors[selectedMirror].getSize(),
+                    mirrors[selectedMirror].getRotation()
+                );
+            }
+        }
+
+        // Rotation des miroirs avec les touches R et F
+        if (event.type == sf::Event::KeyPressed) {
+            if (selectedMirror >= 0) {
+                if (event.key.code == sf::Keyboard::R) {
+                    mirrors[selectedMirror].rotate(5.f);
+                }
+                else if (event.key.code == sf::Keyboard::F) {
+                    mirrors[selectedMirror].rotate(-5.f);
+                }
+            }
         }
     }
 }
@@ -114,6 +164,7 @@ void Game::update(const float& deltaTime, RenderWindow& window) {
         isRunning = 0;
         //mettre les transition
     }
+    lightPath = traceLightPath(lightSource, mirrors, target);
 }
 
 void Game::view(RenderWindow& window) {
@@ -161,7 +212,17 @@ void Game::draw(RenderWindow& window) {
         //parralaxLevelTwo.draw(window);
     }
     level.drawMap(window);
-    //levelTwoBeam.draw(window);
     player.draw(window);
+    for (size_t i = 0; i < mirrors.size(); ++i) {
+        mirrors[i].draw(window);
+    }
+    target.draw(window);
+    // Dessiner le chemin du rayon
+    for (auto& ray : lightPath) {
+        ray.draw(window);
+    }
+
+    // Dessiner la source
+    lightSource.draw(window);
     window.display();
 }

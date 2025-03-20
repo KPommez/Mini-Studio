@@ -3,7 +3,10 @@
 #include "EntityManager.hpp"
 #include "Map.hpp"
 #include "ParralaxBackground.hpp"
-#include "LuminousBeam.hpp"
+// Level 2 header files
+#include "LightSource.hpp"
+#include "Mirror.hpp"
+#include "Target.hpp"
 
 class Game {
 public:
@@ -24,6 +27,15 @@ private:
 	void update(const float& deltaTime, RenderWindow& window);
 	void draw(RenderWindow& window);
 
+// Level 2 exclusive
+private:
+	int selectedMirror;
+	bool mirrorSelected;
+	LightSource lightSource;
+	vector<Mirror> mirrors;
+	Target target;
+	vector<LightRay> lightPath;
+	vector<LightRay> traceLightPath(const LightSource& source, const vector<Mirror>& mirrors, Target& target, int maxReflections = 10);
 
 private:
 	bool isRunning;
@@ -40,5 +52,4 @@ private:
 	View vue;
 	Vector2i playerSize;
 	ParralaxBackground parralaxLevelOne;
-	LuminousBeam levelTwoBeam;
 };

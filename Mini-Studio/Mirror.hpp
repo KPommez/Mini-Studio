@@ -1,22 +1,28 @@
 #pragma once
 
 #include "includeAll.hpp"
+#include "LightRay.hpp"
 
+// Classe pour représenter un miroir (rectangle orientable)
 class Mirror {
-public:
-	Mirror(const Vector2f& pos, const Vector2f& size, const float& startingAngle);
-
-public:
-	Vector2f getPosition() const;
-	void rotate(const float& deltaTime);
-	void draw(RenderWindow& window);
-
 private:
-	RectangleShape hitbox;
-	Texture texture;
-	Sprite sprite;
-	Vector2f       m_size;
-	Vector2f       m_pos;
-	float          m_angle;
-	bool           m_isTrigerred;
+    sf::RectangleShape shape;
+    sf::Vector2f normal; // Vecteur normal au miroir
+
+    void updateNormal();
+
+public:
+    Mirror(sf::Vector2f position, sf::Vector2f size, float rotation = 0.f);
+
+    void setRotation(float rotation);
+    void rotate(float angle);
+
+    sf::Vector2f getPosition() const { return shape.getPosition(); }
+    sf::Vector2f getSize() const { return shape.getSize(); }
+    float getRotation() const { return shape.getRotation(); }
+    sf::Vector2f getNormal() const { return normal; }
+
+    bool intersect(const LightRay& ray, sf::Vector2f& intersection, sf::Vector2f& reflectedDirection) const;
+
+    void draw(sf::RenderWindow& window);
 };

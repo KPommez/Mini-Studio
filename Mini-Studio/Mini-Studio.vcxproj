@@ -148,7 +148,8 @@
     <ClCompile Include="Eolienne.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Lampadaire.cpp" />
-    <ClCompile Include="LuminousBeam.cpp" />
+    <ClCompile Include="LightRay.cpp" />
+    <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Pétrifeu.cpp" />
     <ClCompile Include="SolarPanel.cpp" />
     <ClCompile Include="SpriteMenu.cpp" />
+    <ClCompile Include="Target.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.hpp" />
@@ -167,7 +169,8 @@
     <ClInclude Include="Eolienne.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="includeAll.hpp" />
-    <ClInclude Include="LuminousBeam.hpp" />
+    <ClInclude Include="LightRay.hpp" />
+    <ClInclude Include="LightSource.hpp" />
     <ClInclude Include="Menu.hpp" />
     <ClInclude Include="Lampadaire.hpp" />
     <ClInclude Include="Map.hpp" />
@@ -178,6 +181,7 @@
     <ClInclude Include="Pétrifeu.hpp" />
     <ClInclude Include="SpriteMenu.hpp" />
     <ClInclude Include="SolarPanel.hpp" />
+    <ClInclude Include="Target.hpp" />
     <ClInclude Include="Texte.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
