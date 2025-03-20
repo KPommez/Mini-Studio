@@ -133,9 +133,9 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	Texte sautJoystick(font, "Saut", 40, 0, 0, 0, 1085, 690);
 	
 	///Bulle arrière
-	spriteVBulle.push_back(spriteBulle1);
+	/*spriteVBulle.push_back(spriteBulle1);
 	spriteVBulle.push_back(spriteBulle3);
-	spriteVBulle.push_back(spriteBulle2);
+	spriteVBulle.push_back(spriteBulle2);*/
 
 	///Selection
 	selectSprite.push_back(selectPlaySprite);
