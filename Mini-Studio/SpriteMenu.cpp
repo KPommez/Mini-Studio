@@ -4,14 +4,13 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 {
 	Vector2f WindowSize{ static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y) };
 	if (!font.loadFromFile("Assets/font/Minecraft.ttf")                            ||
-		!bulle1.loadFromFile("Assets/backMenu/texte.png")                          ||
-		!bulle2.loadFromFile("Assets/backMenu/texte1.png")                         ||
-		!bulle3.loadFromFile("Assets/backMenu/texte2.png")                         ||
-		!choix1.loadFromFile("Assets/backMenu/bouton_play.png")                    ||
-		!choix2.loadFromFile("Assets/backMenu/bouton_options.png")                 ||
-		!choix3.loadFromFile("Assets/backMenu/bouton_quitter.png")                 ||
+		!ami1.loadFromFile("Assets/backMenu/ami1.png")                             ||
+		!ami2.loadFromFile("Assets/backMenu/ami2.png")                             ||
+		!bullePlayer.loadFromFile("Assets/backMenu/bulleMenu.png")                 ||
+		!option.loadFromFile("Assets/backMenu/optionIcone.png")                    ||
+		!choix1.loadFromFile("Assets/backMenu/okarriveb.png")                      ||
+		!choix3.loadFromFile("Assets/backMenu/pasmtnR.png")                        ||
 		!selectPlay.loadFromFile("Assets/backMenu/selection_bouton.png")           ||
-		!selectSettings.loadFromFile("Assets/backMenu/selection_bouton.png")       ||
 		!selectQuit.loadFromFile("Assets/backMenu/selection_bouton.png")           ||
 		!textureTouche.loadFromFile("Assets/backMenu/toucheQ.png")                 ||
 		!textureTouche1.loadFromFile("Assets/backMenu/toucheS.png")                ||
@@ -29,48 +28,54 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	}
 
 	sprite.setOrigin(0, 0);
+
+	///////////Texte Ami /////////////
+	Sami1.setTexture(ami1);
+	Sami2.setTexture(ami2);
+
+	Sami1.setScale(0.5f, 0.5f);
+	Sami2.setScale(0.5f, 0.5f);
+
+	Sami1.setPosition(WindowSize.x / 2.f - (ami1.getSize().x / 3.35f), WindowSize.y / 9.f);
+	Sami2.setPosition(WindowSize.x / 2.f - (ami1.getSize().x / 3.35f), WindowSize.y / 3.5f);
+
+	TexteAmi.push_back(Sami1);
+	TexteAmi.push_back(Sami2);
 	///////////Selection//////////////
 	selectPlaySprite.setTexture(selectPlay);
-	selectSettingsSprite.setTexture(selectSettings);
 	selectQuitSprite.setTexture(selectQuit);
 
-	selectPlaySprite.setScale(0.5f, 0.5f);
-	selectSettingsSprite.setScale(0.5f, 0.5f);
-	selectQuitSprite.setScale(0.5f, 0.5f);
+	selectPlaySprite.setScale(0.6f, 0.6f);
+	selectQuitSprite.setScale(0.60f, 0.75f);
 
-	selectPlaySprite.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 2.5f), WindowSize.y / 4.5f);
-	selectSettingsSprite.setPosition(WindowSize.x / 2.f - (selectSettings.getSize().x / 1.95f), WindowSize.y / 2.5f - (selectSettings.getSize().y / 1.5f));
-	selectQuitSprite.setPosition(WindowSize.x / 2.f - (selectQuit.getSize()).x / 2.5f, WindowSize.y / 1.80f);
+	selectPlaySprite.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 5.5f), WindowSize.y / 1.90f);
+	selectQuitSprite.setPosition(WindowSize.x / 2.f - (selectQuit.getSize()).x / 5.f, WindowSize.y / 1.63f);
 
 	selectPlaySprite.setColor(Color(255, 255, 255, 0));
-	selectSettingsSprite.setColor(Color(255, 255, 255, 0));
 	selectQuitSprite.setColor(Color(255, 255, 255, 0));
+	spriteOption.setColor(Color(127, 127, 127, 0));
 
 	//////////Bulle/////////////////
-	spriteBulle1.setTexture(bulle1);
-	spriteBulle2.setTexture(bulle2);
-	spriteBulle3.setTexture(bulle3);
 
-	spriteBulle1.setScale(0.5f, 0.5f);
-	spriteBulle2.setScale(0.5f, 0.5f);
-	spriteBulle3.setScale(0.5f, 0.5f);
+	spriteBullePlayer.setTexture(bullePlayer);
+	spriteBullePlayer.setScale(0.40f, 0.40f);
+	spriteBullePlayer.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 2.5f), WindowSize.y / 2.5f);
 
-	spriteBulle1.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 2.f), WindowSize.y / 5.f);
-	spriteBulle3.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 1.5f), WindowSize.y / 2.85f);
-	spriteBulle2.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 1.95f), WindowSize.y / 1.95f);
+	spriteOption.setTexture(option);
+	spriteOption.setScale(0.15f, 0.15f);
+	spriteOption.setPosition(WindowSize.x / 2.f + (selectPlay.getSize().x / 3.5f), WindowSize.y / 5.f - (option.getSize().x / 10.f) );
+
 
 	///////////Choix Play/Settings/Quit ////////
 	spriteChoix1.setTexture(choix1);
-	spriteChoix2.setTexture(choix2);
 	spriteChoix3.setTexture(choix3);
 
 	spriteChoix1.setScale(0.5f, 0.5f);
-	spriteChoix2.setScale(0.5f, 0.5f);
-	spriteChoix3.setScale(0.5f, 0.5f);
+	spriteChoix3.setScale(0.35f, 0.35f);
 
-	spriteChoix1.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 3.5f), WindowSize.y / 4.5f);
-	spriteChoix2.setPosition(WindowSize.x / 2.f - (selectSettings.getSize().x / 2.5f), WindowSize.y / 2.5f - (selectSettings.getSize().y / 1.5f));
-	spriteChoix3.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x) / 3.75f - (choix1.getSize().x / 5.f ), WindowSize.y / 1.81f);
+	//spriteChoix1.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 20.f), WindowSize.y / 1.90f);
+	spriteChoix1.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 8.f), WindowSize.y / 1.90f);
+	spriteChoix3.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x) / 5.f, WindowSize.y / 1.65f);
 
 	///Touche 
 	touche.setTexture(textureTouche);
@@ -118,19 +123,13 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	toucheManette5.setPosition(1675, 850);
 	toucheManette5.setScale(0.4f, 0.4f);
 
-	///Bulle arrière
-	spriteVBulle.push_back(spriteBulle1);
-	spriteVBulle.push_back(spriteBulle3);
-	spriteVBulle.push_back(spriteBulle2);
 
 	///Selection
 	selectSprite.push_back(selectPlaySprite);
-	selectSprite.push_back(selectSettingsSprite);
 	selectSprite.push_back(selectQuitSprite);
 
 	///Texte
 	spriteTexte.push_back(spriteChoix1);
-	spriteTexte.push_back(spriteChoix2);
 	spriteTexte.push_back(spriteChoix3);
 
 	//Touche
@@ -166,8 +165,13 @@ void SpriteMenu::setTexture(const string& PNGfile, RenderWindow& window)
 }
 
 void SpriteMenu::drawVector(RenderWindow& window) {
-	for (auto& bulle : spriteVBulle) {
-		window.draw(bulle);
+	//for (auto& bulle : spriteVBulle) {
+	//	window.draw(bulle);
+	//}
+	window.draw(spriteBullePlayer);
+	window.draw(spriteOption);
+	for (auto& ami : TexteAmi) {
+		window.draw(ami);
 	}
 	for (auto& button : selectSprite) {
 		window.draw(button);

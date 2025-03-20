@@ -20,7 +20,7 @@ public:
 	Map level;
 	Player player;
 	bool getRunning();
-	
+	int index;
 
 private:
 	void pollEvents(RenderWindow& window);
@@ -34,7 +34,7 @@ private:
 	bool isMousePressed;
 	bool isRectangleSelected;
 	bool levelActif;
-	int index;
+
 	int screenX;
 	int screenY;
 	int spaceReleases;

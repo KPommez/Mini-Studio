@@ -2,7 +2,11 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
+<<<<<<< HEAD
+      <FullPath>C:\Users\aponce\source\repos\KPommez\Mini-Studio\Release\Mini-Studio.exe</FullPath>
+=======
       <FullPath>C:\Users\dhollemaert\source\repos\KPommez\Mini-Studio\Release\Mini-Studio.exe</FullPath>
+>>>>>>> 9568c28caa44c89c7b825f881d4d6994cdaec427
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

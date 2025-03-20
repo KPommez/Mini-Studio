@@ -31,6 +31,7 @@ void Game::Run(RenderWindow& window) {
     isRunning = true;
     inGame = true;
     srand(static_cast<unsigned int>(time(NULL)));
+    levelActif = true;
 
     // Chargement des assets
     parralaxLevelOne.instanciateLayers(window, "levelOne", 8); // Level 1 has 7 layers in his background + 1 for high sky
