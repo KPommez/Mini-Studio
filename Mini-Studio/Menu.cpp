@@ -22,9 +22,9 @@ void Menu::start(RenderWindow& window) {
 		posButon = 0;
 	}
 	else if (posButon <= -1) {
-		posButon = 0;
+		posButon = 3;
 	}
-	//cout << game.getRunning();
+	cout << posButon << endl;
 	if (game.lose == true)
 	{
 		menuState = LOOSE;
@@ -74,12 +74,12 @@ void Menu::menu(RenderWindow& window) {
 		if (Keyboard::isKeyPressed(Keyboard::K))
 			window.close();
 
-		if (spriteMenu.spriteTexte[0].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 2) { //Play
+		if (spriteMenu.spriteTexte[0].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 1) { //Play
 			spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 255));
 			spriteMenu.spriteOption.setColor(Color(255, 255, 255, 255));
 			spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 0));
 		}
-		else if (spriteMenu.spriteOption.getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 1) { //Settings
+		else if (spriteMenu.spriteOption.getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 2) { //Settings
 			spriteMenu.selectSprite[0].setColor(Color(255, 255, 255, 0));
 			spriteMenu.spriteOption.setColor(Color(127, 127, 127, 255));
 			spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 0));
@@ -95,13 +95,13 @@ void Menu::menu(RenderWindow& window) {
 			spriteMenu.selectSprite[1].setColor(Color(255, 255, 255, 0));
 		}
 
-		if (spriteMenu.spriteTexte[0].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0,1) && posButon == 2) {
+		if (spriteMenu.spriteTexte[0].getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0,1) && posButon == 1) {
 			listeTexte.clear();
 			listeRectangle.clear();
 			menuState = START;
 			game.setRunning(true);
 		}
-		if (spriteMenu.spriteOption.getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 1) {
+		if (spriteMenu.spriteOption.getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 2) {
 			listeTexte.clear();
 			listeRectangle.clear();
 			menuState = OPTION;
