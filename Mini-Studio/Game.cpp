@@ -119,7 +119,7 @@ void Game::update(const float& deltaTime, RenderWindow& window) {
             }
             level.plateformeTest.clear();
             level.platforms.clear();
-            level.endLevel.setPosition(-50, -50);
+            
             level.m_entityManager->deleteAllEnnemy();
 
             player.playerSprite.setPosition(500, 500);
