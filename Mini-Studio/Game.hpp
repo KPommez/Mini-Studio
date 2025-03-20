@@ -3,10 +3,9 @@
 #include "EntityManager.hpp"
 #include "Map.hpp"
 #include "ParralaxBackground.hpp"
-// Level 2 header files
-#include "LightSource.hpp"
-#include "Mirror.hpp"
-#include "Target.hpp"
+
+class Ray;
+struct Mirror;
 
 class Game {
 public:
@@ -25,21 +24,14 @@ public:
 private:
 	void pollEvents(RenderWindow& window);
 	void update(const float& deltaTime, RenderWindow& window);
+	void updateRay(RenderWindow& window);
 	void draw(RenderWindow& window);
-
-// Level 2 exclusive
-private:
-	int selectedMirror;
-	bool mirrorSelected;
-	LightSource lightSource;
-	vector<Mirror> mirrors;
-	Target target;
-	vector<LightRay> lightPath;
-	vector<LightRay> traceLightPath(const LightSource& source, const vector<Mirror>& mirrors, Target& target, int maxReflections = 10);
 
 private:
 	bool isRunning;
 	bool firstParralaxOn, secondParralaxOn;
+	bool isMousePressed;
+	bool isRectangleSelected;
 	bool levelActif;
 	int index;
 	int screenX;

@@ -1,6 +1,16 @@
 #include "Game.hpp"
+#include "LightRay.hpp"
+
+namespace {
+    Ray ray;
+    std::vector<Mirror> mirrors;
+    std::vector<std::pair<sf::Vector2f, sf::Vector2f>> allSegments;
+    std::vector<std::pair<sf::Vector2f, sf::Vector2f>> raySegments;
+    const int MAX_REFLECTIONS = 15;
+}
 
 Game::Game(RenderWindow& window) {
+    ray.create(sf::Vector2f(window.getSize().x / 2.f, window.getSize().y / 2.f), sf::Vector2f(1.f, 1.5f));
     deltaTime = 0.f;
     event = {};
     lose = false;
@@ -13,26 +23,21 @@ Game::Game(RenderWindow& window) {
     firstParralaxOn = true;
     secondParralaxOn = false;
     levelActif = true;
-    // Level 2 exclusive
-    selectedMirror = -1;
-    mirrorSelected = false;
+    isMousePressed = false;
+    isRectangleSelected = false;
 }
 
 void Game::Run(RenderWindow& window) {
     isRunning = true;
     inGame = true;
-    srand(time(NULL));
+    srand(static_cast<unsigned int>(time(NULL)));
 
     // Chargement des assets
     parralaxLevelOne.instanciateLayers(window, "levelOne", 8); // Level 1 has 7 layers in his background + 1 for high sky
     // Chargement de la map
-    mirrors = {
-        Mirror(sf::Vector2f(300.f, 200.f), sf::Vector2f(100.f, 10.f), 45.f),
-        Mirror(sf::Vector2f(500.f, 300.f), sf::Vector2f(100.f, 10.f), -45.f),
-        Mirror(sf::Vector2f(400.f, 400.f), sf::Vector2f(100.f, 10.f), 0.f)
-    };
-    lightSource.setPosition(sf::Vector2f(400.f, 100.f)); // Mets une position correcte
-    lightSource.setDirection(sf::Vector2f(1.f, 1.f));    // Une direction diagonale
+    mirrors.push_back(createRectangle(sf::Vector2f(300.f, 200.f)));
+    mirrors.push_back(createRectangle(sf::Vector2f(500.f, 400.f)));
+    mirrors.push_back(createRectangle(sf::Vector2f(400.f, 300.f)));
     // Ajout des menus
     // Appel du dessin du menu
 
@@ -62,8 +67,6 @@ void Game::Run(RenderWindow& window) {
     window.clear();
     levelActif = false;
     view(window);
-    
-
 }
 
 bool Game::setRunning(bool test)
@@ -87,51 +90,56 @@ void Game::pollEvents(RenderWindow& window) {
         if (event.type == Event::KeyReleased && event.key.code == Keyboard::P) {
             inGame = !inGame;
         }
+        // Gestion des clics de souris
         if (event.type == sf::Event::MouseButtonPressed) {
+            sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
             if (event.mouseButton.button == sf::Mouse::Left) {
-                sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+                isMousePressed = true;
+                isRectangleSelected = false;
 
-                // Vérifier si un miroir est sélectionné
-                for (size_t i = 0; i < mirrors.size(); ++i) {
-                    sf::Vector2f mirrorPos = mirrors[i].getPosition();
-                    sf::Vector2f mirrorSize = mirrors[i].getSize();
-
-                    // Vérification simplifiée (on pourrait améliorer la précision)
-                    if (std::abs(mousePos.x - mirrorPos.x) < mirrorSize.x / 2 &&
-                        std::abs(mousePos.y - mirrorPos.y) < mirrorSize.y / 2) {
-                        selectedMirror = i;
-                        mirrorSelected = true;
-                        break;
+                // Vérifier si un rectangle est cliqué
+                for (auto& rect : mirrors) {
+                    if (rect.contains(mousePos)) {
+                        rect.select(mousePos);
+                        isRectangleSelected = true;
+                        break; // Sélectionner seulement le premier rectangle trouvé
                     }
                 }
             }
+            else if (event.mouseButton.button == sf::Mouse::Right) {
+                // Créer un nouveau rectangle à la position du clic droit
+                mirrors.push_back(createRectangle(mousePos));
+            }
         }
-
-        if (event.type == sf::Event::MouseButtonReleased) {
+        else if (event.type == sf::Event::MouseButtonReleased) {
             if (event.mouseButton.button == sf::Mouse::Left) {
-                mirrorSelected = false;
-            }
-        }
+                isMousePressed = false;
 
-        if (event.type == sf::Event::MouseMoved) {
-            if (mirrorSelected && selectedMirror >= 0) {
-                // Déplacer le miroir sélectionné
-                mirrors[selectedMirror] = Mirror(
-                    sf::Vector2f(event.mouseMove.x, event.mouseMove.y),
-                    mirrors[selectedMirror].getSize(),
-                    mirrors[selectedMirror].getRotation()
-                );
-            }
-        }
-
-        // Rotation des miroirs avec les touches R et F
-        if (event.type == sf::Event::KeyPressed) {
-            if (selectedMirror >= 0) {
-                if (event.key.code == sf::Keyboard::R) {
-                    mirrors[selectedMirror].rotate(5.f);
+                // Désélectionner tous les rectangles
+                for (auto& rect : mirrors) {
+                    rect.deselect();
                 }
-                else if (event.key.code == sf::Keyboard::F) {
-                    mirrors[selectedMirror].rotate(-5.f);
+            }
+        }
+        else if (event.type == sf::Event::MouseMoved && isMousePressed) {
+            sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+            // Déplacer le rectangle sélectionné
+            for (auto& rect : mirrors) {
+                rect.move(mousePos);
+            }
+        }
+        else if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Delete) {
+                // Supprimer le rectangle sélectionné
+                for (auto it = mirrors.begin(); it != mirrors.end(); ) {
+                    if (it->isSelected) {
+                        it = mirrors.erase(it);
+                    }
+                    else {
+                        ++it;
+                    }
                 }
             }
         }
@@ -143,7 +151,82 @@ bool Game::getRunning()
     return isRunning;
 }
 
+void Game::updateRay(RenderWindow& window) {
+	allSegments.clear();
+    raySegments.clear();
+    // Ajouter les segments des rectangles flottants
+    for (auto& rect : mirrors) {
+        auto rectSegments = rect.getSegments();
+        allSegments.insert(allSegments.end(), rectSegments.begin(), rectSegments.end());
+    }
+
+    // Calculer les réflexions
+    sf::Vector2f currentOrigin = ray.origin;
+    sf::Vector2f currentDirection = ray.direction;
+
+    raySegments.push_back({ currentOrigin, currentOrigin }); // Placeholder pour le premier segment
+
+    for (int i = 0; i < MAX_REFLECTIONS; i++) {
+        float minDistance = std::numeric_limits<float>::max();
+        sf::Vector2f closestIntersection;
+        sf::Vector2f closestNormal;
+        bool foundIntersection = false;
+
+        // Trouver l'intersection la plus proche
+        for (const auto& segment : allSegments) {
+            sf::Vector2f intersection;
+            float distance;
+
+            if (raySegmentIntersection(
+                currentOrigin, currentDirection,
+                segment.first, segment.second,
+                intersection, distance
+            )) {
+                if (distance < minDistance && distance > 0.001f) {
+                    minDistance = distance;
+                    closestIntersection = intersection;
+
+                    // Calculer la normale au segment
+                    sf::Vector2f segDir = segment.second - segment.first;
+                    sf::Vector2f normal(-segDir.y, segDir.x);
+                    float length = std::sqrt(normal.x * normal.x + normal.y * normal.y);
+                    normal /= length;
+
+                    // S'assurer que la normale pointe vers l'intérieur
+                    if (normal.x * currentDirection.x + normal.y * currentDirection.y > 0) {
+                        normal = -normal;
+                    }
+
+                    closestNormal = normal;
+                    foundIntersection = true;
+                }
+            }
+        }
+
+        // Mettre à jour le segment de rayon actuel
+        raySegments.back().second = foundIntersection ? closestIntersection : currentOrigin + currentDirection * 1000.f;
+
+        // Si pas d'intersection, arrêter
+        if (!foundIntersection) {
+            break;
+        }
+
+        // Calculer la direction réfléchie
+        sf::Vector2f reflectedDirection = reflect(currentDirection, closestNormal);
+
+        // Préparer pour la prochaine itération
+        currentOrigin = closestIntersection;
+        currentDirection = reflectedDirection;
+
+        // Ajouter un nouveau segment pour la prochaine réflexion
+        raySegments.push_back({ currentOrigin, currentOrigin });
+    }
+}
+
 void Game::update(const float& deltaTime, RenderWindow& window) {
+    if (index == 0) {
+		updateRay(window);
+    }
     level.m_entityManager->updateEntities(window, deltaTime);
     player.Colision(window, deltaTime, level.platforms, level.plateformeTest);
     player.update(deltaTime, window);
@@ -164,7 +247,6 @@ void Game::update(const float& deltaTime, RenderWindow& window) {
         isRunning = 0;
         //mettre les transition
     }
-    lightPath = traceLightPath(lightSource, mirrors, target);
 }
 
 void Game::view(RenderWindow& window) {
@@ -207,22 +289,20 @@ void Game::draw(RenderWindow& window) {
     window.clear();
     if (index == 0) {
         parralaxLevelOne.draw(window);
-    }
-    if (index == 1) {
-        //parralaxLevelTwo.draw(window);
+        for (auto& rect : mirrors) {
+            rect.draw(window);
+        }
+        // Dessiner tous les segments du rayon
+        for (const auto& segment : raySegments) {
+            sf::VertexArray line(sf::Lines, 2);
+            line[0].position = segment.first;
+            line[0].color = sf::Color::Red;
+            line[1].position = segment.second;
+            line[1].color = sf::Color::Yellow;
+            window.draw(line);
+        }
     }
     level.drawMap(window);
     player.draw(window);
-    for (size_t i = 0; i < mirrors.size(); ++i) {
-        mirrors[i].draw(window);
-    }
-    target.draw(window);
-    // Dessiner le chemin du rayon
-    for (auto& ray : lightPath) {
-        ray.draw(window);
-    }
-
-    // Dessiner la source
-    lightSource.draw(window);
     window.display();
 }

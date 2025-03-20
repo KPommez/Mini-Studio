@@ -28,6 +28,7 @@ Player::Player() {
 	fallingSpeed    = speed;
 	spacebarPresses = 0;
 	countSide       = 0;
+	hitcount        = 0;
 	animationTime   = 0.f;
 }
 

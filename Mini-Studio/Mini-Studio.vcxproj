@@ -148,12 +148,9 @@
     <ClCompile Include="Eolienne.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Lampadaire.cpp" />
-    <ClCompile Include="LightRay.cpp" />
-    <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Mirror.cpp" />
     <ClCompile Include="ParralaxBackground.cpp" />
     <ClCompile Include="Plateforme.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -170,11 +167,9 @@
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="includeAll.hpp" />
     <ClInclude Include="LightRay.hpp" />
-    <ClInclude Include="LightSource.hpp" />
     <ClInclude Include="Menu.hpp" />
     <ClInclude Include="Lampadaire.hpp" />
     <ClInclude Include="Map.hpp" />
-    <ClInclude Include="Mirror.hpp" />
     <ClInclude Include="ParralaxBackground.hpp" />
     <ClInclude Include="Plateforme.hpp" />
     <ClInclude Include="Player.hpp" />
