@@ -197,11 +197,11 @@ void Menu::win(RenderWindow& window) {
 	while (window.pollEvent(gameEvent)) {
 		if (gameEvent.type == Event::Closed)
 			window.close();
-		if (spriteMenu.WinButton[0].getGlobalBounds().contains(mouse.x, mouse.y)) {
+		if (spriteMenu.WinButton[0].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 1) {
 			spriteMenu.WinButton[0].setColor(Color(127, 127, 127, 255));
 			spriteMenu.WinButton[1].setColor(Color(255, 255, 255, 255));
 		}
-		else if (spriteMenu.WinButton[1].getGlobalBounds().contains(mouse.x, mouse.y)) {
+		else if (spriteMenu.WinButton[1].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 0) {
 			spriteMenu.WinButton[1].setColor(Color(127, 127, 127, 255));
 			spriteMenu.WinButton[0].setColor(Color(255, 255, 255, 255));
 		}
@@ -210,10 +210,10 @@ void Menu::win(RenderWindow& window) {
 			spriteMenu.WinButton[1].setColor(Color(255, 255, 255, 255));
 		}
 
-		if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.WinButton[0].getGlobalBounds().contains(mouse.x, mouse.y)) {
+		if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.WinButton[0].getGlobalBounds().contains(mouse.x, mouse.y) || Joystick::isButtonPressed(0, 1) && posButon == 1) {
 			menuState = MENU;
 		}
-		else if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.WinButton[1].getGlobalBounds().contains(mouse.x, mouse.y)) {
+		else if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.WinButton[1].getGlobalBounds().contains(mouse.x, mouse.y) || Joystick::isButtonPressed(0, 1) && posButon == 0) {
 			window.close();
 		}
 
@@ -242,11 +242,11 @@ void Menu::loose(RenderWindow& window) {
 		if (gameEvent.type == Event::Closed)
 			window.close();
 
-		if (spriteMenu.LoseButton[0].getGlobalBounds().contains(mouse.x, mouse.y)) {
+		if (spriteMenu.LoseButton[0].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 1) {
 			spriteMenu.LoseButton[0].setColor(Color(127, 127, 127, 255));
 			spriteMenu.LoseButton[1].setColor(Color(255, 255, 255, 255));
 		}
-		else if (spriteMenu.LoseButton[1].getGlobalBounds().contains(mouse.x, mouse.y)) {
+		else if (spriteMenu.LoseButton[1].getGlobalBounds().contains(mouse.x, mouse.y) || posButon == 0) {
 			spriteMenu.LoseButton[1].setColor(Color(127, 127, 127, 255));
 			spriteMenu.LoseButton[0].setColor(Color(255, 255, 255, 255));
 		}
@@ -255,10 +255,10 @@ void Menu::loose(RenderWindow& window) {
 			spriteMenu.LoseButton[1].setColor(Color(255, 255, 255, 255));
 		}
 
-		if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.LoseButton[0].getGlobalBounds().contains(mouse.x, mouse.y)) {
+		if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.LoseButton[0].getGlobalBounds().contains(mouse.x, mouse.y) || Joystick::isButtonPressed(0, 1) && posButon == 1) {
 			menuState = START;
 		}
-		else if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.LoseButton[1].getGlobalBounds().contains(mouse.x, mouse.y)) {
+		else if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.LoseButton[1].getGlobalBounds().contains(mouse.x, mouse.y) || Joystick::isButtonPressed(0, 1) && posButon == 0) {
 			window.close();
 		}
 	}
