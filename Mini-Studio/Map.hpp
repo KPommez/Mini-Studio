@@ -20,6 +20,7 @@ public:
 	RectangleShape endLevel;
 	RectangleShape end;
 	vector<RectangleShape> platforms;
+	
 	vector <Plateforme*> plateformeTest;
 	vector<string> allLevels;
 	shared_ptr<EntityManager> m_entityManager;

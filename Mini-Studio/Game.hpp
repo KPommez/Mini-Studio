@@ -3,7 +3,9 @@
 #include "EntityManager.hpp"
 #include "Map.hpp"
 #include "ParralaxBackground.hpp"
-#include "LuminousBeam.hpp"
+
+class Ray;
+struct Mirror;
 
 class Game {
 public:
@@ -23,12 +25,14 @@ public:
 private:
 	void pollEvents(RenderWindow& window);
 	void update(const float& deltaTime, RenderWindow& window);
+	void updateRay(RenderWindow& window);
 	void draw(RenderWindow& window);
-
 
 private:
 	bool isRunning;
 	bool firstParralaxOn, secondParralaxOn;
+	bool isMousePressed;
+	bool isRectangleSelected;
 	bool levelActif;
 
 	int screenX;
@@ -41,5 +45,4 @@ private:
 	View vue;
 	Vector2i playerSize;
 	ParralaxBackground parralaxLevelOne;
-	LuminousBeam levelTwoBeam;
 };
