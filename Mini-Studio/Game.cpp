@@ -18,6 +18,7 @@ Game::Game(RenderWindow& window) {
 void Game::Run(RenderWindow& window) {
     isRunning = true;
     inGame = true;
+    levelActif = true;
     srand(time(NULL));
 
     // Chargement des assets
@@ -51,12 +52,9 @@ void Game::Run(RenderWindow& window) {
             lose = true;
         }
     }
-
     window.clear();
     levelActif = false;
     view(window);
-    
-
 }
 
 bool Game::setRunning(bool test)
@@ -110,10 +108,10 @@ void Game::update(const float& deltaTime, RenderWindow& window) {
         player.playerSprite.setPosition(500, 500);
         level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
     }
-    if (player.playerSprite.getGlobalBounds().intersects(level.end.getGlobalBounds())) {
-        isRunning = 0;
-        //mettre les transition
-    }
+    //if (player.playerSprite.getGlobalBounds().intersects(level.end.getGlobalBounds())) {
+    //    isRunning = 0;
+    //    //mettre les transition
+    //}
 }
 
 void Game::view(RenderWindow& window) {
