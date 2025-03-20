@@ -1,6 +1,6 @@
 #include "Plateforme.hpp"
 
-Plateforme::Plateforme(float xPos, float yPos, int state) : posX(xPos), posY(yPos), State(state) {
+Plateforme::Plateforme(float xPos, float yPos, int state, Texture texture) : posX(xPos), posY(yPos), State(state), tex(texture) {
     wayPoint1 = 0;
     wayPoint2 = 0;
     i = 0;
@@ -10,7 +10,7 @@ Plateforme::Plateforme(float xPos, float yPos, int state) : posX(xPos), posY(yPo
 void Plateforme::creation(float posX,float posY) {
     plat.setSize({ 40.f, 40.f });
     plat.setPosition(posX, posY);
-    plat.setFillColor(Color::Red);
+    plat.setTexture(&tex);
 
     if (State == 1) {
         wayPoint1 = posX + 100;
