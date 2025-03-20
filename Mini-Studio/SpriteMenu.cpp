@@ -83,80 +83,80 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 
 	///Touche 
 	touche.setTexture(textureTouche);
-	touche.setPosition(720, 170);
+	touche.setPosition(WindowSize.x / 2.66f, WindowSize.y / 6.35f);
 	touche.setScale(0.4f, 0.4f);
 
 	touche1.setTexture(textureTouche1);
-	touche1.setPosition(850, 170);
+	touche1.setPosition(WindowSize.x / 2.26f, WindowSize.y / 6.35f);
 	touche1.setScale(0.4f, 0.4f);
 
 	touche2.setTexture(textureTouche2);
-	touche2.setPosition(980, 170);
+	touche2.setPosition(WindowSize.x / 1.95f, WindowSize.y / 6.35f);
 	touche2.setScale(0.4f, 0.4f);
 
 	touche3.setTexture(textureTouche3);
-	touche3.setPosition(647.5f, 280);
+	touche3.setPosition(WindowSize.x / 2.96f, WindowSize.y / 3.85f);
 	touche3.setScale(0.4f, 0.4f);
 
 	touche4.setTexture(textureTouche4);
-	touche4.setPosition(780, 280);
+	touche4.setPosition(WindowSize.x / 2.46f, WindowSize.y / 3.85f);
 	touche4.setScale(0.4f, 0.4f);
 
 	touche5.setTexture(textureTouche5);
-	touche5.setPosition(915, 280);
+	touche5.setPosition(WindowSize.x / 2.09f, WindowSize.y / 3.85f);
 	touche5.setScale(0.4f, 0.4f);
 
 	touche6.setTexture(textureTouche6);
-	touche6.setPosition(1047.5f, 280);
+	touche6.setPosition(WindowSize.x / 1.83f, WindowSize.y / 3.85f);
 	touche6.setScale(0.4f, 0.4f);
 
 	///Touche manette
 	toucheManette.setTexture(textureToucheManette);
-	toucheManette.setPosition(527.5f, 435);
+	toucheManette.setPosition(WindowSize.x / 3.64f, WindowSize.y / 2.48f);
 	toucheManette.setScale(0.4f, 0.4f);
 
 	toucheManette1.setTexture(textureToucheManette1);
-	toucheManette1.setPosition(547.5f, 325);
+	toucheManette1.setPosition(WindowSize.x / 3.5f, WindowSize.y / 3.32f);
 	toucheManette1.setScale(0.4f, 0.4f);
 
 	toucheManette2.setTexture(textureToucheManette2);
-	toucheManette2.setPosition(567.5f, 435);
+	toucheManette2.setPosition(WindowSize.x / 3.38f, WindowSize.y / 2.48f);
 	toucheManette2.setScale(0.4f, 0.4f);
 
 	toucheManette3.setTexture(textureToucheManette3);
-	toucheManette3.setPosition(645, 645);
+	toucheManette3.setPosition(WindowSize.x / 2.97f, WindowSize.y / 1.67f);
 	toucheManette3.setScale(0.4f, 0.4f);
 
 	toucheManette4.setTexture(textureToucheManette4);
-	toucheManette4.setPosition(835, 705);
+	toucheManette4.setPosition(WindowSize.x / 2.3f, WindowSize.y / 1.53f);
 	toucheManette4.setScale(0.475f, 0.475f);
 
 	toucheManette5.setTexture(textureToucheManette5);
-	toucheManette5.setPosition(1740, 895);
+	toucheManette5.setPosition(WindowSize.x / 1.1f, WindowSize.y / 1.2f);
 	toucheManette5.setScale(0.475f, 0.475f);
 
 	toucheManette6.setTexture(textureToucheManette6);
-	toucheManette6.setPosition(970, 702.5f);
+	toucheManette6.setPosition(WindowSize.x / 1.98f, WindowSize.y / 1.53f);
 	toucheManette6.setScale(0.5f, 0.5f);
 
 	toucheManette7.setTexture(textureToucheManette7);
-	toucheManette7.setPosition(1100, 702.5f);
+	toucheManette7.setPosition(WindowSize.x / 1.74f, WindowSize.y / 1.53f);
 	toucheManette7.setScale(0.5f, 0.5f);
 
 	///Texte Option 
-	Texte retour(font, "Retour", 40, 0, 0, 0, 1700, 1000);
-	Texte clavier(font, "Clavier", 40, 0, 0, 0, 860, 150);
-	Texte dashClavier(font, "Dash", 32.5f, 0, 0, 0, 705, 430);
-	Texte sautClavier(font, "Saut", 32.5f, 0, 0, 0, 840, 430);
-	Texte rotateLeftClavier(font, "Turn-L", 32.5f, 0, 0, 0, 960, 430);
-	Texte rotateRightClavier(font, "Turn-R", 32.5f, 0, 0, 0, 1090, 430);
+	Texte retour(font, "Retour", 40, 0, 0, 0, WindowSize.x / 1.129f, WindowSize.y / 1.08f);
+	Texte clavier(font, "Clavier", 40, 0, 0, 0, WindowSize.x/ 2.23f, WindowSize.y / 7.2f);
+	Texte dashClavier(font, "Dash", 32.5f, 0, 0, 0, WindowSize.x / 2.72f, WindowSize.y / 2.51f);
+	Texte sautClavier(font, "Saut", 32.5f, 0, 0, 0, WindowSize.x / 2.28f, WindowSize.y / 2.51f);
+	Texte rotateLeftClavier(font, "Turn-L", 32.5f, 0, 0, 0, WindowSize.x / 2.0f, WindowSize.y / 2.51f);
+	Texte rotateRightClavier(font, "Turn-R", 32.5f, 0, 0, 0, WindowSize.x / 1.76f, WindowSize.y / 2.51f);
 	
 	///texte Option Joystick
-	Texte joystick(font, "Joystick", 40, 0, 0, 0, 860, 520);
-	Texte dashJoystick(font, "Dash", 32.5f, 0, 0, 0, 705, 787.5f);
-	Texte sautJoystick(font, "Saut", 32.5f, 0, 0, 0, 840, 787.5f);
-	Texte rotateLeftJoystick(font, "Turn-L", 32.5f, 0, 0, 0, 960, 787.5f);
-	Texte rotateRightJoystick(font, "Turn-R", 32.5f, 0, 0, 0, 1090, 787.5f);
+	Texte joystick(font, "Joystick", 40, 0, 0, 0, WindowSize.x / 2.23f, WindowSize.y / 2.07f);
+	Texte dashJoystick(font, "Dash", 32.5f, 0, 0, 0, WindowSize.x / 2.72f, WindowSize.y / 1.37f);
+	Texte sautJoystick(font, "Saut", 32.5f, 0, 0, 0, WindowSize.x / 2.28f, WindowSize.y / 1.37f);
+	Texte rotateLeftJoystick(font, "Turn-L", 32.5f, 0, 0, 0, WindowSize.x / 2.0f, WindowSize.y / 1.37f);
+	Texte rotateRightJoystick(font, "Turn-R", 32.5f, 0, 0, 0, WindowSize.x / 1.76f, WindowSize.y / 1.37f);
 	
 	///Bulle arrière
 	/*spriteVBulle.push_back(spriteBulle1);

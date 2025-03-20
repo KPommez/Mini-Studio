@@ -130,15 +130,6 @@ void Menu::option(RenderWindow& window) {
 
 
 	Rectangle RectRetour(180, 55, 1690, 1000, 255, 255, 255); //tailleX, tailleY posX, posY, R, G, B 
-	///*Rectangle RectDashClavier(125, 55, 490, 690, 255, 255, 255);
-	//Rectangle RectSautClavier(125, 55, 620, 690, 255, 255, 255);*/
-	//Rectangle RectDashJoystick(125, 55, 940, 690, 255, 255, 255);
-	//Rectangle RectSautJoystick(125, 55, 1075, 690, 255, 255, 255);
-	//listeRectangle.push_back(RectRetour);
-	///*listeRectangle.push_back(RectDashClavier);
-	//listeRectangle.push_back(RectSautClavier);*/
-	//listeRectangle.push_back(RectDashJoystick);
-	//listeRectangle.push_back(RectSautJoystick);
 
 	for (auto& Rectangle : listeRectangle) {
 		window.draw(Rectangle.creation());
