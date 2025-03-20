@@ -33,8 +33,8 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	selectPlaySprite.setScale(0.5f, 0.5f);
 	selectQuitSprite.setScale(0.5f, 0.5f);
 
-	selectPlaySprite.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 3.5f), WindowSize.y / 4.5f);
-	selectQuitSprite.setPosition(WindowSize.x / 2.f - (selectQuit.getSize()).x / 2.5f, WindowSize.y / 1.80f);
+	selectPlaySprite.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 5.5f), WindowSize.y / 1.90f);
+	selectQuitSprite.setPosition(WindowSize.x / 2.f - (selectQuit.getSize()).x / 5.5f, WindowSize.y / 1.63f);
 
 	selectPlaySprite.setColor(Color(255, 255, 255, 0));
 	selectQuitSprite.setColor(Color(255, 255, 255, 0));
