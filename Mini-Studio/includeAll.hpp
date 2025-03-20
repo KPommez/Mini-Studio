@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include <corecrt_math_defines.h>
 #include <vector>
 #include <fstream>
 #include <sstream>
