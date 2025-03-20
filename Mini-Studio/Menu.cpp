@@ -2,7 +2,7 @@
 
 
 Menu::Menu(RenderWindow& window) : game(window) {
-	menuState = MENU;
+	menuState = LOOSE;
 	posButon = 3;
 	spriteMenu.initAllSpriteMenu(window);
 }
@@ -185,25 +185,11 @@ void Menu::win(RenderWindow& window) {
 	listeRectangle.clear();
 	drawback(window);
 	spriteMenu.setTexture("assets/backMenu/victory.png", window);
+	Vector2i n_mouse = Mouse::getPosition(window);
+	Vector2f mouse = { (float)n_mouse.x, (float)n_mouse.y };
 
-	Texte start(spriteMenu.font, "Restart", 40, 0, 0, 0, 880, 410);
-	listeTexte.push_back(start);
-
-	Texte touche(spriteMenu.font, "Quitter", 40, 0, 0, 0, 880, 550);
-	listeTexte.push_back(touche);
-
-	Rectangle RecTitre(170, 70, 870, 400, 255, 255, 255);
-	listeRectangle.push_back(RecTitre);
-
-	Rectangle RecTouche(150, 70, 870, 540, 255, 255, 255);
-	listeRectangle.push_back(RecTouche);
-
-	for (auto& Rectangle : listeRectangle) {
-		window.draw(Rectangle.creation());
-	}
-
-	for (auto& Texte : listeTexte) {
-		window.draw(Texte.creation());
+	for (auto& winButton : spriteMenu.WinButton) {
+		window.draw(winButton);
 	}
 	window.display();
 
@@ -211,20 +197,26 @@ void Menu::win(RenderWindow& window) {
 	while (window.pollEvent(gameEvent)) {
 		if (gameEvent.type == Event::Closed)
 			window.close();
-
-		if (Mouse::isButtonPressed(Mouse::Left)) {
-			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
-				listeTexte.clear();
-				listeRectangle.clear();
-				menuState = MENU;
-
-			}
-			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
-				listeTexte.clear();
-				listeRectangle.clear();
-				window.close();
-			}
+		if (spriteMenu.WinButton[0].getGlobalBounds().contains(mouse.x, mouse.y)) {
+			spriteMenu.WinButton[0].setColor(Color(127, 127, 127, 255));
+			spriteMenu.WinButton[1].setColor(Color(255, 255, 255, 255));
 		}
+		else if (spriteMenu.WinButton[1].getGlobalBounds().contains(mouse.x, mouse.y)) {
+			spriteMenu.WinButton[1].setColor(Color(127, 127, 127, 255));
+			spriteMenu.WinButton[0].setColor(Color(255, 255, 255, 255));
+		}
+		else {
+			spriteMenu.WinButton[0].setColor(Color(255, 255, 255, 255));
+			spriteMenu.WinButton[1].setColor(Color(255, 255, 255, 255));
+		}
+
+		if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.WinButton[0].getGlobalBounds().contains(mouse.x, mouse.y)) {
+			menuState = MENU;
+		}
+		else if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.WinButton[1].getGlobalBounds().contains(mouse.x, mouse.y)) {
+			window.close();
+		}
+
 	}
 
 }
@@ -236,24 +228,11 @@ void Menu::loose(RenderWindow& window) {
 	drawback(window);
 	spriteMenu.setTexture("assets/backMenu/defeat.png", window);
 
-	Texte start(spriteMenu.font, "Restart", 40, 0, 0, 0, 880, 410);
-	listeTexte.push_back(start);
+	Vector2i n_mouse = Mouse::getPosition(window);
+	Vector2f mouse = { (float)n_mouse.x, (float)n_mouse.y };
 
-	Texte touche(spriteMenu.font, "Quitter", 40, 0, 0, 0, 880, 550);
-	listeTexte.push_back(touche);
-
-	Rectangle RecTitre(170, 70, 870, 400, 255, 255, 255);
-	listeRectangle.push_back(RecTitre);
-
-	Rectangle RecTouche(150, 70, 870, 540, 255, 255, 255);
-	listeRectangle.push_back(RecTouche);
-
-	for (auto& Rectangle : listeRectangle) {
-		window.draw(Rectangle.creation());
-	}
-
-	for (auto& Texte : listeTexte) {
-		window.draw(Texte.creation());
+	for (auto& loseButton : spriteMenu.LoseButton) {
+		window.draw(loseButton);
 	}
 
 	window.display();
@@ -263,16 +242,24 @@ void Menu::loose(RenderWindow& window) {
 		if (gameEvent.type == Event::Closed)
 			window.close();
 
-		if (Mouse::isButtonPressed(Mouse::Left)) {
-			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
-				listeTexte.clear();
-				listeRectangle.clear();
-				menuState = START;
-				game.lose = false;
-			}
-			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
-				window.close();
-			}
+		if (spriteMenu.LoseButton[0].getGlobalBounds().contains(mouse.x, mouse.y)) {
+			spriteMenu.LoseButton[0].setColor(Color(127, 127, 127, 255));
+			spriteMenu.LoseButton[1].setColor(Color(255, 255, 255, 255));
+		}
+		else if (spriteMenu.LoseButton[1].getGlobalBounds().contains(mouse.x, mouse.y)) {
+			spriteMenu.LoseButton[1].setColor(Color(127, 127, 127, 255));
+			spriteMenu.LoseButton[0].setColor(Color(255, 255, 255, 255));
+		}
+		else {
+			spriteMenu.LoseButton[0].setColor(Color(255, 255, 255, 255));
+			spriteMenu.LoseButton[1].setColor(Color(255, 255, 255, 255));
+		}
+
+		if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.LoseButton[0].getGlobalBounds().contains(mouse.x, mouse.y)) {
+			menuState = START;
+		}
+		else if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.LoseButton[1].getGlobalBounds().contains(mouse.x, mouse.y)) {
+			window.close();
 		}
 	}
 }

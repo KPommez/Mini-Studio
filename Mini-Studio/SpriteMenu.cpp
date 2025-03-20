@@ -12,6 +12,10 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 		!choix3.loadFromFile("Assets/backMenu/pasmtnR.png")                        ||
 		!selectPlay.loadFromFile("Assets/backMenu/selection_bouton.png")           ||
 		!selectQuit.loadFromFile("Assets/backMenu/selection_bouton.png")           ||
+		!Back.loadFromFile("Assets/backMenu/RetourMenu.png")					   ||
+		!Quit.loadFromFile("Assets/backMenu/Quitter.png")					       ||
+		!Retry.loadFromFile("Assets/backMenu/retry.png")                           ||
+		!Forfeit.loadFromFile("Assets/backMenu/forfeit.png")                       ||
 		!textureTouche.loadFromFile("Assets/backMenu/toucheQ.png")                 ||
 		!textureTouche1.loadFromFile("Assets/backMenu/toucheS.png")                ||
 		!textureTouche2.loadFromFile("Assets/backMenu/toucheD.png")                ||
@@ -73,9 +77,38 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	spriteChoix1.setScale(0.5f, 0.5f);
 	spriteChoix3.setScale(0.35f, 0.35f);
 
-	//spriteChoix1.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 20.f), WindowSize.y / 1.90f);
 	spriteChoix1.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x / 8.f), WindowSize.y / 1.90f);
 	spriteChoix3.setPosition(WindowSize.x / 2.f - (selectPlay.getSize().x) / 5.f, WindowSize.y / 1.65f);
+
+
+	///////////Win /////////
+
+	spriteBack.setTexture(Back);
+	spriteQuitter.setTexture(Quit);
+
+	spriteBack.setScale(0.5f, 0.5f);
+	spriteQuitter.setScale(0.5f, 0.5f);
+
+	spriteBack.setPosition(WindowSize.x / 2.f - (Back.getSize().x / 7.0f), WindowSize.y / 2.f);
+	spriteQuitter.setPosition(WindowSize.x / 2.f - (Quit.getSize().x / 15.0f), WindowSize.y / 1.60f);
+
+	WinButton.push_back(spriteBack);
+	WinButton.push_back(spriteQuitter);
+
+	///////////Lose /////////
+
+	spriteRetry.setTexture(Retry);
+	spriteForfeit.setTexture(Forfeit);
+
+	spriteRetry.setScale(0.5f, 0.5f);
+	spriteForfeit.setScale(0.5f, 0.5f);
+
+	spriteRetry.setPosition(WindowSize.x / 2.f - (Retry.getSize().x / 9.0f), WindowSize.y / 1.90f);
+	spriteForfeit.setPosition(WindowSize.x / 2.f - (Forfeit.getSize().x / 9.0f), WindowSize.y / 1.60f);
+
+	LoseButton.push_back(spriteRetry);
+	LoseButton.push_back(spriteForfeit);
+
 
 	///Touche 
 	touche.setTexture(textureTouche);
@@ -132,11 +165,6 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	Texte dashJoystick(font, "Dash", 40, 0, 0, 0, 950, 690);
 	Texte sautJoystick(font, "Saut", 40, 0, 0, 0, 1085, 690);
 	
-	///Bulle arrière
-	/*spriteVBulle.push_back(spriteBulle1);
-	spriteVBulle.push_back(spriteBulle3);
-	spriteVBulle.push_back(spriteBulle2);*/
-
 	///Selection
 	selectSprite.push_back(selectPlaySprite);
 	selectSprite.push_back(selectQuitSprite);

@@ -15,9 +15,9 @@ public:
     Menu(RenderWindow& window);
     void start(RenderWindow& window);
 public:
-
     int posButon;
     bool hasStarted = false;
+
 
 private:
     Clock menuNavigationClock;
