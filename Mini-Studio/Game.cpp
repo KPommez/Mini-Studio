@@ -81,7 +81,7 @@ bool Game::setRunning(bool test)
 
 void Game::pollEvents(RenderWindow& window) {
     while (window.pollEvent(event)) {
-        if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
+        if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) || Joystick::isButtonPressed(0,9)) {
             isRunning = false;
             inGame = false;
         }
