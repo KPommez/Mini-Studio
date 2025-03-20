@@ -39,7 +39,6 @@ void Menu::start(RenderWindow& window) {
 	case START:
 		game.player.hitcount = 0;
 		game.Run(window);
-		//exit(0);
 		menuState = MENU;
 		break;
 	case WIN:
@@ -112,8 +111,7 @@ void Menu::menu(RenderWindow& window) {
 		if (NivTest.getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left))
 		{
 			cout << "test niveau";
-			game.index = 2;
-
+			/*game.index = 2;*/
 		}
 	}
 	window.display();
@@ -185,9 +183,8 @@ void Menu::win(RenderWindow& window) {
 	window.clear(Color::Black);
 	listeTexte.clear();
 	listeRectangle.clear();
-
-	Texte Titre(spriteMenu.font, "Vous avez .... gagné ??", 80, 255, 0, 0, 480, 255);
-	listeTexte.push_back(Titre);
+	drawback(window);
+	spriteMenu.setTexture("assets/backMenu/victory.png", window);
 
 	Texte start(spriteMenu.font, "Restart", 40, 0, 0, 0, 880, 410);
 	listeTexte.push_back(start);
@@ -208,6 +205,57 @@ void Menu::win(RenderWindow& window) {
 	for (auto& Texte : listeTexte) {
 		window.draw(Texte.creation());
 	}
+	window.display();
+
+	Event gameEvent;
+	while (window.pollEvent(gameEvent)) {
+		if (gameEvent.type == Event::Closed)
+			window.close();
+
+		if (Mouse::isButtonPressed(Mouse::Left)) {
+			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
+				listeTexte.clear();
+				listeRectangle.clear();
+				menuState = MENU;
+
+			}
+			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
+				listeTexte.clear();
+				listeRectangle.clear();
+				window.close();
+			}
+		}
+	}
+
+}
+
+void Menu::loose(RenderWindow& window) {
+	window.clear(Color::Black);
+	listeTexte.clear();
+	listeRectangle.clear();
+	drawback(window);
+	spriteMenu.setTexture("assets/backMenu/defeat.png", window);
+
+	Texte start(spriteMenu.font, "Restart", 40, 0, 0, 0, 880, 410);
+	listeTexte.push_back(start);
+
+	Texte touche(spriteMenu.font, "Quitter", 40, 0, 0, 0, 880, 550);
+	listeTexte.push_back(touche);
+
+	Rectangle RecTitre(170, 70, 870, 400, 255, 255, 255);
+	listeRectangle.push_back(RecTitre);
+
+	Rectangle RecTouche(150, 70, 870, 540, 255, 255, 255);
+	listeRectangle.push_back(RecTouche);
+
+	for (auto& Rectangle : listeRectangle) {
+		window.draw(Rectangle.creation());
+	}
+
+	for (auto& Texte : listeTexte) {
+		window.draw(Texte.creation());
+	}
+
 	window.display();
 
 	Event gameEvent;
@@ -220,58 +268,6 @@ void Menu::win(RenderWindow& window) {
 				listeTexte.clear();
 				listeRectangle.clear();
 				menuState = START;
-
-			}
-			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
-				listeTexte.clear();
-				listeRectangle.clear();
-				menuState = MENU;
-			}
-		}
-	}
-
-}
-
-void Menu::loose(RenderWindow& window) {
-	window.clear(Color::Black);
-	listeTexte.clear();
-	listeRectangle.clear();
-
-	Texte Titre(spriteMenu.font, "Vous avez perdu, vous n'êtes pas le héros", 80, 255, 0, 0, 180, 255);
-	listeTexte.push_back(Titre);
-
-	Texte start(spriteMenu.font, "Restart", 40, 0, 0, 0, 880, 410);
-	listeTexte.push_back(start);
-
-	Texte touche(spriteMenu.font, "Quitter", 40, 0, 0, 0, 880, 550);
-	listeTexte.push_back(touche);
-
-	Rectangle RecTitre(170, 70, 870, 400, 255, 255, 255);
-	listeRectangle.push_back(RecTitre);
-
-	Rectangle RecTouche(150, 70, 870, 540, 255, 255, 255);
-	listeRectangle.push_back(RecTouche);
-
-	for (auto& Rectangle : listeRectangle) {
-		window.draw(Rectangle.creation());
-	}
-
-	for (auto& Texte : listeTexte) {
-		window.draw(Texte.creation());
-	}
-
-	window.display();
-
-	Event gameEvent;
-	while (window.pollEvent(gameEvent)) {
-		if (gameEvent.type == Event::Closed)
-			window.close();
-
-		if (Mouse::isButtonPressed(Mouse::Left)) {
-			if (Mouse::getPosition(window).x > RecTitre.posX && Mouse::getPosition(window).y > RecTitre.posY && Mouse::getPosition(window).x < RecTitre.posX + RecTitre.tailleX && Mouse::getPosition(window).y < RecTitre.posY + RecTitre.tailleY) {
-				listeTexte.clear();
-				listeRectangle.clear();
-				menuState = MENU;
 				game.lose = false;
 			}
 			if (Mouse::getPosition(window).x > RecTouche.posX && Mouse::getPosition(window).y > RecTouche.posY && Mouse::getPosition(window).x < RecTouche.posX + RecTouche.tailleX && Mouse::getPosition(window).y < RecTouche.posY + RecTouche.tailleY) {
