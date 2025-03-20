@@ -5,7 +5,7 @@ SolarPanel::SolarPanel(Vector2f pos, Player* players, RenderWindow& window) {
 	position = pos;
 	shape.setPosition(pos);
 	shape.setFillColor(Color::Transparent);
-	shape.setSize(Vector2f(50.0f, 50.0f));
+	shape.setSize(Vector2f(50.0f, 300.0f));
 	faisceau = 0;
 	
 }

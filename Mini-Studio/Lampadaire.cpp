@@ -6,14 +6,18 @@ Lampadaire::Lampadaire(Vector2f pos, Player* players, ParralaxBackground* _curre
 	player = players;
 	position = pos;
 	shape.setPosition(pos);
-	shape.setFillColor(Color::Red);
-	shape.setSize({ 50, 50 });
+	shape.setFillColor(Color::Transparent);
+	shape.setSize({ 375, 125 });
 	currentState = PATROL;
 	moveSide = LEFT; 
 	currentWaypoint = 0;
 	waypoints[0] = Vector2f(position.x + 100, position.y);
 	waypoints[1] = Vector2f(position.x - 400, position.y);
-
+	spriteTexture.loadFromFile("Assets/Lampadaire/lamp_idle.png");
+	spriteChar.setTexture(spriteTexture);
+	spriteChar.setPosition(pos);
+	spriteChar.setScale(0.25, 0.25);
+	changedSide = false;
 	
 	
 	currentLevel = _currentLevel;
@@ -22,8 +26,16 @@ Lampadaire::Lampadaire(Vector2f pos, Player* players, ParralaxBackground* _curre
 }
 void Lampadaire::update(const float& deltaTime, RenderWindow& window) {
 	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {
-		player->playerSprite.setPosition(player->playerSprite.getPosition().x, 100);
+		player->playerSprite.setPosition(500, 500);
 		player->hitcount++;
+		if (player->isGoingRight) {
+			player->isGoingLeft = true;
+			player->isGoingRight = false;
+		}
+		currentLevel->moveLayers(deltaTime, window, *player);
+		player->isGoingLeft = false;
+		player->isGoingRight = true;
+
 	}
 	switch (currentState) {
 	case PATROL:
@@ -46,22 +58,22 @@ void Lampadaire::update(const float& deltaTime, RenderWindow& window) {
 	default:
 		break;
 	}
-
+	
 	switch(moveSide) {
 	case MOVEMENTSIDE::LEFT:
 		lum.setPointCount(4);
-		lum.setPoint(0, { position.x,position.y  });
-		lum.setPoint(1, { position.x ,position.y + 50 });
+		lum.setPoint(0, { position.x+30,position.y +35 });
+		lum.setPoint(1, { position.x+30 ,position.y + 90 });
 		lum.setPoint(2, { position.x - 350,position.y + 125 });
-		lum.setPoint(3, { position.x - 350,position.y - 75 }); 
+		lum.setPoint(3, { position.x - 350,position.y - 75 });
 		break;
 
 	case MOVEMENTSIDE::RIGHT:
 		lum.setPointCount(4);
-		lum.setPoint(0, { position.x + 50,position.y });
-		lum.setPoint(1, { position.x + 50,position.y + 50 });
-		lum.setPoint(2, { position.x + 400,position.y + 125 });
-		lum.setPoint(3, { position.x + 400,position.y - 75 });
+		lum.setPoint(0, { position.x + 345,position.y + 35 });
+		lum.setPoint(1, { position.x + 345,position.y + 90 });
+		lum.setPoint(2, { position.x + 775,position.y + 125 });
+		lum.setPoint(3, { position.x + 775,position.y - 75 });
 		break;
 
 	default:
@@ -81,25 +93,16 @@ void Lampadaire::chase(Vector2f playerPos, const float& deltaTime, RenderWindow&
 	switch (moveSide) {
 	case MOVEMENTSIDE::LEFT:
 		shape.move(direction * 250.f * deltaTime, 0);
+		spriteChar.move(direction * 250.f * deltaTime, 0);
 		break;
 	case MOVEMENTSIDE::RIGHT:
 		shape.move(-direction * 250.f * deltaTime, 0);
+		spriteChar.move(-direction * 250.f * deltaTime, 0);
 		break;
 	};
 	position = shape.getPosition();
 
-	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {
-		player->playerSprite.setPosition(500, 500);
-		player->hitcount++;
-		if (player->isGoingRight) {
-			player->isGoingLeft = true;
-			player->isGoingRight = false;
-		}
-		currentLevel->moveLayers(deltaTime, window, *player);
-		player->isGoingLeft = false;
-		player->isGoingRight = true;
-
-	}
+	
 	//lum.move(direction);
 }
 
@@ -114,7 +117,7 @@ bool Lampadaire::detectPlayer(Vector2f playerPos) {
 	}
 }
 void Lampadaire::patrol(const float& deltaTime) {
-	
+	Vector2f scale = sprite.getScale();
 	Vector2f target              = waypoints[currentWaypoint];
 	Vector2f direction           = target - position;
 	float distance               = sqrt(direction.x * direction.x + direction.y * direction.y);
@@ -122,9 +125,19 @@ void Lampadaire::patrol(const float& deltaTime) {
 	switch (currentWaypoint) {
 	case 0: 
 		moveSide = RIGHT;
+		if (changedSide) {
+			spriteChar.scale(-1, 1);
+			spriteChar.move(-spriteChar.getGlobalBounds().width, 0);
+		}
+		changedSide = false;
 		break;
 	case 1:
 		moveSide = LEFT;
+		if (!changedSide) {
+			spriteChar.scale(-1, 1);
+			spriteChar.move(spriteChar.getGlobalBounds().width, 0);
+		}
+		changedSide = true;
 		break;
 	default:
 		break;
@@ -139,6 +152,7 @@ void Lampadaire::patrol(const float& deltaTime) {
 	}
 
 	shape.move(direction * 100.f * deltaTime);
+	spriteChar.move(direction * 100.f * deltaTime);
 	position = shape.getPosition();
 	//lum.move(direction);
 }
@@ -146,4 +160,5 @@ void Lampadaire::patrol(const float& deltaTime) {
 void Lampadaire::draw(RenderWindow& window) {
 	window.draw(shape);
 	window.draw(lum);
+	window.draw(spriteChar);
 }

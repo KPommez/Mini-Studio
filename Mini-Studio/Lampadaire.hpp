@@ -26,5 +26,8 @@ private:
 	State currentState;
 	MOVEMENTSIDE moveSide;
 	int currentWaypoint;
+	bool changedSide;
 	Vector2f waypoints[2];
+	Sprite spriteChar;
+	Texture spriteTexture;
 };
