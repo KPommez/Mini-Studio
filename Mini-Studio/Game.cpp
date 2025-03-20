@@ -52,6 +52,9 @@ void Game::Run(RenderWindow& window) {
             lose = true;
         }
     }
+    level.plateformeTest.clear();
+    level.platforms.clear();
+    level.m_entityManager->deleteAllEnnemy();
     window.clear();
     levelActif = false;
     view(window);
