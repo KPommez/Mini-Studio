@@ -61,7 +61,7 @@ void Menu::menu(RenderWindow& window) {
 	RectangleShape NivTest(Vector2f{ 50,50 });
 	NivTest.setFillColor(Color::Black);
 	window.draw(NivTest);
-	spriteMenu.setTexture("assets/backMenu/test.png", window);
+	spriteMenu.setTexture("assets/backMenu/MenuDef.png", window);
 
 	Vector2i n_mouse = Mouse::getPosition(window);
 	Vector2f mouse = { (float)n_mouse.x, (float)n_mouse.y };
@@ -112,7 +112,8 @@ void Menu::menu(RenderWindow& window) {
 		if (NivTest.getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left))
 		{
 			cout << "test niveau";
-			game.index = 3;
+			game.index = 2;
+
 		}
 	}
 	window.display();

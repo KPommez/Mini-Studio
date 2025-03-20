@@ -18,6 +18,10 @@ public:
     Texture bullePlayer, option;
     Sprite spriteBullePlayer, spriteOption;
 
+    vector <Sprite> TexteAmi;
+    Texture ami1, ami2;
+    Sprite Sami1, Sami2;
+
     vector <Sprite> spriteToucheClavier;
     Texture textureTouche, textureTouche1, textureTouche2, textureTouche3, textureTouche4;
     Sprite touche, touche1, touche2, touche3, touche4;

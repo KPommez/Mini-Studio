@@ -4,6 +4,8 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 {
 	Vector2f WindowSize{ static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y) };
 	if (!font.loadFromFile("Assets/font/Minecraft.ttf")                            ||
+		!ami1.loadFromFile("Assets/backMenu/amitexte1.png")                        ||
+		!ami2.loadFromFile("Assets/backMenu/amitexte2.png")                        ||
 		!bullePlayer.loadFromFile("Assets/backMenu/bulleMenu.png")                 ||
 		!option.loadFromFile("Assets/backMenu/optionIcone.png")                    ||
 		!choix1.loadFromFile("Assets/backMenu/bouton_play.png")                    ||
@@ -26,6 +28,19 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	}
 
 	sprite.setOrigin(0, 0);
+
+	///////////Texte Ami /////////////
+	Sami1.setTexture(ami1);
+	Sami2.setTexture(ami2);
+
+	Sami1.setScale(0.5f, 0.5f);
+	Sami2.setScale(0.5f, 0.5f);
+
+	Sami1.setPosition(WindowSize.x / 2.f - (ami1.getSize().x / 3.35f), WindowSize.y / 9.f);
+	Sami2.setPosition(WindowSize.x / 2.f - (ami1.getSize().x / 3.35f), WindowSize.y / 3.5f);
+
+	TexteAmi.push_back(Sami1);
+	TexteAmi.push_back(Sami2);
 	///////////Selection//////////////
 	selectPlaySprite.setTexture(selectPlay);
 	selectQuitSprite.setTexture(selectQuit);
@@ -154,6 +169,9 @@ void SpriteMenu::drawVector(RenderWindow& window) {
 	//}
 	window.draw(spriteBullePlayer);
 	window.draw(spriteOption);
+	for (auto& ami : TexteAmi) {
+		window.draw(ami);
+	}
 	for (auto& button : selectSprite) {
 		window.draw(button);
 	}
