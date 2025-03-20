@@ -339,6 +339,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 					playerSprite.move(0, 0);
 				}
 				hasPlatform = true;
+				
 				count++;
 			}
 		}
@@ -354,7 +355,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 					spacebarPresses = 0;
 					playerSprite.move(0, 0);
 				}
-				playerSprite.move(platform->plat.getPosition().x - playerSprite.getPosition().x, 0);    //trouver un truc, sa marche presque
+				playerSprite.move(platform->deplacementX * deltaTime *20.f, 0);    //trouver un truc, sa marche presque
 				hasPlatform = true;
 				count++;
 			}

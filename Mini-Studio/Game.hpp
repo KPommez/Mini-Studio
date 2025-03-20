@@ -20,6 +20,7 @@ public:
 	Map level;
 	Player player;
 	bool getRunning();
+	
 
 private:
 	void pollEvents(RenderWindow& window);

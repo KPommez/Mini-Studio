@@ -63,6 +63,9 @@ void Game::Run(RenderWindow& window) {
             lose = true;
         }
     }
+    level.plateformeTest.clear();
+    level.platforms.clear();
+    level.m_entityManager->deleteAllEnnemy();
 
     window.clear();
     levelActif = false;
@@ -224,7 +227,7 @@ void Game::updateRay(RenderWindow& window) {
 }
 
 void Game::update(const float& deltaTime, RenderWindow& window) {
-    if (index == 0) {
+    if (index == 1) {
 		updateRay(window);
     }
     level.m_entityManager->updateEntities(window, deltaTime);
@@ -234,19 +237,33 @@ void Game::update(const float& deltaTime, RenderWindow& window) {
     for (auto& Plateforme : level.plateformeTest) {
         Plateforme->platUpdate(deltaTime);
     }
-    if (player.playerSprite.getGlobalBounds().intersects(level.endLevel.getGlobalBounds())) {
-        index += 1;
-        levelActif = false;
-        level.plateformeTest.clear();
-        level.platforms.clear();
-        level.m_entityManager->deleteAllEnnemy();
-        player.playerSprite.setPosition(500, 500);
-        level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
-    }
-    if (player.playerSprite.getGlobalBounds().intersects(level.end.getGlobalBounds())) {
-        isRunning = 0;
-        //mettre les transition
-    }
+    
+        if (player.playerSprite.getGlobalBounds().intersects(level.endLevel.getGlobalBounds()) || player.playerSprite.getPosition().x >12300) {
+            index += 1;
+            if (index > 2) {
+                index = 2;
+            }
+            if (index == 1) {
+                levelActif = false;
+            }
+            else {
+                levelActif = true;
+            }
+            level.plateformeTest.clear();
+            level.platforms.clear();
+            
+            level.m_entityManager->deleteAllEnnemy();
+
+            player.playerSprite.setPosition(500, 500);
+            level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
+        }
+        if (player.playerSprite.getGlobalBounds().intersects(level.end.getGlobalBounds())) {
+            isRunning = false;
+            //mettre les transition
+        }
+
+        
+    
 }
 
 void Game::view(RenderWindow& window) {
@@ -261,11 +278,8 @@ void Game::view(RenderWindow& window) {
         if (position.x < 0) {
             position.x = 0;
         }
-        else if (position.x > window.getSize().x * 50.f) { //bloquer joueur vue
-            position.x = window.getSize().x * 50.f;
-        }
-        else {
-
+        else if (position.x > window.getSize().x * 6.f) { //bloquer joueur vue
+            position.x = window.getSize().x * 6.f;
         }
 
         if (position.y > 0) {
@@ -289,6 +303,8 @@ void Game::draw(RenderWindow& window) {
     window.clear();
     if (index == 0) {
         parralaxLevelOne.draw(window);
+    }
+    else if (index == 1) {
         for (auto& rect : mirrors) {
             rect.draw(window);
         }
