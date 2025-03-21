@@ -19,17 +19,18 @@ Player::Player() {
 	hadPlatformWhenJumped    = true;
 	canMove					 = true;
 	// Float members
-	speed           = 400.f;
-	fallingTime     = 0.f;
-	dashingTime     = 0.f;
-	fallingMovement = 0.f;
-	jumpMovement    = 175.f;
-	lastYPos        = 500.f;
-	fallingSpeed    = speed;
-	spacebarPresses = 0;
-	countSide       = 0;
-	hitcount        = 0;
-	animationTime   = 0.f;
+	speed            = 400.f;
+	fallingTime      = 0.f;
+	dashingTime      = 0.f;
+	fallingMovement  = 0.f;
+	jumpMovement     = 175.f;
+	lastYPos         = 500.f;
+	screenWidthLimit = 0.f;
+	fallingSpeed     = speed;
+	spacebarPresses  = 0;
+	countSide        = 0;
+	hitcount         = 0;
+	animationTime    = 0.f;
 }
 
 void Player::resize(RenderWindow& window) {
@@ -94,21 +95,27 @@ void Player::update(const float& deltaTime, RenderWindow& window) {
 void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 	bool hasInput = false;
 	// Inputs left & right
-	if (canMove && (playerSprite.getPosition().x < 50.f * window.getSize().x - playerSprite.getGlobalBounds().width && (Keyboard::isKeyPressed(Keyboard::D) || Joystick::getAxisPosition(0,Joystick::X) >= 10))) {
+	if (canMove && (playerSprite.getPosition().x < screenWidthLimit 
+		&& (Keyboard::isKeyPressed(Keyboard::D) || Joystick::getAxisPosition(0,Joystick::X) >= 10))) 
+	{
 		isGoingRight = true;
 		isGoingLeft = false;
 		isIdling = false;
 		playerSprite.move(speed * 2.f * deltaTime, 0);
 		hasInput = true;
 	}
-	if (canMove && (playerSprite.getPosition().x >= playerSprite.getGlobalBounds().width && (Keyboard::isKeyPressed(Keyboard::Q) || Joystick::getAxisPosition(0, Joystick::X) <= -10))) {
+	if (canMove && (playerSprite.getPosition().x >= playerSprite.getGlobalBounds().width 
+		&& (Keyboard::isKeyPressed(Keyboard::Q) || Joystick::getAxisPosition(0, Joystick::X) <= -10))) 
+	{
 		isGoingLeft = true;
 		isGoingRight = false;
 		isIdling = false;
 		playerSprite.move(-speed * 2.f * deltaTime, 0);
 		hasInput = true;
 	}
-	if (canMove && (Keyboard::isKeyPressed(Keyboard::S) || Joystick::getAxisPosition(0, Joystick::Y) >= 50)) {
+	if (canMove 
+		&& (Keyboard::isKeyPressed(Keyboard::S) || Joystick::getAxisPosition(0, Joystick::Y) >= 50)) 
+	{
 		if (!(playerSprite.getPosition().y >= window.getSize().y - playerSprite.getGlobalBounds().height - window.getSize().y / 10.f)) {
 			hasPressedS = true;
 		}

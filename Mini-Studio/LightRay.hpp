@@ -20,16 +20,57 @@ public:
         // Initialiser la ligne
         line = sf::VertexArray(sf::Lines, 2);
         line[0].position = origin;
-        line[0].color = sf::Color::Red;
-        line[1].color = sf::Color::Yellow;
+        line[0].color = sf::Color(255, 218, 0);
+        line[1].color = sf::Color(255, 218, 0);
     }
 
     void update(const sf::Vector2f& endPoint) {
         line[1].position = endPoint;
     }
 
-    void draw(sf::RenderWindow& window) {
-        window.draw(line);
+    void drawSegment(sf::RenderWindow& window, sf::Vector2f start, sf::Vector2f end, sf::Color startColor, sf::Color endColor) {
+        // Calculer la direction perpendiculaire
+        sf::Vector2f rayDir = end - start;
+        float rayLength = std::sqrt(rayDir.x * rayDir.x + rayDir.y * rayDir.y);
+        if (rayLength < 0.001f) return; // Éviter division par zéro
+
+        rayDir /= rayLength;
+        sf::Vector2f perpDir(-rayDir.y, rayDir.x);
+
+        // Créer un quad pour le segment avec épaisseur
+        sf::VertexArray quad(sf::Quads, 4);
+
+        // La moitié de l'épaisseur dans la direction perpendiculaire
+        sf::Vector2f offset = perpDir * (10.f / 2.f);
+
+        // Définir les quatre coins du quad
+        quad[0].position = start + offset;
+        quad[0].color = startColor;
+
+        quad[1].position = end + offset;
+        quad[1].color = endColor;
+
+        quad[2].position = end - offset;
+        quad[2].color = endColor;
+
+        quad[3].position = start - offset;
+        quad[3].color = startColor;
+
+        window.draw(quad);
+
+        // Ajouter un cercle au point d'origine pour un meilleur rendu
+        sf::CircleShape circle(10.f / 2.f);
+        circle.setFillColor(startColor);
+        circle.setOrigin(10.f / 2.f, 10.f / 2.f);
+        circle.setPosition(start);
+        window.draw(circle);
+
+        // Ajouter un cercle au point d'intersection pour un meilleur rendu
+        sf::CircleShape endCircle(10.f / 2.f);
+        endCircle.setFillColor(endColor);
+        endCircle.setOrigin(10.f / 2.f, 10.f / 2.f);
+        endCircle.setPosition(end);
+        window.draw(endCircle);
     }
 };
 
@@ -39,12 +80,12 @@ struct Mirror {
     bool isSelected;
     sf::Vector2f grabOffset;
 
-    Mirror(float x, float y, float width, float height, sf::Color color) {
+    Mirror(float x, float y, float width, float height, float thickness, sf::Color color) {
         shape.setSize(sf::Vector2f(width, height));
         shape.setPosition(x, y);
         shape.setFillColor(color);
         shape.setOutlineColor(sf::Color::White);
-        shape.setOutlineThickness(2.f);
+        shape.setOutlineThickness(thickness);
         isSelected = false;
     }
 
@@ -141,11 +182,31 @@ sf::Vector2f reflect(const sf::Vector2f& direction, const sf::Vector2f& normal) 
 }
 
 // Fonction pour ajouter un rectangle flottant à la position du clic
-Mirror createRectangle(sf::Vector2f position) {
+Mirror createRectangle(sf::Vector2f position, sf::Vector2f size) {
     return Mirror(
         position.x,
         position.y,
-        50.f, 100.f, // taille
-        sf::Color(rand() % 200 + 55, rand() % 200 + 55, rand() % 200 + 55, 200) // couleur aléatoire
+        size.x, size.y,
+        2.f,            // Thickness
+        sf::Color::White
     );
+}
+
+void updateMirrors(vector<Mirror>& mirrors, const float& deltaTime, RenderWindow& window) {
+    for (auto& mirror : mirrors) {
+        if (mirror.isSelected) {
+            if (Keyboard::isKeyPressed(Keyboard::Up) && mirror.shape.getPosition().y > 0) {
+                mirror.shape.move(0, -800 * deltaTime);
+            }
+            else if (Keyboard::isKeyPressed(Keyboard::Down) && mirror.shape.getPosition().y <= window.getSize().y - mirror.shape.getSize().y) {
+                mirror.shape.move(0, 800 * deltaTime);
+            }
+            else if (Keyboard::isKeyPressed(Keyboard::Left) && mirror.shape.getPosition().x > 0) {
+                mirror.shape.move(-800 * deltaTime, 0);
+            }
+            else if (Keyboard::isKeyPressed(Keyboard::Right) && mirror.shape.getPosition().x <= window.getSize().x - mirror.shape.getSize().x) {
+                mirror.shape.move(800 * deltaTime, 0);
+            }
+        }
+    }
 }

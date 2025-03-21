@@ -16,6 +16,7 @@ void Map::loadMapTextures() {
 	leftLeafPlatform.loadFromFile     ("Assets/Map/Platforms/leftLeafBlock.png");
 	rightLeafPlatform.loadFromFile    ("Assets/Map/Platforms/rightLeafBlock.png");
 	middleNoLeafPlatform.loadFromFile ("Assets/Map/Platforms/noLeafBlock.png");
+	mirror.loadFromFile               ("Assets/LevelAssets/LevelTwo/Sprites/mirror.png");
 }
 
 void Map::loadAllMaps() {
@@ -106,16 +107,12 @@ void Map::loadMap(const string& filename, Player* players, RenderWindow& window,
 				endLevel.setSize({ 40.f,40.f });
 				endLevel.setFillColor(Color::Green);
 				endLevel.setPosition(posX, posY);
-				
-			
 			}
 			else if (line[x] == 'F') {
 				end.setSize({ 40.f,40.f });
 				end.setFillColor(Color::Yellow);
 				end.setPosition(posX, posY);
-			
 			}
-
 			/********************************************************************ennemie************************************************************/
 			else if (line[x] == 'C') {
 				m_entityManager->addEnnemy(make_shared<Lampadaire>(Vector2f(posX, posY), players, currentLevel));

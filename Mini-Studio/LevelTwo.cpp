@@ -1,32 +1,27 @@
 #include "LevelTwo.hpp"
 
 LevelTwo::LevelTwo() {
-	wallBGTexture.loadFromFile("Assets/LevelAssets/LevelTwo/Background/wall.png");
+	wallBGTexture.loadFromFile("Assets/LevelAssets/LevelTwo/Background/background.png");
 	topLeavesTexture.loadFromFile("Assets/LevelAssets/LevelTwo/Background/topLeaves.png");
 	luminousBeamTexture.loadFromFile("Assets/LevelAssets/LevelTwo/Background/luminousBeam.png");
-	solarPanelTexture.loadFromFile("Assets/LevelAssets/LevelTwo/Sprites/solarPanel.png");
 	mirrorTexture.loadFromFile("Assets/LevelAssets/LevelTwo/Sprites/mirror.png");
+	floorTexture.loadFromFile("Assets/LevelAssets/LevelTwo/Background/floor.png");
 	// Sprites
 	wallBG.setTexture(wallBGTexture); 
 	topLeaves.setTexture(topLeavesTexture); 
-	luminousBeam.setTexture(luminousBeamTexture); 
-	solarPanel.setTexture(solarPanelTexture);
+	luminousBeam.setTexture(luminousBeamTexture);
+	floorSprite.setTexture(floorTexture);
 	sprites.reserve(4);
 	sprites.emplace_back(wallBG);
-	sprites.emplace_back(topLeaves);
 	sprites.emplace_back(luminousBeam);
-	sprites.emplace_back(solarPanel);
+	sprites.emplace_back(topLeaves);
+	sprites.emplace_back(floorSprite);
 }
 
 void LevelTwo::scaleSprites(RenderWindow& window) {
-	for (auto& sprite : sprites) {
-		float ratio = (float)window.getSize().x / sprite.getGlobalBounds().width;
-		sprite.setScale(ratio, ratio);
-		sprite.setPosition(0, 0);
+	for (auto& layer : sprites) {
+		layer.setScale(sf::Vector2f((window.getSize().x / layer.getLocalBounds().width), (window.getSize().y / layer.getLocalBounds().height)));
 	}
-	// Solar panel
-	sprites[3].setScale(1, 1);
-	sprites[3].setPosition((float)window.getSize().x - sprites[3].getGlobalBounds().width - (float)window.getSize().x / 10.f, window.getSize().y - window.getSize().y / 10.f);
 }
 
 const Texture* LevelTwo::getTexture() {
@@ -34,8 +29,8 @@ const Texture* LevelTwo::getTexture() {
 }
 
 void LevelTwo::draw(RenderWindow& window) {
-	window.draw(wallBG);
-	window.draw(luminousBeam);
-	window.draw(topLeaves);
-	window.draw(solarPanel);
+	window.draw(sprites[0]);
+	window.draw(sprites[1]);
+	window.draw(sprites[2]);
+	window.draw(sprites[3]);
 }

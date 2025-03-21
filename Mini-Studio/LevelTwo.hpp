@@ -1,12 +1,16 @@
 #pragma once
 
 #include "includeAll.hpp"
+#include "SolarPanel.hpp"
 
 class LevelTwo {
 private:
-	Texture wallBGTexture, topLeavesTexture, luminousBeamTexture, solarPanelTexture, mirrorTexture;
-	Sprite wallBG, topLeaves, luminousBeam, solarPanel, mirror;
+	Texture wallBGTexture, topLeavesTexture, luminousBeamTexture, mirrorTexture, floorTexture;
+	Sprite wallBG, topLeaves, luminousBeam, mirror, floorSprite;
 	vector<Sprite> sprites;
+
+public:
+	SolarPanel endSolarPanel;
 
 public:
 	LevelTwo();

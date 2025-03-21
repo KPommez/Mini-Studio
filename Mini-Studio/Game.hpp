@@ -31,6 +31,8 @@ private:
 
 private:
 	bool isRunning;
+	bool hasWon;
+	bool hasLost;
 	bool isMousePressed;
 	bool isRectangleSelected;
 	bool levelActif;
@@ -39,7 +41,10 @@ private:
 	int screenY;
 	int spaceReleases;
 	float deltaTime;
+	float floorLevel;
 
+	Texture winScreenTexture, lostScreenTexture;
+	Sprite winScreen, lostScreen;
 	Event event;
 	Clock Clock;
 	View vue;
