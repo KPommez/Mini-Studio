@@ -17,7 +17,7 @@ void Eolienne::update(const float& deltaTime, RenderWindow& window) {
 	switch (currentState) {
 	case PATROL:
 		shape.setPosition({ window.getView().getCenter().x + 750,window.getView().getCenter().y - 300 });
-		if (clock.getElapsedTime().asSeconds() < 10) {
+		if (clock.getElapsedTime().asSeconds() < 15) {
 		
 			patrol(deltaTime);
 			
@@ -31,7 +31,7 @@ void Eolienne::update(const float& deltaTime, RenderWindow& window) {
 	case PUSH:
 		player->isGoingLeft = true;
 		player->isIdling = false;
-		if (clock.getElapsedTime().asSeconds() < 1.5) {
+		if (clock.getElapsedTime().asSeconds() < 2) {
 			push(window, deltaTime);
 		}
 		else {
