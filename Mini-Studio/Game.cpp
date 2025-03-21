@@ -38,6 +38,7 @@ void Game::Run(RenderWindow& window) {
     inGame = true;
     srand(static_cast<unsigned int>(time(NULL)));
     levelActif = true;
+    index = 0;
 
     // Chargement des assets
     ray.create(sf::Vector2f(window.getSize().x / 3.f, window.getSize().y / 4.f - 50.f), sf::Vector2f(0.25f, 1.f));
@@ -97,7 +98,7 @@ bool Game::setRunning(bool test)
 
 void Game::pollEvents(RenderWindow& window) {
     while (window.pollEvent(event)) {
-        if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::J)) {
+        if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) || Joystick::isButtonPressed(0,9)) {
             isRunning = false;
             inGame = false;
         }

@@ -8,6 +8,7 @@
 class Ray;
 struct Mirror;
 
+
 class Game {
 public:
 	Game(RenderWindow& window);
