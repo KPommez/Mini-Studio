@@ -17,12 +17,16 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 		!textureTouche2.loadFromFile("Assets/backMenu/toucheD.png")                ||
 		!textureTouche3.loadFromFile("Assets/backMenu/toucheSHIFT.png")            ||
 		!textureTouche4.loadFromFile("Assets/backMenu/toucheSPACE.png")            ||
+		!textureTouche5.loadFromFile("Assets/backMenu/toucheE.png")                ||
+		!textureTouche6.loadFromFile("Assets/backMenu/toucheR.png")                ||
 		!textureToucheManette.loadFromFile("Assets/backMenu/joystick1.png")        ||
 		!textureToucheManette1.loadFromFile("Assets/backMenu/joystick2.png")       ||
 		!textureToucheManette2.loadFromFile("Assets/backMenu/joystick3.png")       ||
 		!textureToucheManette3.loadFromFile("Assets/backMenu/manetteToucheRB.png") ||
 		!textureToucheManette4.loadFromFile("Assets/backMenu/manetteToucheA.png")  ||
-		!textureToucheManette5.loadFromFile("Assets/backMenu/manetteToucheB.png"))
+		!textureToucheManette5.loadFromFile("Assets/backMenu/manetteToucheB.png")  ||
+		!textureToucheManette6.loadFromFile("Assets/backMenu/manetteTouchex.png")  ||
+		!textureToucheManette7.loadFromFile("Assets/backMenu/manetteToucheY.png")   )
 	{
 		cerr << "Assets du menu non totalement charges" << endl;
 	}
@@ -79,58 +83,80 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 
 	///Touche 
 	touche.setTexture(textureTouche);
-	touche.setPosition(450, 400);
+	touche.setPosition(WindowSize.x / 2.66f, WindowSize.y / 6.35f);
 	touche.setScale(0.4f, 0.4f);
 
 	touche1.setTexture(textureTouche1);
-	touche1.setPosition(580, 400);
+	touche1.setPosition(WindowSize.x / 2.26f, WindowSize.y / 6.35f);
 	touche1.setScale(0.4f, 0.4f);
 
 	touche2.setTexture(textureTouche2);
-	touche2.setPosition(710, 400);
+	touche2.setPosition(WindowSize.x / 1.95f, WindowSize.y / 6.35f);
 	touche2.setScale(0.4f, 0.4f);
 
 	touche3.setTexture(textureTouche3);
-	touche3.setPosition(450, 530);
+	touche3.setPosition(WindowSize.x / 2.96f, WindowSize.y / 3.85f);
 	touche3.setScale(0.4f, 0.4f);
 
 	touche4.setTexture(textureTouche4);
-	touche4.setPosition(580, 530);
+	touche4.setPosition(WindowSize.x / 2.46f, WindowSize.y / 3.85f);
 	touche4.setScale(0.4f, 0.4f);
+
+	touche5.setTexture(textureTouche5);
+	touche5.setPosition(WindowSize.x / 2.09f, WindowSize.y / 3.85f);
+	touche5.setScale(0.4f, 0.4f);
+
+	touche6.setTexture(textureTouche6);
+	touche6.setPosition(WindowSize.x / 1.83f, WindowSize.y / 3.85f);
+	touche6.setScale(0.4f, 0.4f);
 
 	///Touche manette
 	toucheManette.setTexture(textureToucheManette);
-	toucheManette.setPosition(700, 295);
+	toucheManette.setPosition(WindowSize.x / 3.64f, WindowSize.y / 2.48f);
 	toucheManette.setScale(0.4f, 0.4f);
 
 	toucheManette1.setTexture(textureToucheManette1);
-	toucheManette1.setPosition(725, 185);
+	toucheManette1.setPosition(WindowSize.x / 3.5f, WindowSize.y / 3.32f);
 	toucheManette1.setScale(0.4f, 0.4f);
 
 	toucheManette2.setTexture(textureToucheManette2);
-	toucheManette2.setPosition(750, 295);
+	toucheManette2.setPosition(WindowSize.x / 3.38f, WindowSize.y / 2.48f);
 	toucheManette2.setScale(0.4f, 0.4f);
 
 	toucheManette3.setTexture(textureToucheManette3);
-	toucheManette3.setPosition(900, 525);
+	toucheManette3.setPosition(WindowSize.x / 2.97f, WindowSize.y / 1.67f);
 	toucheManette3.setScale(0.4f, 0.4f);
 
 	toucheManette4.setTexture(textureToucheManette4);
-	toucheManette4.setPosition(1035, 525);
-	toucheManette4.setScale(0.4f, 0.4f);
+	toucheManette4.setPosition(WindowSize.x / 2.3f, WindowSize.y / 1.53f);
+	toucheManette4.setScale(0.475f, 0.475f);
 
 	toucheManette5.setTexture(textureToucheManette5);
-	toucheManette5.setPosition(1675, 850);
-	toucheManette5.setScale(0.4f, 0.4f);
+	toucheManette5.setPosition(WindowSize.x / 1.1f, WindowSize.y / 1.2f);
+	toucheManette5.setScale(0.475f, 0.475f);
+
+	toucheManette6.setTexture(textureToucheManette6);
+	toucheManette6.setPosition(WindowSize.x / 1.98f, WindowSize.y / 1.53f);
+	toucheManette6.setScale(0.5f, 0.5f);
+
+	toucheManette7.setTexture(textureToucheManette7);
+	toucheManette7.setPosition(WindowSize.x / 1.74f, WindowSize.y / 1.53f);
+	toucheManette7.setScale(0.5f, 0.5f);
 
 	///Texte Option 
-	Texte retour(font, "Retour", 40, 0, 0, 0, 1700, 1000);
-	Texte dashClavier(font, "Dash", 40, 0, 0, 0, 500, 690);
-	Texte sautClavier(font, "Saut", 40, 0, 0, 0, 630, 690);
+	Texte retour(font, "Retour", 40, 0, 0, 0, WindowSize.x / 1.129f, WindowSize.y / 1.08f);
+	Texte clavier(font, "Clavier", 40, 0, 0, 0, WindowSize.x/ 2.23f, WindowSize.y / 7.2f);
+	Texte dashClavier(font, "Dash", 32.5f, 0, 0, 0, WindowSize.x / 2.72f, WindowSize.y / 2.51f);
+	Texte sautClavier(font, "Saut", 32.5f, 0, 0, 0, WindowSize.x / 2.28f, WindowSize.y / 2.51f);
+	Texte rotateLeftClavier(font, "Turn-L", 32.5f, 0, 0, 0, WindowSize.x / 2.0f, WindowSize.y / 2.51f);
+	Texte rotateRightClavier(font, "Turn-R", 32.5f, 0, 0, 0, WindowSize.x / 1.76f, WindowSize.y / 2.51f);
 	
 	///texte Option Joystick
-	Texte dashJoystick(font, "Dash", 40, 0, 0, 0, 950, 690);
-	Texte sautJoystick(font, "Saut", 40, 0, 0, 0, 1085, 690);
+	Texte joystick(font, "Joystick", 40, 0, 0, 0, WindowSize.x / 2.23f, WindowSize.y / 2.07f);
+	Texte dashJoystick(font, "Dash", 32.5f, 0, 0, 0, WindowSize.x / 2.72f, WindowSize.y / 1.37f);
+	Texte sautJoystick(font, "Saut", 32.5f, 0, 0, 0, WindowSize.x / 2.28f, WindowSize.y / 1.37f);
+	Texte rotateLeftJoystick(font, "Turn-L", 32.5f, 0, 0, 0, WindowSize.x / 2.0f, WindowSize.y / 1.37f);
+	Texte rotateRightJoystick(font, "Turn-R", 32.5f, 0, 0, 0, WindowSize.x / 1.76f, WindowSize.y / 1.37f);
 	
 	///Bulle arrière
 	/*spriteVBulle.push_back(spriteBulle1);
@@ -151,6 +177,8 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	spriteToucheClavier.push_back(touche2);
 	spriteToucheClavier.push_back(touche3);
 	spriteToucheClavier.push_back(touche4);
+	spriteToucheClavier.push_back(touche5);
+	spriteToucheClavier.push_back(touche6);
 
 	///Touche manette
 	spriteToucheManette.push_back(toucheManette);
@@ -159,13 +187,21 @@ void SpriteMenu::initAllSpriteMenu(RenderWindow& window)
 	spriteToucheManette.push_back(toucheManette3);
 	spriteToucheManette.push_back(toucheManette4);
 	spriteToucheManette.push_back(toucheManette5);
+	spriteToucheManette.push_back(toucheManette6);
+	spriteToucheManette.push_back(toucheManette7);
 
 	///Texte Option
 	listeTexteOption.push_back(retour);
+	listeTexteOption.push_back(clavier);
+	listeTexteOption.push_back(joystick);
 	listeTexteOption.push_back(dashClavier);
 	listeTexteOption.push_back(sautClavier);
+	listeTexteOption.push_back(rotateLeftClavier);
+	listeTexteOption.push_back(rotateRightClavier);
 	listeTexteOption.push_back(dashJoystick);
 	listeTexteOption.push_back(sautJoystick);
+	listeTexteOption.push_back(rotateLeftJoystick);
+	listeTexteOption.push_back(rotateRightJoystick);
 }
 
 void SpriteMenu::setTexture(const string& PNGfile, RenderWindow& window)
