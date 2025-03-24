@@ -20,7 +20,6 @@ public:
 	RectangleShape endLevel;
 	RectangleShape end;
 	vector<RectangleShape> platforms;
-	
 	vector <Plateforme*> plateformeTest;
 	vector<string> allLevels;
 	shared_ptr<EntityManager> m_entityManager;
@@ -36,5 +35,6 @@ private:
 	vector<string> allLevelsTypePath{ "Assets/Map/" };
 	Texture
 		leftRegularPlatform, rightRegularPlatform, middleRegularPlatform,
-		leftLeafPlatform, rightLeafPlatform, middleNoLeafPlatform;
+		leftLeafPlatform, rightLeafPlatform, middleNoLeafPlatform,
+		mirror;
 };

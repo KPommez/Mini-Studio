@@ -148,6 +148,7 @@
     <ClCompile Include="Eolienne.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Lampadaire.cpp" />
+    <ClCompile Include="LevelTwo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Eolienne.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="includeAll.hpp" />
+    <ClInclude Include="LevelTwo.hpp" />
     <ClInclude Include="LightRay.hpp" />
     <ClInclude Include="Menu.hpp" />
     <ClInclude Include="Lampadaire.hpp" />

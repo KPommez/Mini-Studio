@@ -25,6 +25,7 @@ public:
 	bool hasPressedS;
 	Sprite playerSprite;
 	int hitcount;
+	float screenWidthLimit;
 
 private:
 	void inputGestion(const float& deltaTime, RenderWindow& window);
