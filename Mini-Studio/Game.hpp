@@ -18,6 +18,8 @@ public:
 
 public:
 	bool lose;
+	bool hasWon;
+	bool hasLost;
 	bool inGame;
 	Map level;
 	Player player;
@@ -32,8 +34,6 @@ private:
 
 private:
 	bool isRunning;
-	bool hasWon;
-	bool hasLost;
 	bool isMousePressed;
 	bool isRectangleSelected;
 	bool levelActif;

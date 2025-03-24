@@ -77,10 +77,6 @@ void Lampadaire::anim(const float& deltaTime) {
 	
 }
 void Lampadaire::update(const float& deltaTime, RenderWindow& window) {
-	//if (changedSide) {
-	//	cout << "sprite scaled" << endl;
-	//	spriteChar.scale(-1, 1);
-	//}
 	anim(deltaTime);
 	if (shape.getGlobalBounds().intersects(player->playerSprite.getGlobalBounds())) {
 		player->playerSprite.setPosition(500, 500);
@@ -179,7 +175,7 @@ void Lampadaire::patrol(const float& deltaTime) {
 	Vector2f target              = waypoints[currentWaypoint];
 	Vector2f direction           = target - position;
 	float distance               = sqrt(direction.x * direction.x + direction.y * direction.y);
-	//cout << currentWaypoint << "  " << target.x << " " << target.y << endl;
+
 	switch (currentWaypoint) {
 	case 0: 
 		moveSide = RIGHT;

@@ -18,6 +18,7 @@ public:
 
 public:
 	bool isDashing;
+	bool invertedGravity;
 	bool canMove;
 	bool isIdling;
 	bool isGoingLeft;
@@ -25,6 +26,7 @@ public:
 	bool hasPressedS;
 	Sprite playerSprite;
 	int hitcount;
+	int index;
 	float screenWidthLimit;
 
 private:
@@ -42,7 +44,6 @@ private:
 	bool canDoubleJump;
 	bool hasPlatform;
 	bool hasMovingPlatform;
-	bool invertedGravity;
 	bool isSpacePressed;
 	bool isIdlingAnimationStarted;
 	bool isAnimationStarted;

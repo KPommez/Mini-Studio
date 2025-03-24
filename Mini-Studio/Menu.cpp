@@ -24,10 +24,12 @@ void Menu::start(RenderWindow& window) {
 	else if (posButon <= -1) {
 		posButon = 3;
 	}
-	cout << posButon << endl;
-	if (game.lose == true)
+	if (game.lose || game.hasLost)
 	{
 		menuState = LOOSE;
+	}
+	if (game.hasWon) {
+		menuState = WIN;
 	}
 	switch (menuState) {
 	case MENU:
@@ -98,6 +100,7 @@ void Menu::menu(RenderWindow& window) {
 			listeTexte.clear();
 			listeRectangle.clear();
 			menuState = START;
+			game.index = 0;
 			game.setRunning(true);
 		}
 		if (spriteMenu.spriteOption.getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 1) && posButon == 2) {
@@ -110,8 +113,11 @@ void Menu::menu(RenderWindow& window) {
 		}
 		if (NivTest.getGlobalBounds().contains(mouse.x, mouse.y) && Mouse::isButtonPressed(Mouse::Left))
 		{
-			cout << "test niveau";
-			/*game.index = 2;*/
+			listeTexte.clear();
+			listeRectangle.clear();
+			game.index = 2;
+			menuState = START;
+			game.setRunning(true);
 		}
 	}
 	window.display();
@@ -203,6 +209,7 @@ void Menu::win(RenderWindow& window) {
 
 		if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.WinButton[0].getGlobalBounds().contains(mouse.x, mouse.y) || Joystick::isButtonPressed(0, 1) && posButon == 1) {
 			menuState = MENU;
+			game.hasWon = false;
 		}
 		else if (Mouse::isButtonPressed(Mouse::Left) && spriteMenu.WinButton[1].getGlobalBounds().contains(mouse.x, mouse.y) || Joystick::isButtonPressed(0, 1) && posButon == 0) {
 			window.close();
