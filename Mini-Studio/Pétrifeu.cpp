@@ -29,31 +29,20 @@ void Petrifeu::change() {
 		switch (random) {
 		case 1:
 			if (clock.getElapsedTime().asSeconds() > 8) {
-
-				cout << "Partie 1" << endl;
-
 				clock.restart();
 				feucolor = RED;
 			}
 			break;
 		case 2:
 			if (clock.getElapsedTime().asSeconds() > 12) {
-
-				cout << "Partie 2" << endl;
-
 				feucolor = RED;
 				clock.restart();
-
 			}
 			break;
 		case 3:
 			if (clock.getElapsedTime().asSeconds() > 15) {
-
-				cout << "Partie 3" << endl;
-
 				feucolor = RED;
 				clock.restart();
-
 			}
 			break;
 		}

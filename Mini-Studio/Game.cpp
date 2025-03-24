@@ -24,7 +24,6 @@ Game::Game(RenderWindow& window) {
     screenX = window.getSize().x;
     screenY = window.getSize().y;
     spaceReleases = 0;
-    index = 0;
     levelActif = true;
     isMousePressed = false;
     isRectangleSelected = false;
@@ -38,7 +37,6 @@ void Game::Run(RenderWindow& window) {
     inGame = true;
     srand(static_cast<unsigned int>(time(NULL)));
     levelActif = true;
-    index = 0;
 
     // Chargement des assets
     ray.create(sf::Vector2f(window.getSize().x / 3.f, window.getSize().y / 4.f - 50.f), sf::Vector2f(0.25f, 1.f));
@@ -55,13 +53,11 @@ void Game::Run(RenderWindow& window) {
     player.screenWidthLimit = window.getSize().x * 6.5f;
 
     level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
-    mirrors.push_back(createRectangle(sf::Vector2f(5.f  * 40.f, floorLevel - 2.f  * 80.f), sf::Vector2f(40.f, 80.f)));
-    mirrors.push_back(createRectangle(sf::Vector2f(24.f * 40.f, floorLevel - 4.f  * 80.f), sf::Vector2f(40.f, 80.f)));
-    mirrors.push_back(createRectangle(sf::Vector2f(8.f  * 40.f, floorLevel - 8.f  * 80.f), sf::Vector2f(40.f, 80.f)));
-    mirrors.push_back(createRectangle(sf::Vector2f(2.f  * 40.f, floorLevel - 13.f * 80.f), sf::Vector2f(40.f, 80.f)));
-    mirrors.push_back(createRectangle(sf::Vector2f(20.f * 40.f, floorLevel - 3.f  * 80.f), sf::Vector2f(40.f, 80.f)));
+    mirrors.push_back(createRectangle(sf::Vector2f(15.f * 40.f, floorLevel - 2.f  * 80.f), sf::Vector2f(40.f, 80.f)));
+    mirrors.push_back(createRectangle(sf::Vector2f(20.f * 40.f, floorLevel - 4.f  * 80.f), sf::Vector2f(40.f, 80.f)));
     for (auto& mirror : mirrors) {
         mirror.shape.setTexture(levelTwo.getTexture());
+        mirror.shape.setOrigin(mirror.shape.getSize().x / 2.f, mirror.shape.getSize().y / 2.f);
     }
 
     view(window);
@@ -78,6 +74,7 @@ void Game::Run(RenderWindow& window) {
             inGame = false;
             isRunning = false;
             lose = true;
+            hasLost = true;
         }
     }
 
@@ -111,13 +108,21 @@ void Game::pollEvents(RenderWindow& window) {
         else if (event.type == Event::KeyReleased && event.key.code == Keyboard::P) {
             inGame = !inGame;
         }
-        if (event.type == sf::Event::MouseButtonPressed) {
+        if (event.type == sf::Event::MouseWheelScrolled) {
+            sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+            for (auto& mirror : mirrors) {
+                if (mirror.contains(mousePos)) {
+                    mirror.shape.rotate(event.mouseWheelScroll.delta * 5.f);
+                }
+            }
+        }
+        else if (event.type == sf::Event::MouseButtonPressed) {
             sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
             if (event.mouseButton.button == sf::Mouse::Left) {
                 isMousePressed = true;
                 isRectangleSelected = false;
-
                 // Vérifier si un rectangle est cliqué
                 for (auto& rect : mirrors) {
                     if (rect.contains(mousePos)) {
@@ -128,19 +133,40 @@ void Game::pollEvents(RenderWindow& window) {
                 }
             }
             else if (event.mouseButton.button == sf::Mouse::Right) {
-                isMousePressed = true;
-                isRectangleSelected = false;
-
-                for (auto& rect : mirrors) {
-                    if (rect.contains(mousePos)) {
-                        rect.deselect();
-                        break;
-                    }
-                }
+                // Créer un nouveau rectangle à la position du clic droit
+                mirrors.push_back(createRectangle(mousePos, {40.f, 80.f}));
+                mirrors[mirrors.size() - 1].shape.setTexture(levelTwo.getTexture());
+                mirrors[mirrors.size() - 1].shape.setOrigin(mirrors[mirrors.size() - 1].shape.getSize().x / 2.f, mirrors[mirrors.size() - 1].shape.getSize().y / 2.f);
             }
         }
         else if (event.type == sf::Event::MouseButtonReleased) {
-            isMousePressed = false;
+            if (event.mouseButton.button == sf::Mouse::Left) {
+                isMousePressed = false;
+                // Désélectionner tous les rectangles
+                for (auto& rect : mirrors) {
+                    rect.deselect();
+                }
+            }
+        }
+        else if (event.type == sf::Event::MouseMoved && isMousePressed) {
+            sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+            // Déplacer le rectangle sélectionné
+            for (auto& rect : mirrors) {
+                rect.move(mousePos);
+            }
+        }
+        else if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Delete) {
+                // Supprimer le rectangle sélectionné
+                for (auto it = mirrors.begin(); it != mirrors.end(); ) {
+                    if (it->isSelected) {
+                        it = mirrors.erase(it);
+                    }
+                    else {
+                        ++it;
+                    }
+                }
+            }
         }
     }
 }
@@ -153,7 +179,7 @@ bool Game::getRunning()
 void Game::updateRay(RenderWindow& window) {
 	allSegments.clear();
     raySegments.clear();
-    // Ajouter les segments des rectangles flottants
+
     auto solarPanelSegments = levelTwo.endSolarPanel.getSegments();
     allSegments.insert(allSegments.end(), solarPanelSegments.begin(), solarPanelSegments.end());
     for (auto& rect : mirrors) {
@@ -161,11 +187,10 @@ void Game::updateRay(RenderWindow& window) {
         allSegments.insert(allSegments.end(), rectSegments.begin(), rectSegments.end());
     }
 
-    // Calculer les réflexions
     sf::Vector2f currentOrigin = ray.origin;
     sf::Vector2f currentDirection = ray.direction;
 
-    raySegments.push_back({ currentOrigin, currentOrigin }); // Placeholder pour le premier segment
+    raySegments.push_back({ currentOrigin, currentOrigin });
 
     for (int i = 0; i < MAX_REFLECTIONS; i++) {
         float minDistance = std::numeric_limits<float>::max();
@@ -173,7 +198,6 @@ void Game::updateRay(RenderWindow& window) {
         sf::Vector2f closestNormal;
         bool foundIntersection = false;
 
-        // Trouver l'intersection la plus proche
         for (const auto& segment : allSegments) {
             sf::Vector2f intersection;
             float distance;
@@ -187,13 +211,11 @@ void Game::updateRay(RenderWindow& window) {
                     minDistance = distance;
                     closestIntersection = intersection;
 
-                    // Calculer la normale au segment
                     sf::Vector2f segDir = segment.second - segment.first;
                     sf::Vector2f normal(-segDir.y, segDir.x);
                     float length = std::sqrt(normal.x * normal.x + normal.y * normal.y);
                     normal /= length;
 
-                    // S'assurer que la normale pointe vers l'intérieur
                     if (normal.x * currentDirection.x + normal.y * currentDirection.y > 0) {
                         normal = -normal;
                     }
@@ -201,10 +223,8 @@ void Game::updateRay(RenderWindow& window) {
                     closestNormal = normal;
                     foundIntersection = true;
 
-                    // Vérifier si l'intersection s'est produite sur le panneau solaire (4 premiers segments)
                     if (segment == allSegments[0] || segment == allSegments[1] || segment == allSegments[2] || segment == allSegments[3]) {
                         levelTwo.endSolarPanel.isOn = true;
-                        hasWon = true;
                     }
                     else {
                         levelTwo.endSolarPanel.isOn = false;
@@ -234,41 +254,41 @@ void Game::updateRay(RenderWindow& window) {
 }
 
 void Game::update(const float& deltaTime, RenderWindow& window) {
+    if (index == 0 && (player.playerSprite.getGlobalBounds().intersects(level.endLevel.getGlobalBounds()) || player.playerSprite.getPosition().x > player.screenWidthLimit)) {
+        index++;
+        player.index = index;
+        levelActif = false;
+        player.screenWidthLimit = window.getSize().x - player.playerSprite.getGlobalBounds().width;
+        level.plateformeTest.clear();
+        level.platforms.clear();
+        level.m_entityManager->deleteAllEnnemy();
+        player.playerSprite.setPosition(500, 500);
+        level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
+    }
     if (index == 1) {
+        // WIN CONDITION :
+        //  - Checking if the solar panel is activated and the player has to cross the end of the level
+        if (levelTwo.endSolarPanel.isOn && (player.playerSprite.getGlobalBounds().intersects(level.endLevel.getGlobalBounds()) || player.playerSprite.getPosition().x > player.screenWidthLimit)) {
+            hasWon = true;
+            inGame = false;
+            isRunning = false;
+            return;
+        }
         levelTwo.endSolarPanel.update(deltaTime, window);
 		updateRay(window);
-        updateMirrors(mirrors, deltaTime, window);
+        updateMirrors(mirrors);
     }
+    // Unlocks gravity inversion
+    if (index == 2 && player.index == 0) {
+        player.index = 2;
+    }
+    // All levels call these functions
     level.m_entityManager->updateEntities(window, deltaTime);
     player.Colision(window, deltaTime, level.platforms, level.plateformeTest);
     player.update(deltaTime, window);
     parralaxLevelOne.moveLayers(deltaTime, window, player);
     for (auto& Plateforme : level.plateformeTest) {
         Plateforme->platUpdate(deltaTime);
-    }
-    if (player.playerSprite.getGlobalBounds().intersects(level.endLevel.getGlobalBounds()) || player.playerSprite.getPosition().x > player.screenWidthLimit) {
-        index += 1;
-        if (index > 2) {
-            index = 2;
-            player.screenWidthLimit = window.getSize().x * 50.f;
-        }
-        if (index == 1) {
-            levelActif = false;
-            player.screenWidthLimit = window.getSize().x - player.playerSprite.getGlobalBounds().width;
-        }
-        else {
-            levelActif = true;
-        }
-        level.plateformeTest.clear();
-        level.platforms.clear();
-            
-        level.m_entityManager->deleteAllEnnemy();
-
-        player.playerSprite.setPosition(500, 500);
-        level.loadMap(level.allLevels.at(index), &player, window, &parralaxLevelOne);
-    }
-    if (player.playerSprite.getGlobalBounds().intersects(level.end.getGlobalBounds())) {
-        isRunning = false;
     }
 }
 
@@ -279,15 +299,12 @@ void Game::view(RenderWindow& window) {
         position.x = (player.playerSprite.getPosition().x + (playerSize.x / 2.f) - (screenX / 2.f));
         position.y = (player.playerSprite.getPosition().y + (playerSize.y / 2.f) - (screenY / 2.f));
 
-        // permet de fixer une limite donc a voir avec les carré noir de Kiliann
-
         if (position.x < 0) {
             position.x = 0;
         }
-        else if (position.x > window.getSize().x * 6.f) { //bloquer joueur vue
+        else if (position.x > window.getSize().x * 6.f) {
             position.x = window.getSize().x * 6.f;
         }
-
         if (position.y > 0) {
             position.y = 0;
         }
@@ -316,21 +333,14 @@ void Game::draw(RenderWindow& window) {
             }
             for (size_t i = 0; i < raySegments.size(); i++) {
                 const auto& segment = raySegments[i];
-                // Couleurs qui s'affaiblissent avec chaque réflexion
-                sf::Color startColor = sf::Color::Yellow;
-                sf::Color endColor = sf::Color::Yellow;
+                sf::Color startColor = sf::Color(255, 255, 0, 255 - (i / 10.f) * 255);
+                sf::Color endColor = sf::Color(255, 255, 0, 255 - ((i + 1) / 10.f) * 255);
                 ray.drawSegment(window, segment.first, segment.second, startColor, endColor);
             }
             levelTwo.endSolarPanel.draw(window);
         }
         level.drawMap(window);
         player.draw(window);
-    }
-    else if(hasWon && !hasLost) {
-        window.draw(winScreen);
-    }
-    else {
-        window.draw(lostScreen);
     }
     window.display();
 }

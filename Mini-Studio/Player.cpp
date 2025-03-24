@@ -31,6 +31,7 @@ Player::Player() {
 	countSide        = 0;
 	hitcount         = 0;
 	animationTime    = 0.f;
+	index            = 0;
 }
 
 void Player::resize(RenderWindow& window) {
@@ -122,6 +123,14 @@ void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 		else {
 			hasPressedS = false;
 		}
+	}
+	if (Keyboard::isKeyPressed(Keyboard::G) && index == 2) {
+		invertedGravity = !invertedGravity;
+		playerSprite.setScale(playerSprite.getScale().x, -1 * playerSprite.getScale().y);
+		for (auto& sprite : playerSprites) {
+			sprite.setScale(sprite.getScale().x, -1 * sprite.getScale().y);
+		}
+		std::cout << "Inversing gravity" << std::endl;
 	}
 	if (!hasInput) {
 		isIdling = true;

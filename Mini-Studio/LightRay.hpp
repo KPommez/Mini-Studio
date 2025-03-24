@@ -116,16 +116,42 @@ struct Mirror {
     std::vector<std::pair<sf::Vector2f, sf::Vector2f>> getSegments() {
         sf::Vector2f pos = shape.getPosition();
         sf::Vector2f size = shape.getSize();
+        float rotationAngle = shape.getRotation();
 
+        // Convert the rotation angle to radians
+        float radians = rotationAngle * (M_PI / 180.f);
+
+        // Calculate the cosine and sine of the rotation angle
+        float cosAngle = std::cos(radians);
+        float sinAngle = std::sin(radians);
+
+        // Define the original points of the rectangle relative to the center
+        std::vector<sf::Vector2f> originalPoints = {
+            sf::Vector2f(-size.x / 2.f, -size.y / 2.f), // Top-left
+            sf::Vector2f(size.x / 2.f, -size.y / 2.f),  // Top-right
+            sf::Vector2f(size.x / 2.f, size.y / 2.f),   // Bottom-right
+            sf::Vector2f(-size.x / 2.f, size.y / 2.f)   // Bottom-left
+        };
+
+        // Rotate each point around the center
+        std::vector<sf::Vector2f> rotatedPoints;
+        for (const auto& point : originalPoints) {
+            sf::Vector2f rotatedPoint;
+            rotatedPoint.x = point.x * cosAngle - point.y * sinAngle;
+            rotatedPoint.y = point.x * sinAngle + point.y * cosAngle;
+            rotatedPoints.push_back(rotatedPoint + pos);
+        }
+
+        // Create the segments from the rotated points
         return {
-            // Segment haut
-            { sf::Vector2f(pos.x, pos.y), sf::Vector2f(pos.x + size.x, pos.y) },
-            // Segment droite
-            { sf::Vector2f(pos.x + size.x, pos.y), sf::Vector2f(pos.x + size.x, pos.y + size.y) },
-            // Segment bas
-            { sf::Vector2f(pos.x + size.x, pos.y + size.y), sf::Vector2f(pos.x, pos.y + size.y) },
-            // Segment gauche
-            { sf::Vector2f(pos.x, pos.y + size.y), sf::Vector2f(pos.x, pos.y) }
+            // Top segment
+            { rotatedPoints[0], rotatedPoints[1] },
+            // Right segment
+            { rotatedPoints[1], rotatedPoints[2] },
+            // Bottom segment
+            { rotatedPoints[2], rotatedPoints[3] },
+            // Left segment
+            { rotatedPoints[3], rotatedPoints[0] }
         };
     }
 };
@@ -192,21 +218,8 @@ Mirror createRectangle(sf::Vector2f position, sf::Vector2f size) {
     );
 }
 
-void updateMirrors(vector<Mirror>& mirrors, const float& deltaTime, RenderWindow& window) {
+void updateMirrors(vector<Mirror>& mirrors) {
     for (auto& mirror : mirrors) {
-        if (mirror.isSelected) {
-            if (Keyboard::isKeyPressed(Keyboard::Up) && mirror.shape.getPosition().y > 0) {
-                mirror.shape.move(0, -800 * deltaTime);
-            }
-            else if (Keyboard::isKeyPressed(Keyboard::Down) && mirror.shape.getPosition().y <= window.getSize().y - mirror.shape.getSize().y) {
-                mirror.shape.move(0, 800 * deltaTime);
-            }
-            else if (Keyboard::isKeyPressed(Keyboard::Left) && mirror.shape.getPosition().x > 0) {
-                mirror.shape.move(-800 * deltaTime, 0);
-            }
-            else if (Keyboard::isKeyPressed(Keyboard::Right) && mirror.shape.getPosition().x <= window.getSize().x - mirror.shape.getSize().x) {
-                mirror.shape.move(800 * deltaTime, 0);
-            }
-        }
+        
     }
 }

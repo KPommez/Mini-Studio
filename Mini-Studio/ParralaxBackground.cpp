@@ -49,6 +49,8 @@ void ParralaxBackground::instanciateLayers(RenderWindow& window, string level, i
 }
 
 void ParralaxBackground::moveLayers(const float& deltaTime, RenderWindow& window, const Player& player) {
+	// Checking borders
+	checkBorders(player, window);
 	// Movement
 	if (player.isGoingRight && !player.isIdling) {
 		layers[0].move (-50.f  * deltaTime, 0);
@@ -86,8 +88,6 @@ void ParralaxBackground::moveLayers(const float& deltaTime, RenderWindow& window
 		layers[7].move (350.f * deltaTime, 0);
 		layers[15].move(350.f * deltaTime, 0);
 	}
-	// Checking borders
-	checkBorders(player, window);
 }
 
 void ParralaxBackground::checkBorders(const Player& player, RenderWindow& window) {
