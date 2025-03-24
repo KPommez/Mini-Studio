@@ -6,19 +6,27 @@
 class SpriteMenu {
 public:
     Font font;
-	Sprite sprite;
+	Sprite sprite; //Fond
 	Texture texture;
 
-    vector <Sprite> selectSprite;
+    vector <Sprite> selectSprite; //Selection
     Texture selectPlay, selectQuit;
     Sprite selectPlaySprite, selectQuitSprite;
 
-    vector <Sprite> spriteTexte;
+    vector <Sprite> spriteTexte; //Play/Quit
     Texture choix1, choix3;
     Sprite spriteChoix1, spriteChoix3;
 
-    Texture bullePlayer, option;
+    Texture bullePlayer, option; 
     Sprite spriteBullePlayer, spriteOption;
+
+    vector <Sprite> WinButton;
+    Texture Back, Quit;
+    Sprite spriteBack, spriteQuitter;
+
+    vector <Sprite> LoseButton;
+    Texture Retry, Forfeit;
+    Sprite spriteRetry, spriteForfeit;
 
     vector <Sprite> TexteAmi;
     Texture ami1, ami2;
