@@ -124,7 +124,15 @@ void Player::inputGestion(const float& deltaTime, RenderWindow& window) {
 			hasPressedS = false;
 		}
 	}
-	if (Keyboard::isKeyPressed(Keyboard::G) && index == 2) {
+	if (Keyboard::isKeyPressed(Keyboard::G) && index == 2 && !invertedGravity) {
+		invertedGravity = !invertedGravity;
+		playerSprite.setScale(playerSprite.getScale().x, -1 * playerSprite.getScale().y);
+		for (auto& sprite : playerSprites) {
+			sprite.setScale(sprite.getScale().x, -1 * sprite.getScale().y);
+		}
+		std::cout << "Inversing gravity" << std::endl;
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::H) && index == 2 && invertedGravity) {
 		invertedGravity = !invertedGravity;
 		playerSprite.setScale(playerSprite.getScale().x, -1 * playerSprite.getScale().y);
 		for (auto& sprite : playerSprites) {
@@ -329,20 +337,24 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 	else {
 		posY = playerSprite.getPosition().y - playerSprite.getGlobalBounds().height;
 	}
-	if (playerSprite.getPosition().x <= 0) {
-		playerSprite.move(speed * 2.f * deltaTime, 0);
-		isIdling = true;
-		isIdlingAnimationStarted = true;
-	}
 	hasPlatform = false;
 	hasMovingPlatform = false;
-	if (playerSprite.getPosition().y >= floorLevel) {
+	if (playerSprite.getPosition().y >= floorLevel && !invertedGravity) {
 		isFalling = false;
 		isJumping = false;
 		hasPlatform = true;
 		canDoubleJump = true;
 		hadPlatformWhenJumped = true;
 		playerSprite.setPosition(playerSprite.getPosition().x, floorLevel);
+		spacebarPresses = 0;
+	}
+	else if (playerSprite.getPosition().y <= 0 && invertedGravity) {
+		isFalling = false;
+		isJumping = false;
+		hasPlatform = true;
+		canDoubleJump = true;
+		hadPlatformWhenJumped = true;
+		playerSprite.setPosition(playerSprite.getPosition().x, 0);
 		spacebarPresses = 0;
 	}
 	else {
@@ -364,7 +376,7 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		}
 		for (auto& platform : platformsMobile) {
 			if (playerSprite.getGlobalBounds().intersects(platform->plat.getGlobalBounds()) && !hasPressedS) {
-				if (isFalling) {
+				if (isFalling && !invertedGravity) {
 					playerSprite.setPosition(playerSprite.getPosition().x, platform->plat.getPosition().y);
 					hasMovingPlatform = true;
 					isJumping = false;
@@ -374,7 +386,17 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 					spacebarPresses = 0;
 					playerSprite.move(0, 0);
 				}
-				playerSprite.move(platform->deplacementX * deltaTime *20.f, 0);    //trouver un truc, sa marche presque
+				else if (isFalling && invertedGravity) {
+					playerSprite.setPosition(playerSprite.getPosition().x, platform->plat.getPosition().y + platform->plat.getSize().y + playerSprite.getGlobalBounds().height);
+					hasMovingPlatform = true;
+					isJumping = false;
+					isFalling = false;
+					canDoubleJump = true;
+					hadPlatformWhenJumped = true;
+					spacebarPresses = 0;
+					playerSprite.move(0, 0);
+				}
+				playerSprite.move(platform->deplacementX * deltaTime * 20.f, 0);    //trouver un truc, sa marche presque
 				hasPlatform = true;
 				count++;
 			}
@@ -385,13 +407,19 @@ void Player::Colision(RenderWindow& window, const float& deltaTime, vector<Recta
 		}
 	}
 	for (auto& platform : platforms) {
-		if (playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) && !hasPressedS && posY > platform.getPosition().y && !isJumping) {
+		if (!invertedGravity && playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) && !hasPressedS && posY > platform.getPosition().y && !isJumping) {
 			playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
+		}
+		else if (invertedGravity && playerSprite.getGlobalBounds().intersects(platform.getGlobalBounds()) && !hasPressedS && posY > platform.getPosition().y && !isJumping) {
+			playerSprite.setPosition(playerSprite.getPosition().x, platform.getPosition().y + platform.getSize().y + playerSprite.getGlobalBounds().height - 0.1f);
 		}
 	}
 	for (auto& platform : platformsMobile) {
-		if (playerSprite.getGlobalBounds().intersects(platform->plat.getGlobalBounds()) && !hasPressedS && posY > platform->plat.getPosition().y && !isJumping) {
+		if (!invertedGravity && playerSprite.getGlobalBounds().intersects(platform->plat.getGlobalBounds()) && !hasPressedS && posY > platform->plat.getPosition().y && !isJumping) {
 			playerSprite.setPosition(playerSprite.getPosition().x, platform->plat.getPosition().y - playerSprite.getGlobalBounds().height + 0.1f);
+		}
+		else if (invertedGravity && playerSprite.getGlobalBounds().intersects(platform->plat.getGlobalBounds()) && !hasPressedS && posY > platform->plat.getPosition().y && !isJumping) {
+			playerSprite.setPosition(playerSprite.getPosition().x, platform->plat.getPosition().y + platform->plat.getSize().y + playerSprite.getGlobalBounds().height - 0.1f);
 		}
 	}
 }
